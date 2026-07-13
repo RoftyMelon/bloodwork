@@ -1,0 +1,840 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- iOS Safari's data detectors auto-link anything that smells like a date, duration or
+     phone number and render it blue. "4mo", "2.3y" and 4-digit values all qualify. Off. -->
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no">
+<!-- Without this Safari tints its toolbar with a default (white). Kept in sync with the
+     theme by paint(), because the toggle overrides the OS preference. -->
+<meta name="theme-color" content="#FFFFFF">
+<!-- Add to Home Screen -> runs standalone: no address bar, no bottom toolbar, full screen.
+     The only way to be rid of Safari's chrome, since its collapse gesture can't be forced. -->
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Blood panel">
+<link rel="apple-touch-icon" href="./icon.png">
+<link rel="icon" href="./icon.png">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+[data-theme=dark]{
+  --chrome:#262624;
+  /* Claude dark: warm near-black grey, never a cold blue-black */
+  --bg:#262624;
+  --txt:#F5F4EF; --t2:rgba(245,244,239,.62); --t3:rgba(245,244,239,.42); --t4:rgba(245,244,239,.26);
+  --line:rgba(245,244,239,.13); --line2:rgba(245,244,239,.075);
+  --ok:#52C07E; --watch:#E5A34A; --out:#F0705F; --info:#7FB3F0;
+  --stick:#262624; --head:#30302E;
+  --hov:rgba(127,179,240,.10); --hovs:#2B3239; --grp:#2F2F2C; --sel:#7FB3F0;
+  --band:rgba(245,244,239,.16);
+  --btn:#30302E; --btn-b:rgba(245,244,239,.14); --btn-h:#3B3B37;
+  --sol:#F5F4EF; --sol-t:#262624;
+  --mg:rgba(245,244,239,.07);
+  --frost:rgba(48,48,46,.72); --frost-b:rgba(245,244,239,.14); --frost-h:rgba(59,59,55,.9);
+}
+:root{--thh:38px; --nm:180px}   /* sizing: theme-independent, must not sit in a theme block */
+:root,[data-theme=light]{--chrome:#FFFFFF;   /* pre-compensates Safari's darkening; see paint() */
+  
+  /* Claude cream: warm ivory paper, warm near-black ink */
+  --bg:#FAF9F5;
+  --txt:#1F1E1D; --t2:rgba(31,30,29,.64); --t3:rgba(31,30,29,.45); --t4:rgba(31,30,29,.27);
+  --line:rgba(31,30,29,.14); --line2:rgba(31,30,29,.08);
+  --ok:#146B45; --watch:#9C5B0D; --out:#B23B30; --info:#3D6AA8;
+  --stick:#FAF9F5; --head:#F0EEE6;
+  --hov:rgba(61,106,168,.075); --hovs:#EDF0F6; --grp:#EFEDE3; --sel:#3D6AA8;
+  --band:rgba(31,30,29,.16);
+  --btn:#FFFFFF; --btn-b:rgba(31,30,29,.15); --btn-h:#F0EEE6;
+  --sol:#1F1E1D; --sol-t:#FAF9F5;
+  --mg:rgba(31,30,29,.08);
+  --frost:rgba(250,249,245,.75); --frost-b:rgba(31,30,29,.14); --frost-h:rgba(250,249,245,.95);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg)}
+body{color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;font-feature-settings:'tnum' 1;position:relative;
+  min-height:100vh;min-height:100dvh}   /* dvh tracks Safari's collapsing bottom bar */
+/* Theme flip: colours crossfade in place. The orbit is excluded, or this shorthand
+   would replace its transition list and kill the 850ms transform. */
+html.tfade,html.tfade *:not(.orbit-disc):not(.icon-moon):not(.icon-sun),
+html.tfade *::before,html.tfade *::after{
+  transition:background-color .22s ease,color .22s ease,border-color .22s ease,
+             fill .22s ease,stroke .22s ease !important}
+.wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 20px 110px}
+.topbar{position:fixed;top:0;left:0;width:100%;z-index:50;background:var(--bg);
+  padding:20px var(--gut,20px) 0;
+  transition:border-color .2s ease;border-bottom:.5px solid transparent}
+.topspacer{height:var(--toph,112px)}   /* fixed takes it out of flow; hold its place */
+.topbar.stuck{border-bottom-color:var(--line)}
+
+button{font-family:inherit;font-size:12.5px;font-weight:550;letter-spacing:-.005em;
+  padding:9px 15px;border-radius:11px;cursor:pointer;transition:.18s cubic-bezier(.3,.9,.3,1);
+  background:var(--btn);border:.5px solid var(--btn-b);color:var(--txt)}
+button:hover{background:var(--btn-h)}
+button.solid{background:var(--sol);color:var(--sol-t);border-color:transparent;font-weight:600}
+button.solid:hover{opacity:.9;background:var(--sol)}
+button.warn{color:var(--out);border-color:var(--out);background:transparent}
+button.warn:hover{background:var(--out);color:#fff}
+button.ic{padding:0;width:30px;height:30px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;color:var(--t2)}
+button.ic:hover{color:var(--txt)}
+
+/* Orbit toggle. The clip circle IS the horizon: icons exist only inside it.
+   The disc pivots BELOW the window (50% 104%), so they rise and set on a shallow
+   arc rather than popping straight up. The sun layer is pre-rotated 180deg, so it
+   waits on the far side. Each click adds +180deg, always the same direction. */
+.orbit{position:relative;width:100%;height:100%;display:block;
+  -webkit-clip-path:circle(50%);clip-path:circle(50%)}
+.orbit-disc{position:absolute;inset:0;transform-origin:50% 104%}
+.orbit-layer{position:absolute;inset:0}
+.orbit-layer.sun-side{transform:rotate(180deg);transform-origin:50% 104%}
+.icon-moon{position:absolute;left:calc(50% - 7.5px);top:calc(50% - 7.5px)}
+.icon-sun{position:absolute;left:calc(50% - 9.5px);top:calc(50% - 9.5px)}
+.orbit-disc,.icon-moon,.icon-sun{transition:transform .85s cubic-bezier(.55,.05,.22,1)}
+button:focus-visible{outline:2px solid var(--info);outline-offset:2px}
+
+td.boot{padding:60px 24px;text-align:center;line-height:1.8;color:var(--txt);font-size:15px}
+td.boot span{color:var(--t3);font-size:12.5px}
+
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.topline{display:flex;align-items:flex-start;gap:10px}
+.bar{flex:1;min-width:0;display:flex;gap:6px;row-gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.chips{display:contents}
+.toc{display:flex;gap:2px;margin-left:8px;min-width:0;
+  flex-wrap:nowrap;overflow-x:auto;                 /* never wrap: scroll instead */
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.toc::-webkit-scrollbar{display:none}
+.tspace{display:none}   /* only used on narrow screens, see the media query */
+.nav{flex:none}
+.srch{display:flex;align-items:center;flex:none;width:30px;height:30px;border-radius:99px;overflow:hidden;
+  background:var(--btn);border:.5px solid var(--btn-b);
+  transition:width .3s cubic-bezier(.2,.9,.25,1),border-color .16s}
+.srch.open{width:186px;border-color:var(--txt)}
+.srch .sicon{flex:none;width:28px;height:28px; display:flex;align-items:center;justify-content:center;
+  padding:0;border:none;background:none;border-radius:50%;color:var(--t3)}
+.srch .sicon:hover{background:none;color:var(--txt)}
+.srch.open .sicon{color:var(--t2);cursor:default}
+.srch input{flex:1;min-width:0;height:100%;padding:0;border:none;background:none;border-radius:0;outline:none;
+  font-family:inherit;font-size:12.5px;font-weight:450;color:var(--txt);
+  opacity:0;transition:opacity .16s ease .1s}
+.srch.open input{opacity:1}
+.srch input::placeholder{color:var(--t3)}
+.srch input:focus-visible{outline:none}
+.srch .qx{display:none;flex:none;width:22px;height:22px;margin-right:5px;padding:0;line-height:20px;
+  text-align:center;font-size:16px;font-weight:400;border:none;background:none;border-radius:50%;color:var(--t3)}
+.srch .qx:hover{background:var(--btn-h);color:var(--txt)}
+.srch.has .qx{display:block}
+.chip{font-family:inherit;font-size:12px;font-weight:520;padding:7px 13px;border-radius:99px;cursor:pointer;
+  background:var(--btn);border:.5px solid var(--btn-b);color:var(--t2);transition:.16s}
+.chip:hover{background:var(--btn-h);color:var(--txt)}
+.chip[aria-pressed=true]{background:var(--sol);color:var(--sol-t);border-color:transparent;font-weight:600}
+.cn{font-size:10.5px;font-weight:700;margin-left:6px;opacity:.45;font-variant-numeric:tabular-nums}
+.cn.hot{color:var(--out);opacity:1}
+.chip[aria-pressed=true] .cn{color:inherit;opacity:.55}
+
+/* table */
+
+table{border-collapse:separate;border-spacing:0;table-layout:fixed;width:100%;min-width:1130px}
+thead th{position:sticky;top:var(--toph,70px);z-index:8;background:var(--head);
+  font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);
+  height:var(--thh);padding:0 10px;vertical-align:middle;
+  text-align:right;white-space:nowrap;border-bottom:.5px solid var(--line)}
+thead th.lft{text-align:left}
+/* Frozen block: identity + current value + unit. Everything to its right scrolls.
+   With table-layout:fixed these widths are REAL, so the sticky offsets can trust them. */
+th.nm,td.nm,th.now,td.now,th.uc,td.uc{position:sticky;z-index:2;background:var(--stick)}
+th.nm,td.nm{left:var(--gut,20px);text-align:left;width:var(--nm)}
+th.now,td.now{left:calc(var(--gut,20px) + var(--nm));width:68px}
+thead th.now{padding:0 5px}   /* 'LATEST' is the only thing keeping this column wide */
+th.uc,td.uc{left:calc(var(--gut,20px) + var(--nm) + 68px);width:62px;
+  border-right:1.5px solid var(--line)}
+th.lc,td.lc{width:52px}
+th.off,td.off{width:150px}
+th.pos,td.pos{width:170px}
+th.tr,td.tr{min-width:104px}   /* no width: absorbs the leftover */
+thead th.nm,thead th.now,thead th.uc{background:var(--head);z-index:9}
+thead th.now{color:var(--txt)}
+tr.grp td{position:sticky;top:calc(var(--toph,70px) + var(--thh) - 3px);z-index:6;padding:0;
+  background:var(--grp);
+  border-top:.5px solid var(--line);border-bottom:.5px solid var(--line)}
+tr.grp .ghd{position:sticky;left:var(--gut,20px);width:fit-content;text-align:left;
+  padding:9px 10px 10px;
+  display:flex;align-items:baseline;gap:11px;white-space:nowrap}
+tr.grp .gt{font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  /* µ uppercases to Greek Mu, which looks like M. Units must never be case-mapped. */
+  color:var(--txt);line-height:1.25}
+tr.grp .gs{font-size:11px;font-weight:450;letter-spacing:0;color:var(--t4);line-height:1.35}
+
+td.tr{text-align:left;padding-left:14px}
+.trw{display:flex;align-items:baseline;gap:7px}
+.dlt{font-size:13px;font-weight:600;color:var(--t2);font-variant-numeric:tabular-nums;
+  white-space:nowrap;letter-spacing:-.01em}
+.tsp{font-size:10px;color:var(--t4);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tnil{color:var(--t4)}
+
+/* expanded chart: x-axis IS the draw columns above it */
+tr.det>td{padding:0;border-bottom:.5px solid var(--line)}
+.dwrap{display:grid;grid-template-rows:0fr;transition:grid-template-rows .34s cubic-bezier(.25,.9,.3,1)}
+.dwrap.open{grid-template-rows:1fr}
+.dclip{overflow:hidden;min-height:0;background:var(--grp);
+  box-shadow:inset 3px 0 0 var(--sel)}
+.chart{display:flex;height:200px;padding:22px 0 18px;opacity:0;transition:opacity .2s ease}
+.dwrap.open .chart{opacity:1}
+.cy{flex:none;position:relative;color:var(--t3)}
+.cyl{position:absolute;right:14px;height:0;display:flex;align-items:center;justify-content:flex-end}
+.cyl span{font-size:11px;font-variant-numeric:tabular-nums;background:var(--grp);padding:0 5px;
+  transform:translateY(-.5px)}
+.cyl.o span{color:var(--ok);font-weight:600}
+.cyu{position:absolute;right:14px;top:-7px;font-size:11px;font-weight:500;color:var(--t4)}
+.ckey{position:absolute;right:48px;top:0;bottom:0;display:flex;gap:14px}
+.cka{position:relative;flex:none}
+.cka.ref{width:34px}
+.cka.opt{width:64px}
+/* each bracket spans its own range at the plot's y-scale, so reference NESTS around optimal */
+.ckt{position:absolute;right:0;display:flex;align-items:center;gap:8px}
+.ckbr{flex:none;width:8px;align-self:stretch;border:1px solid var(--t4);
+  border-right:none;border-radius:3px 0 0 3px}
+.ckbr.opt{border-color:color-mix(in srgb,var(--ok) 70%,transparent)}
+/* vertical, reading bottom-to-top, like a y-axis title. The numbers are on the axis already. */
+.ckl{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;
+  /* In vertical-rl, flex 'column' runs along the BLOCK axis (the two columns), and
+     align-items centres along the INLINE axis, which is the vertical one. */
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  font-size:12.5px;font-weight:600;color:var(--txt);letter-spacing:.01em}
+/* horizontal, and centred on the bracket's span: it sits INSIDE the range it qualifies */
+/* rides in the vertical flow, below the label. Logical properties, because in
+   vertical-rl the inline axis IS the vertical one. */
+.ckl em{font-style:normal;font-size:8.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--t3);border:.5px solid var(--line);border-radius:4px;
+  padding-inline:7px;padding-block:2px}
+/* visual weight tracks evidential weight. No status colour borrowed:
+   green/amber/red mean things about your blood, never about my confidence. */
+.ckl em.strong{color:var(--t2);border-color:var(--t3);border-width:1px}
+.ckl em.weak{color:var(--t4);border-style:dashed}
+.cy::after{content:'';position:absolute;right:0;top:0;bottom:0;width:1px;background:var(--line)}
+.cplot{flex:1;position:relative}
+.cplot svg{position:absolute;inset:0;width:100%;height:100%;color:var(--t2);overflow:visible}
+.cb{position:absolute;left:0;right:0}
+.cb.clin{background:var(--band)}
+.cb.opt{background:var(--ok);opacity:.22}
+.cgl{position:absolute;left:0;right:0;height:0;border-top:.5px dashed var(--line)}
+.cgl.o{border-top-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+.cd{position:absolute;width:9px;height:9px;border-radius:50%;transform:translate(-50%,50%);
+  border:2px solid var(--grp)}
+.cd.ok{background:var(--ok)} .cd.watch{background:var(--watch)} .cd.out{background:var(--out)}
+.cpad{flex:none}
+@media(prefers-reduced-motion:reduce){.dwrap{grid-template-rows:1fr}.chart{opacity:1}}
+tbody td{padding:9px 10px;font-size:13px;text-align:right;white-space:nowrap;color:var(--t2);
+  border-bottom:.5px solid var(--line2);font-variant-numeric:tabular-nums}
+tr.m{cursor:pointer;transition:background .14s}
+tr.m:hover td{background:var(--hov)}
+tr.m:hover td.now,tr.m:hover td.uc{background:var(--hovs)}
+tr.m:hover td.nm{background:linear-gradient(90deg,var(--sel) 0,var(--sel) 3px,var(--hovs) 3px)}
+td.nm{font-size:13.5px;font-weight:560;color:var(--txt);letter-spacing:-.01em;overflow:hidden}
+td.nm .n1{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+td.nm .fr{font-size:10px;font-weight:400;color:var(--t4);display:block;margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:0}
+td.uc{text-align:left;padding-left:7px;font-size:11.5px;color:var(--t3);
+  white-space:nowrap;font-variant-numeric:tabular-nums}
+td.lc{text-align:left;padding-left:10px;white-space:nowrap}
+.lm{font-size:11.5px;font-weight:500;color:var(--t2);font-variant-numeric:tabular-nums}
+.lm.old{color:var(--info);font-weight:650}
+.nilx{color:var(--t4)}
+td.c{font-size:12.5px;color:var(--t3);text-align:center;padding:9px 4px}
+th.dcol{text-align:center;width:64px;padding:0 4px;letter-spacing:.05em}
+td.c.has{color:var(--t2)}
+td.c.ok{color:var(--ok)}td.c.watch{color:var(--watch)}td.c.out{color:var(--out);font-weight:600}
+td.nil{color:var(--t4)}
+td.now{white-space:nowrap;padding-right:4px}
+td.dnow,th.dnow{font-weight:700;color:var(--txt)}
+
+/* current pill */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:10px;
+  font-size:13.5px;font-weight:650;letter-spacing:-.015em;font-variant-numeric:tabular-nums;
+  background:var(--btn);border:.5px solid var(--btn-b);color:var(--txt)}
+.pill.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent);
+  border-color:color-mix(in srgb,var(--ok) 32%,transparent)}
+.pill.watch{color:var(--watch);background:color-mix(in srgb,var(--watch) 12%,transparent);
+  border-color:color-mix(in srgb,var(--watch) 32%,transparent)}
+.pill.out{color:var(--out);background:color-mix(in srgb,var(--out) 14%,transparent);
+  border-color:color-mix(in srgb,var(--out) 38%,transparent);}
+td.off{text-align:left;padding-left:16px;white-space:nowrap}
+.exc{font-size:12.5px;font-weight:600;white-space:nowrap;letter-spacing:-.01em}
+.exc em{font-style:normal;font-weight:500;opacity:.62;font-size:11px}
+.exc.out{color:var(--out)} .exc.watch{color:var(--watch)}
+
+/* THE INLINE GAUGE */
+td.pos{padding-right:14px}
+.mg{position:relative;height:9px;border-radius:5px;background:var(--mg)}
+.mgc{position:absolute;top:0;height:9px;border-radius:5px;background:var(--band)}
+.mgo{position:absolute;top:0;height:9px;border-radius:5px;background:var(--ok);opacity:.72}
+.mgt{position:absolute;top:-3.5px;width:3px;height:16px;border-radius:2px;transform:translateX(-1.5px);
+  background:var(--txt);transition:left .6s cubic-bezier(.2,.85,.25,1)}
+.mgt.ok{background:var(--ok);}
+.mgt.watch{background:var(--watch);}
+.mgt.out{background:var(--out);width:3.5px}
+.mgx{position:relative;height:11px;margin-top:5px}
+.mgx span{position:absolute;font-size:9px;color:var(--t4);font-variant-numeric:tabular-nums;white-space:nowrap}
+.mgx span.o{color:var(--ok);font-weight:600}
+
+.gutmask{position:fixed;top:0;left:0;width:var(--gut,20px);height:100%;
+  background:var(--bg);z-index:7;pointer-events:none}
+.top{position:fixed;right:26px;bottom:calc(26px + env(safe-area-inset-bottom));z-index:40;width:44px;height:44px;padding:0;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;
+  background:var(--frost);border:.5px solid var(--frost-b);color:var(--t2);
+  backdrop-filter:blur(9px) saturate(150%);-webkit-backdrop-filter:blur(9px) saturate(150%);
+  opacity:0;pointer-events:none;transform:translateY(8px);
+  transition:opacity .22s ease,transform .22s cubic-bezier(.2,.9,.25,1),color .14s,background .14s}
+.top.on{opacity:1;pointer-events:auto;transform:none}
+.top:hover{background:var(--frost-h);color:var(--txt)}
+
+/* the categories navigate, they do not filter */
+.nav{font-family:inherit;font-size:12px;font-weight:500;padding:5px 10px;border-radius:99px;cursor:pointer;
+  background:none;border:.5px solid transparent;color:var(--t3);transition:.14s}
+.nav:hover{background:var(--btn);border-color:var(--btn-b);color:var(--txt);transform:none}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+  .orbit-disc,.icon-moon,.icon-sun{transition:none!important}
+  html.tfade,html.tfade *{transition:none!important}}
+
+/* ---- Media queries LAST: they add no specificity, so a later base rule would win. ---- */
+/* A landscape phone is 393px TALL. The toolbar is position:fixed, so every pixel it
+   keeps is a pixel of data you never see. Trigger on short screens too, not just narrow. */
+@media(max-width:900px),(max-height:560px){
+  /* 20px of page margin is a phone luxury. And viewport-fit=cover means Safari no longer
+     shrinks the viewport for the notch, so we pad only where the hardware actually is. */
+  /* iOS's landscape inset (~59px) clears the Dynamic Island (~12px deep) AND the display's
+     rounded corners, with slack on top. Half of it still clears the hardware. */
+  .wrap{padding-left:max(10px,calc(env(safe-area-inset-left) / 2));
+        padding-right:max(10px,calc(env(safe-area-inset-right) / 2));
+        padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+  /* ONE token. The header is sized by --thh and the section bar is offset by --thh,
+     so changing it here moves both, and they cannot drift apart. */
+  :root{--thh:26px}
+  .topbar{padding-top:8px}
+  .bar{margin-bottom:6px;row-gap:4px}
+  .chip{padding:4px 10px;font-size:11px}
+  .chip .cn{margin-left:5px;font-size:10px}
+  .srch{width:24px;height:24px}
+  .srch .sicon{width:22px;height:22px}
+  button.ic{width:24px;height:24px}
+  .nav{padding:2px 8px;font-size:11px}
+  /* The toggle leaves the flex row and pins to the top-right, so the TOC on row 2 gets
+     the bar's FULL width. A 34px spacer holds its place on row 1 and forces the wrap. */
+  .topline{display:block}
+  .tspace{display:block;flex:none;width:34px;margin-left:auto}
+  button.ic{position:absolute;top:8px;right:var(--gut,10px)}
+  /* The section bar is PINNED the whole time you're inside a section, so its height is
+     permanently spent. Drop the marker count and tighten it: 60px -> 32px. */
+  tr.grp .ghd{padding:5px 10px 6px;gap:9px}
+  tr.grp .gt{font-size:12px;letter-spacing:.07em}
+}
+/* 900px, not 760: a phone in LANDSCAPE is 852px wide, and the 380px frozen block would
+   eat 45% of it. Landscape keeps slipping through width breakpoints because it is WIDER. */
+@media(max-width:900px){
+  /* Freeze the marker column and nothing else. */
+  /* left:auto unfreezes them HORIZONTALLY. position:static would also kill their
+     sticky-TOP, and these <th> are part of the pinned header row. */
+  th.now,td.now,th.uc,td.uc{left:auto}
+  /* Once they scroll, they slide OVER the still-frozen marker column. With an equal
+     z-index the tie goes to DOM order, and they come later, so they'd win. Drop them. */
+  td.now,td.uc{z-index:auto}
+  thead th.now,thead th.uc{z-index:8}   /* same layer as the other scrolling headers */
+  th.uc,td.uc{border-right:none}
+  th.nm,td.nm{width:164px;min-width:164px;max-width:164px;
+    border-right:1.5px solid var(--line)}
+  td.nm{font-size:12.5px}
+  td.nm .fr{font-size:9.5px}
+  /* --nmw is driven by scrollX in JS, so it eases from 164px to 78px as you pull sideways.
+     Names ellipsis rather than disappear, and the row height never jumps. */
+  th.nm,td.nm{width:var(--nmw,164px);min-width:var(--nmw,164px);max-width:var(--nmw,164px);
+    padding-left:10px;padding-right:6px}
+}
+</style>
+
+<div class="wrap">
+  <div class="topbar" id="topbar">
+    <div class="topline">
+    <div class="bar">
+    <div class="srch" id="srch">
+      <button class="sicon" id="sbtn" aria-label="Search markers" title="Search  ( / )">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      </button>
+      <input id="q" type="text" autocomplete="off" spellcheck="false">
+      <button class="qx" id="qx" title="Clear" aria-label="Clear search">&times;</button>
+    </div>
+      <div class="chips" id="chips"></div>
+      <span class="tspace"></span>
+      <div class="toc" id="toc"></div>
+    </div>
+    <button class="ic" id="tbtn" onclick="flip()" aria-label="Switch theme">
+      <span class="orbit">
+        <span class="orbit-disc" id="odisc">
+          <span class="orbit-layer">
+            <svg class="icon-moon" id="omoon" width="15" height="15" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </span>
+          <span class="orbit-layer sun-side">
+            <svg class="icon-sun" id="osun" width="19" height="19" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="4.6"/>
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          </span>
+        </span>
+      </span>
+    </button>
+    </div>
+  </div>
+  <div class="topspacer"></div>
+  <div class="shell"><div class="scroll"><table id="tbl"><tbody><tr><td class="boot">
+      <b>Loading…</b><br><span>If this stays here, JavaScript did not run.
+      iOS previews HTML in a sandbox that sometimes blocks it. Open the file in a browser instead.</span>
+    </td></tr></tbody></table></div></div>
+</div>
+
+<div class="gutmask" aria-hidden="true"></div>
+
+<button class="top" id="top" aria-label="Back to top" title="Back to top">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script src="./bloodwork.js"></script>
+<script>
+// ---- DATA LIVES IN bloodwork.json ----
+// One source of truth. The dashboard reads it; so does any AI you hand it to.
+// To add a draw, edit that file. Never edit data in here.
+let MARK=[],DECS=[],CATS=[],DATA={draws:[]};
+
+// Accent-folding, so "hemoglobine" finds "Hémoglobine". NFKD splits the accent off the
+// letter; the range then strips it. œ/æ have no decomposition, so they're folded by hand.
+const norm=s=>s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
+  .replace(/œ/g,'oe').replace(/æ/g,'ae');
+
+const TKEY='bloodpanel.theme';
+// S.draws is filled AFTER the fetch — it can't reference DATA at declaration time any more.
+let S={draws:[],theme:'light'},filter='all',q='',qRaw='',openRow=null;
+
+// u is a unit LABEL ("mg/L"), not an index — an AI can't silently fat-finger a string the
+// way it can an integer. Numbers still work, for anything written the old way.
+const unitOf=(m,u)=>(typeof u==='number'?m.units[u]:m.units.find(x=>x.l===u))||m.units[0];
+const toUS=(m,r,u)=>{const x=unitOf(m,u);
+  return x.a!==undefined?x.a*r+x.b:r*x.m;};
+const fmt=n=>{const a=Math.abs(n);const d=a>=100?0:a>=10?1:a>=1?2:3;return parseFloat(n.toFixed(d)).toString();};
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function status(m,v){if(v==null||isNaN(v))return'none';
+  if(v<m.clin[0]||v>m.clin[1])return'out';
+  if(m.opt&&(v<m.opt[0]||v>m.opt[1]))return'watch';return'ok';}
+const chron=()=>S.draws.slice().sort((a,b)=>a.date.localeCompare(b.date));
+function latest(m){const c=chron().filter(d=>d.v[m.id]);if(!c.length)return null;
+  const d=c[c.length-1];return{d,v:toUS(m,d.v[m.id].r,d.v[m.id].u),raw:d.v[m.id]};}
+const NOW=new Date(),STALE=18;
+const ago=mo=>mo<1?'<1mo':mo<12?mo+'mo':(Math.round(mo/12*10)/10)+'y';
+const months=ds=>{const d=new Date(ds+'T00:00:00');
+  return (NOW.getFullYear()-d.getFullYear())*12+(NOW.getMonth()-d.getMonth());};
+const C=()=>S.theme==='light'?{ok:'#1B8A47',watch:'#B4610A',out:'#CE1126'}
+                             :{ok:'#30D158',watch:'#FF9F0A',out:'#FF453A'};
+const ODISC=document.getElementById('odisc'),OMOON=document.getElementById('omoon'),
+      OSUN=document.getElementById('osun');
+let orbitR=0;
+function setOrbit(animate){
+  const els=[ODISC,OMOON,OSUN];
+  if(!animate)els.forEach(e=>e.style.transition='none');
+  ODISC.style.transform=`rotate(${orbitR}deg)`;
+  OMOON.style.transform=`rotate(${-orbitR}deg)`;          // counter-rotate: stay upright in orbit
+  OSUN.style.transform =`rotate(${-(orbitR+180)}deg)`;
+  if(!animate){void ODISC.offsetWidth;els.forEach(e=>e.style.transition='');}  // flush, don't animate
+}
+function paint(){
+  const H=document.documentElement;
+  H.dataset.theme=S.theme;
+  const tc=document.querySelector('meta[name=theme-color]');   // Safari tints its chrome with this
+  if(tc)tc.setAttribute('content',getComputedStyle(H).getPropertyValue('--chrome').trim()||'#FFFFFF');
+  const lbl=S.theme==='dark'?'Switch to light mode':'Switch to dark mode';
+  const b=document.getElementById('tbtn'); b.setAttribute('aria-label',lbl); b.title=lbl;
+}
+async function flip(){
+  const H=document.documentElement;
+  orbitR+=180; setOrbit(true);                 // live button, uninterrupted 850ms orbit
+  H.classList.add('tfade');
+  S.theme=S.theme==='light'?'dark':'light';
+  paint();
+  clearTimeout(flip._t);
+  flip._t=setTimeout(()=>H.classList.remove('tfade'),300);   // then get out of hover's way
+  try{if(window.storage)await window.storage.set(TKEY,S.theme);}catch(e){}
+}
+const DKEY='bloodpanel.data';
+
+// If an AI edited this file, catch what it got wrong BEFORE it becomes a number on screen.
+function audit(j){
+  const bad=[],ids=new Set(j.MARK.map(m=>m.id));
+  j.DATA.draws.forEach(d=>{
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(d.date))bad.push(`draw "${d.id}": date "${d.date}" is not YYYY-MM-DD`);
+    Object.entries(d.v).forEach(([id,v])=>{
+      const m=j.MARK.find(x=>x.id===id);
+      if(!m){bad.push(`draw ${d.date}: unknown marker "${id}" — it will be IGNORED`);return;}
+      if(typeof v.u==='string'&&!m.units.some(x=>x.l===v.u))
+        bad.push(`draw ${d.date}, ${m.en}: unit "${v.u}" is not one of [${m.units.map(x=>x.l).join(', ')}]`);
+      if(typeof v.r!=='number'||!isFinite(v.r))
+        bad.push(`draw ${d.date}, ${m.en}: value "${v.r}" is not a number`);
+    });
+  });
+  return bad;
+}
+
+function boot(j,cache){
+  const bad=audit(j);
+  if(bad.length){
+    document.getElementById('tbl').innerHTML=
+      '<tbody><tr><td style="padding:40px 24px;line-height:1.9;color:var(--t2)">'+
+      '<b style="color:var(--out);font-size:15px">'+bad.length+' problem'+(bad.length>1?'s':'')+' in bloodwork.js</b><br>'+
+      '<span style="font-size:12px;color:var(--t3)">Fix these before trusting anything below.</span><br><br>'+
+      bad.map(b=>'&bull; '+esc(b)).join('<br>')+'</td></tr></tbody>';
+    return;                                   // refuse to render rather than render a lie
+  }
+  MARK=j.MARK; DECS=j.DECS; CATS=j.CATS; DATA=j.DATA;
+  S.draws=DATA.draws;
+  MARK.forEach(m=>m._h=norm(m.en+' '+m.fr+' '+m.us));   // search index, derived
+  // Remember it, so opening from disk on a phone doesn't mean re-picking the file
+  // every single time. Re-pick only when the data actually changes.
+  if(cache!==false){try{localStorage.setItem(DKEY,JSON.stringify(j));}catch(e){}}
+  paint(); render();
+}
+
+// Opened from disk, fetch() is blocked. So offer the file instead: pick it or drop it.
+// No server, no host, no account. The JSON is just a file you keep.
+function askForFile(err){
+  document.getElementById('tbl').innerHTML=
+    '<tbody><tr><td id="dz" style="padding:56px 20px;text-align:center;line-height:1.75;color:var(--t2)">'+
+    '<b style="color:var(--txt);font-size:16px">Open bloodwork.js</b><br>'+
+    '<span style="font-size:13px">Pick it from wherever you keep it.</span><br><br>'+
+    // big tap target: this is the whole interaction on a phone
+    '<label style="display:inline-block;min-width:200px;padding:15px 26px;border-radius:99px;'+
+    'background:var(--sol);color:var(--sol-t);cursor:pointer;font-size:14px;font-weight:600;'+
+    '-webkit-tap-highlight-color:transparent">'+
+    'Choose file<input id="pick" type="file" style="display:none"></label>'+
+    '<br><br><span style="color:var(--t4);font-size:11.5px;line-height:1.6">'+
+    'On a laptop, keeping bloodwork.js in this folder loads it automatically.<br>'+
+    'iOS previews each file alone, so it has to be picked.</span></td></tr></tbody>';
+  const take=async f=>{ if(!f) return;
+    try{
+      let t=await f.text();
+      const i=t.indexOf('{');                       // tolerate the window.BLOODWORK = wrapper
+      if(i>0) t=t.slice(i).replace(/;\s*$/,'');
+      boot(JSON.parse(t));
+    }catch(e){ alert('That file is not valid bloodwork data\n\n'+e); } };
+  document.getElementById('pick').addEventListener('change',e=>take(e.target.files[0]));
+  ['dragover','drop'].forEach(t=>document.addEventListener(t,e=>e.preventDefault()));
+  document.addEventListener('drop',e=>take(e.dataTransfer&&e.dataTransfer.files[0]));
+}
+
+async function load(){
+  try{if(window.storage){const r=await window.storage.get(TKEY);
+    if(r&&(r.value==='dark'||r.value==='light'))S.theme=r.value;}}catch(e){}
+  paint();
+  // 1. bloodwork.js sitting next to this file. Works from DISK — no server, no CORS,
+  //    because <script src> is not subject to the fetch() same-origin rule.
+  if(window.BLOODWORK) return boot(window.BLOODWORK);
+  // 2. a sandbox that refused to load the sibling script (iOS Quick Look sometimes does)
+  try{ const c=localStorage.getItem(DKEY); if(c) return boot(JSON.parse(c),false); }catch(e){}
+  // 3. nothing worked: ask for the file
+  askForFile();
+}
+
+/* inline position gauge: clinical band, optimal band, your value */
+function mini(m){
+  const [a0,a1]=m.axis,sp=a1-a0||1;
+  const P=x=>Math.max(0,Math.min(100,((x-a0)/sp)*100));
+  const cl=P(m.clin[0]),cw=P(m.clin[1])-cl;
+  const ol=m.opt?P(m.opt[0]):0,ow=m.opt?P(m.opt[1])-ol:0;
+  const L=latest(m);
+  const tick=L?`<div class="mgt ${status(m,L.v)}" style="left:${P(L.v)}%"></div>`:'';
+  const lab=(x,v)=>{const p=P(x);const tf=p<9?'none':p>91?'translateX(-100%)':'translateX(-50%)';
+    return `<span style="left:${p}%;transform:${tf}">${fmt(v)}</span>`;};
+  const tip=`Clinical ${fmt(m.clin[0])}–${fmt(m.clin[1])} ${m.us}`+
+    (m.opt?` · Optimal ${fmt(m.opt[0])}–${fmt(m.opt[1])} (${m.oc})`:'')+
+    (L?` · You: ${fmt(L.v)}`:' · not measured');
+  return `<div title="${tip}">
+    <div class="mg"><div class="mgc" style="left:${cl}%;width:${cw}%"></div>
+      ${m.opt?`<div class="mgo" style="left:${ol}%;width:${ow}%"></div>`:''}${tick}</div>
+    <div class="mgx">${lab(m.clin[0],m.clin[0])}${lab(m.clin[1],m.clin[1])}</div></div>`;
+}
+function sev(m,v){
+  const w=(m.clin[1]-m.clin[0])||1;                       // normalise by the marker's own range width
+  if(v<m.clin[0])return 100+(m.clin[0]-v)/w;              // so mg/dL and mL/min are comparable
+  if(v>m.clin[1])return 100+(v-m.clin[1])/w;
+  if(m.opt){ if(v<m.opt[0])return (m.opt[0]-v)/w; if(v>m.opt[1])return (v-m.opt[1])/w; }
+  return 0;
+}
+function excursion(m,v){                                   // how far past the edge, in the marker's own units
+  if(v<m.clin[0])return `${fmt(m.clin[0]-v)} under`;
+  if(v>m.clin[1])return `${fmt(v-m.clin[1])} over`;
+  if(m.opt){ if(v<m.opt[0])return `${fmt(m.opt[0]-v)} below target`;
+             if(v>m.opt[1])return `${fmt(v-m.opt[1])} above target`; }
+  return '';
+}
+function trend(m){
+  // latest vs the reading BEFORE it: "what moved since I last drew blood"
+  const pts=chron().filter(d=>d.v[m.id]);
+  if(pts.length<2)return '<span class="tnil">—</span>';
+  const V=d=>toUS(m,d.v[m.id].r,d.v[m.id].u);
+  const A=pts[pts.length-2],B=pts[pts.length-1],diff=V(B)-V(A);
+  const yrs=(new Date(B.date+'T00:00:00')-new Date(A.date+'T00:00:00'))/31557600000;
+  const lbl=Math.abs(diff)<1e-9?'no change':(diff>0?'↑':'↓')+' '+fmt(Math.abs(diff));
+  const tip=`${fmt(V(A))} (${A.date}) → ${fmt(V(B))} (${B.date}) ${m.us}`;
+  return `<div class="trw" title="${tip}"><span class="dlt">${lbl}</span>`+
+    `<span class="tsp">${yrs>=1?fmt(yrs)+'y':Math.round(yrs*12)+'mo'}</span></div>`;
+}
+
+// re-measure the open chart's panes against the CURRENT column positions
+function fitChart(){
+  const d=document.querySelector('tr.det'); if(!d)return;
+  const cy=d.querySelector('.cy'),cp=d.querySelector('.cpad');
+  const t=document.getElementById('tbl'),h=t.tHead?[...t.tHead.rows[0].cells]:[];
+  if(!cy||!cp||!h.length)return;
+  const n=chron().length,first=5+(filter==='flag'?1:0),last=first+n-1;
+  if(!h[first]||!h[last])return;
+  const tb=t.getBoundingClientRect();
+  cy.style.width=(h[first].getBoundingClientRect().left-tb.left)+'px';
+  cp.style.width=(tb.right-h[last].getBoundingClientRect().right)+'px';
+}
+
+function det(row,id,cols,n,tri){
+  const cur=document.querySelector('tr.det');
+  if(cur&&openRow===row){                                // toggle shut THIS row
+    const w=cur.querySelector('.dwrap');openRow=null;
+    if(!w){cur.remove();return;}
+    w.classList.remove('open');
+    let done=false;const kill=()=>{if(!done){done=true;cur.remove();}};
+    w.addEventListener('transitionend',e=>{if(e.target===w&&e.propertyName==='grid-template-rows')kill();});
+    setTimeout(kill,420); return;
+  }
+  if(cur)cur.remove();
+  openRow=row;
+  const m=MARK.find(x=>x.id===id),ds=chron();
+  const V=d=>toUS(m,d.v[m.id].r,d.v[m.id].u);
+  const pts=ds.map((d,i)=>({i,d})).filter(o=>o.d.v[m.id]);
+
+  // Y-AXIS: the lab reference range, widened only enough to contain the data.
+  const vals=pts.map(o=>V(o.d));
+  let lo=Math.min(m.clin[0],...vals),hi=Math.max(m.clin[1],...vals);
+  const pd=((hi-lo)||1)*.12; lo-=pd; hi+=pd;
+  const P=v=>((v-lo)/(hi-lo))*100;                      // % up from the bottom
+  const X=i=>((i+.5)/n)*100;                            // dead centre of each draw column
+
+  // y labels: clinical bounds always; optimal only where it will not collide
+  let L=[[m.clin[1],''],[m.clin[0],'']];
+  if(m.opt)[m.opt[1],m.opt[0]].forEach(v=>{
+    if(L.every(([w])=>Math.abs(P(v)-P(w))>7))L.push([v,'o']);});
+  const ylab=L.map(([v,c])=>`<div class="cyl ${c}" style="bottom:${P(v).toFixed(2)}%"><span>${fmt(v)}</span></div>`).join('');
+  const grid=L.map(([v,c])=>`<div class="cgl ${c}" style="bottom:${P(v).toFixed(2)}%"></div>`).join('');
+  const path=pts.map((o,k)=>`${k?'L':'M'}${X(o.i).toFixed(2)},${(100-P(V(o.d))).toFixed(2)}`).join(' ');
+  const dots=pts.map(o=>`<div class="cd ${status(m,V(o.d))}" style="left:${X(o.i).toFixed(2)}%;bottom:${P(V(o.d)).toFixed(2)}%"`+
+    ` title="${o.d.date} · ${fmt(V(o.d))} ${m.us}"></div>`).join('');
+  // measure, don't assume: column widths change with the viewport, so the panes must follow
+  const _t=document.getElementById('tbl'),_h=_t.tHead?[..._t.tHead.rows[0].cells]:[];
+  const _first=5+(tri?1:0), _last=_first+n-1;       // first and last draw column
+  const _tb=_t.getBoundingClientRect();
+  const preW=_h[_first]?(_h[_first].getBoundingClientRect().left-_tb.left):634;
+  const padW=_h[_last] ?(_tb.right-_h[_last].getBoundingClientRect().right):104;
+
+  const box=`<tr class="det"><td colspan="${cols}"><div class="dwrap"><div class="dclip">
+    <div class="chart">
+      <div class="cy" style="width:${preW}px">
+        <div class="ckey">
+          <div class="cka ref">
+            <div class="ckt" style="bottom:${P(m.clin[0]).toFixed(2)}%;height:${(P(m.clin[1])-P(m.clin[0])).toFixed(2)}%">
+              <span class="ckl">Lab reference range</span><span class="ckbr"></span></div>
+          </div>
+          ${m.opt?`<div class="cka opt">
+            <div class="ckt" style="bottom:${P(m.opt[0]).toFixed(2)}%;height:${(P(m.opt[1])-P(m.opt[0])).toFixed(2)}%">
+              <span class="ckl">Optimal target<em class="${m.oc}">${m.oc}</em></span><span class="ckbr opt"></span></div>
+          </div>`:''}
+        </div>
+        <div class="cyu">${m.us}</div>${ylab}</div>
+      <div class="cplot">
+        <div class="cb clin" style="bottom:${P(m.clin[0]).toFixed(2)}%;height:${(P(m.clin[1])-P(m.clin[0])).toFixed(2)}%"></div>
+        ${m.opt?`<div class="cb opt" style="bottom:${P(m.opt[0]).toFixed(2)}%;height:${(P(m.opt[1])-P(m.opt[0])).toFixed(2)}%"></div>`:''}
+        ${grid}
+        ${pts.length>1?`<svg viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${path}" fill="none"
+          stroke="currentColor" stroke-width="1.6" vector-effect="non-scaling-stroke"
+          stroke-linecap="round" stroke-linejoin="round" opacity=".8"/></svg>`:''}
+        ${dots}
+      </div>
+      <div class="cpad" style="width:${padW}px"></div>
+    </div></div></div></td></tr>`;
+  row.insertAdjacentHTML('afterend',box);
+  const w=row.nextElementSibling.querySelector('.dwrap');
+  requestAnimationFrame(()=>w.classList.add('open'));
+}
+
+function render(){
+  const ds=chron(), n=ds.length;   // oldest -> newest: this row IS the chart's x-axis
+  const cur={};MARK.forEach(m=>cur[m.id]=latest(m));
+  const out=MARK.filter(m=>cur[m.id]&&status(m,cur[m.id].v)==='out');
+  const wat=MARK.filter(m=>cur[m.id]&&status(m,cur[m.id].v)==='watch');
+  const stl=MARK.filter(m=>cur[m.id]&&months(cur[m.id].d.date)>STALE);
+  const nev=MARK.filter(m=>!cur[m.id]);
+  const N={all:MARK.length,flag:out.length+wat.length,crit:DECS.length};   // the label says 'supplement', so count supplements
+  document.getElementById('chips').innerHTML=
+    [{id:'all',t:'All'},{id:'flag',t:'Flagged'},{id:'crit',t:'By supplement'}]
+      .map(c=>`<button class="chip" aria-pressed="${filter===c.id&&!q}" onclick="setF('${c.id}')"`+
+        (c.id==='flag'?` title="Outside the lab reference range, or outside the optimal target"`
+         :c.id==='crit'?` title="${DECS.length} supplements, ${MARK.filter(m=>m.dec).length} markers between them"`:'')+
+        `>${c.t}<span class="cn${c.id==='flag'&&out.length?' hot':''}">${N[c.id]}</span></button>`).join('');
+  document.getElementById('toc').innerHTML=
+    CATS.map(c=>`<button class="nav" onclick="goto('${c.id}')">${c.t}</button>`).join('');
+  const tri=filter==='flag',sup=filter==='crit';                 // triage view earns an extra column
+  const cols=n+6+(tri?1:0);
+  const hd=ds.map((d,i)=>{const dt=new Date(d.date+'T00:00:00');
+    return `<th class="dcol ${i===n-1?'dnow':''}" title="${d.date}">${dt.toLocaleString('en',{month:'short'})} '${d.date.slice(2,4)}</th>`;}).join('');
+  let h=`<thead><tr><th class="nm lft">Marker</th>`+
+    `<th class="now" title="Most recent value for this marker, whichever draw it came from">Latest</th>`+
+    `<th class="uc lft" title="Governs every value in this row: Latest, all six draws, the gauge and the delta"></th>`+
+    `<th class="lc lft" title="How long ago the latest reading was taken">Age</th>`+
+    (tri?`<th class="off lft" title="How far outside its range or target the latest value sits">Off by</th>`:'')+
+    `<th class="pos lft">Range &amp; position</th>${hd}`+
+    `<th class="tr lft" title="Latest reading vs the one before it">Since prev.</th></tr></thead>`;
+
+  const R=m=>{
+    const L=cur[m.id];
+    let pill='<span class="nilx">—</span>',off='',lm='<span class="nilx">—</span>';
+    if(L){const st=status(m,L.v),mo=months(L.d.date),old=mo>STALE,ex=excursion(m,L.v);
+      pill=`<span class="pill ${st}" title="${fmt(L.v)} ${m.us} · measured ${L.d.date}">${fmt(L.v)}</span>`;
+      lm=`<span class="lm${old?' old':''}" title="Measured ${L.d.date}${old?' · over 18 months old':''}">${ago(mo)}</span>`;
+      if(ex)off=`<span class="exc ${st}">${ex} <em>${m.us}</em></span>`;}
+    const cells=ds.map((d,i)=>{const e=d.v[m.id];
+      if(!e)return `<td class="c nil ${i===n-1?'dnow':''}">·</td>`;
+      const v=toUS(m,e.r,e.u);
+      return `<td class="c has ${status(m,v)} ${i===n-1?'dnow':''}" title="${fmt(e.r)} ${unitOf(m,e.u).l}">${fmt(v)}</td>`;}).join('');
+    return `<tr class="m" data-id="${m.id}" onclick="det(this,'${m.id}',${cols},${n},${tri})">
+      <td class="nm"><div class="n1">${m.en}</div><span class="fr">${m.fr}</span></td>
+      <td class="now">${pill}</td>
+      <td class="uc" title="Reported in: ${m.units.map(u=>u.l).join(' / ')}">${m.us}</td>
+      <td class="lc">${lm}</td>
+      ${tri?`<td class="off">${off}</td>`:''}
+      <td class="pos">${mini(m)}</td>
+      ${cells}<td class="tr">${trend(m)}</td></tr>`;
+  };
+
+  // each section is its OWN tbody: that is what stops the sticky bars piling up on each other
+  const SEC=(id,title,sub,body)=>
+    `<tbody${id?` id="sec-${id}"`:''}><tr class="grp"><td colspan="${cols}">`+
+    `<div class="ghd"><div class="gt">${title}</div>${sub?`<div class="gs">${sub}</div>`:''}</div>`+
+    `</td></tr>${body}</tbody>`;
+  const NONE=t=>`<tr><td colspan="${cols}" style="padding:26px;text-align:center;color:var(--t3)">${t}</td></tr>`;
+
+  if(q){
+    const rows=MARK.filter(m=>m._h.includes(q));
+    h+=SEC(null,'Search',`${rows.length} of ${MARK.length} markers match \u201c${esc(qRaw)}\u201d`,
+      rows.length?rows.map(R).join(''):NONE('No marker matches that.'));
+  } else if(filter==='flag'){
+    const rows=MARK.filter(m=>cur[m.id]&&['out','watch'].includes(status(m,cur[m.id].v)))
+                   .sort((a,b)=>sev(b,cur[b.id].v)-sev(a,cur[a.id].v));
+    h+=SEC(null,'Needs attention','Ranked worst first, by how far outside its own range',
+      rows.length?rows.map(R).join(''):NONE('Nothing flagged.'));
+  } else if(sup){
+    DECS.forEach(g=>{
+      const rows=MARK.filter(m=>m.dec&&m.dec.includes(g));
+      if(rows.length)h+=SEC(null,g,rows.length+' markers',rows.map(R).join(''));
+    });
+  } else {
+    CATS.forEach(c=>{
+      const rows=MARK.filter(m=>m.cat===c.id);
+      if(rows.length)h+=SEC(c.id,c.t,rows.length+' markers',rows.map(R).join(''));
+    });
+  }
+  openRow=null;                                        // the DOM is about to be replaced
+  document.getElementById('tbl').innerHTML=h;
+  requestAnimationFrame(()=>{if(typeof setTop==='function')setTop();});
+}
+const SRCH=document.getElementById('srch'),QI=document.getElementById('q'),TOP=document.getElementById('top');
+function goto(cat){
+  const run=()=>{
+    const el=document.getElementById('sec-'+cat),th=document.querySelector('thead th');
+    if(!el||!th)return;
+    // The header's rendered bottom, wherever it is pinned. Works for both scrollers.
+    const headBottom=th.getBoundingClientRect().bottom;
+    // (the tbody isn't sticky — only its cells are — so its rect is the true layout position)
+    const barTop=el.getBoundingClientRect().top;
+    window.scrollBy({top:barTop-headBottom+1,behavior:'smooth'});  // +1 tucks under, never a seam
+  };
+  if(filter!=='all'||q){setF('all');requestAnimationFrame(()=>requestAnimationFrame(run));}
+  else run();
+}
+const TB=document.getElementById('topbar'),WRAP=document.querySelector('.wrap');
+const R0=document.documentElement.style;
+const setGut=()=>{                                   // left margin of the content column
+  const pl=parseFloat(getComputedStyle(WRAP).paddingLeft)||0;
+  R0.setProperty('--gut',(WRAP.offsetLeft+pl)+'px');
+};
+const setTop=()=>{
+  R0.setProperty('--toph',TB.getBoundingClientRect().height+'px');      // sub-pixel, not offsetHeight
+  // --thh is NOT measured. `thead th{height:var(--thh)}` sizes the header FROM it, so measuring
+  // it back would be circular, and any drift opens a gap the frozen cells shine through.
+};
+setGut(); setTop();
+if(window.ResizeObserver)new ResizeObserver(setTop).observe(TB);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{setTop();setGut();});
+let _stuck=false;
+// The frozen marker column narrows PROGRESSIVELY as you scroll sideways: 164px -> 112px
+// over the first 150px of travel. Tied to scroll position, not a threshold, so it tracks
+// your thumb. rAF-throttled, because changing a column width relayouts the table.
+const NM_WIDE=164, NM_NARROW=78, NM_TRAVEL=170;
+let _rafx=0, _lastW=-1;
+function setNmW(){
+  _rafx=0;
+  const t=Math.min(Math.max(window.scrollX,0)/NM_TRAVEL,1);
+  const e=t*t*(3-2*t);                                  // smoothstep: eases in and out
+  const w=Math.round(NM_WIDE+(NM_NARROW-NM_WIDE)*e);
+  if(w!==_lastW){
+    _lastW=w;
+    R0.setProperty('--nmw',w+'px');      // skip the relayout if unchanged
+    fitChart();                          // the draw columns just moved; the chart must follow
+  }
+}
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY>12;
+  if(s!==_stuck){_stuck=s;TB.classList.toggle('stuck',s);}
+  TOP.classList.toggle('on',window.scrollY>420);
+  if(!_rafx)_rafx=requestAnimationFrame(setNmW);
+},{passive:true});
+setNmW();
+window.addEventListener('resize',()=>{setTop();setGut();fitChart();},{passive:true});
+TOP.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+function onQ(v){qRaw=v.trim();q=norm(qRaw);SRCH.classList.toggle('has',!!q);render();}
+function sShut(){SRCH.classList.remove('open','has');QI.value='';QI.blur();if(q)onQ('');}
+function setF(f){filter=f;
+  if(q){QI.value='';q='';qRaw='';SRCH.classList.remove('has');}
+  render();}
+QI.addEventListener('focus',()=>SRCH.classList.add('open'));
+QI.addEventListener('input',e=>onQ(e.target.value));
+QI.addEventListener('blur',()=>setTimeout(()=>{               // let a click on the × land first
+  if(!q&&document.activeElement!==QI)SRCH.classList.remove('open');},150));
+document.getElementById('sbtn').addEventListener('click',()=>{
+  if(SRCH.classList.contains('open')&&!q)sShut(); else QI.focus();});
+document.getElementById('qx').addEventListener('click',()=>{QI.value='';onQ('');QI.focus();});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'&&SRCH.classList.contains('open'))sShut();
+  else if(e.key==='/'&&document.activeElement!==QI){e.preventDefault();QI.focus();}});
+QI.placeholder='Search markers…';
+
+// Toggling a row open then shut lands two clicks in the same spot: the browser reads that
+// as a double-click and selects the word under the cursor. Suppress the selection on the
+// 2nd+ click only, so a deliberate drag-select can still copy a value.
+// Shift-click the search button to forget the cached data and load a fresh file.
+document.getElementById('sbtn').addEventListener('click',e=>{
+  if(!e.shiftKey)return;
+  e.stopImmediatePropagation();
+  try{localStorage.removeItem(DKEY);}catch(x){}
+  askForFile();
+},true);
+
+document.getElementById('tbl').addEventListener('mousedown',e=>{
+  if(e.detail>1&&e.target.closest&&e.target.closest('tr.m'))e.preventDefault();
+});
+
+load();
+</script>
