@@ -168,15 +168,11 @@ window.BLOODWORK =
    ]},
    {"id": "dinner", "t": "Dinner", "at": "17:00", "items": [
     "200g mozzarella di bufala",
-    "Rice or pasta",
+    "Rice or pasta + olive oil",
     "Ground beef or chicken (frozen, reheated)",
     "Frozen reheated vegetables",
     "Two kiwis"
    ]}
-  ],
-  "notes": [
-   "Lots of olive oil.",
-   "Rarely fish."
   ]
  },
  "MARK": [
