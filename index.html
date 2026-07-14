@@ -1109,7 +1109,9 @@ function renderPage(p){
     const lt=new Set();
     ROUTINE.forEach(r=>{if(r.until){lt.add(parseInt(r.t));lt.add(parseInt(r.until));}});
     const mark=hh=>`<i class="rhl${lt.has(hh)?' lt':''}">${String(hh).padStart(2,'0')}:00</i>`;
-    h=`<div class="pgh">Daily routine</div><div class="pgsub">${ROUTINE[0].t} &rarr; ${ROUTINE[ROUTINE.length-1].t} · ${H1-H0} hours</div>`;
+    h=`<div class="pgh">Daily routine</div><div class="pgsub">`+
+      `${ROUTINE[ROUTINE.length-1].t} &rarr; ${ROUTINE[0].t} · ${24-(H1-H0)}h bed time<br>`+
+      `${ROUTINE[0].t} &rarr; ${ROUTINE[ROUTINE.length-1].t} · ${H1-H0}h wake time</div>`;
     h+=cardRow(CARE.filter(c=>c.top));   // the meal-supps cards lead the page
     let hr=H0;
     while(hr<=H1){
