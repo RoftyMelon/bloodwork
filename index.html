@@ -412,6 +412,7 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .ccard ul{margin:7px 0 0;padding:0;list-style:none}
 .ccard li{font-size:12.5px;color:var(--t2);line-height:1.7;padding:3px 0;border-bottom:.5px solid var(--line2)}
 .ccard li:last-child{border-bottom:none}
+.cempty{font-size:12.5px;color:var(--t4);padding:8px 0 2px}
 /* diet */
 .meal{margin-top:18px}
 .mfoods{margin:8px 0 0;padding:0;list-style:none}
@@ -681,7 +682,7 @@ function audit(j){
     if(!m.items||!m.items.length)bad.push(`DIET "${m.t}": meal has no items`);
   });
   if(j.CARE)j.CARE.forEach(c=>{
-    if(!c.items||!c.items.length)bad.push(`CARE "${c.t}": card has no items`);
+    if(!Array.isArray(c.items))bad.push(`CARE "${c.t}": items must be an array (empty is fine)`);
   });
   return bad;
 }
@@ -1057,9 +1058,11 @@ function renderPage(p){
           return `<div class="rev"><span class="rem">${r.t}${r.until?`<span class="ru">&ndash;${r.until}</span>`:''}</span><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div>${sup}</div></div>`;
         }).join('')+`</div></div>`;
     }
-    // care cards close the page, below the day
+    // care cards close the page, below the day; an empty card is a deliberate placeholder
     if(CARE.length)h+=`<div class="care">`+CARE.map(c=>
-      `<div class="ccard"><b>${esc(c.t)}</b><ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')+`</div>`;
+      `<div class="ccard"><b>${esc(c.t)}</b>${c.items.length
+        ?`<ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`
+        :`<div class="cempty">&mdash;</div>`}</div>`).join('')+`</div>`;
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
       DIET.meals.map(m=>`<div class="meal"><div class="pgst">${esc(m.t)}<small>${esc(m.at||'')}</small></div>`+

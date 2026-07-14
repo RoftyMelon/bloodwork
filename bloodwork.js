@@ -140,6 +140,10 @@ window.BLOODWORK =
   {"t": "22:00", "do": "Lights out"}
  ],
  "CARE": [
+  {"id": "bsupps", "t": "Breakfast supps", "items": []},
+  {"id": "lsupps", "t": "Lunch supps", "items": []},
+  {"id": "dsupps", "t": "Dinner supps", "items": []},
+  {"id": "esupps", "t": "Evening supps", "items": []},
   {"id": "dental", "t": "Dental", "items": [
    "Water jet + toothbrush 2-3x/day",
    "Alternate thread floss & interdental brushes",
@@ -148,8 +152,9 @@ window.BLOODWORK =
   ]},
   {"id": "face", "t": "Face", "items": [
    "Morning: serum, then day cream",
-   "Evening: 1% retinol, then night cream, then petroleum (Vaseline)",
-   "Glycolic acid 7%, 2x/week",
+   "After dinner: 1% retinol, then night cream, then petroleum (Vaseline)",
+   "2x/week, instead of retinol: glycolic acid 7%",
+   "Full body hydrating cream after shower",
    "Microneedling 1mm, face + scalp, 1x/week"
   ]}
  ],
