@@ -428,8 +428,12 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
    line on any phone: divisor 26 = the longest lead line in em ("Striving for 3
    sessions…"), 46px = page padding; wide screens just get the 16px cap. */
 .cnote.lead{font-size:clamp(12px,calc((100vw - 46px)/26),16px);color:var(--t2);font-style:normal}
-/* cards sit NEXT TO each other and the row slides sideways when they overflow */
+/* cards sit NEXT TO each other and the row slides sideways when they overflow.
+   The row BREAKS OUT of the page's 780px prose measure: it grows to its content,
+   clamped to the viewport (minus the content gutters) — so a wide desktop shows
+   every card and a phone still gets the same scrolling row. */
 .care{display:flex;flex-wrap:nowrap;gap:14px;margin:14px 0 26px;
+  width:max-content;max-width:calc(100vw - var(--gut,20px) - 20px);
   overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .care::-webkit-scrollbar{display:none}
 .ccard{flex:0 0 clamp(250px,82vw,310px);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
