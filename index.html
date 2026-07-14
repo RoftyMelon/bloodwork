@@ -103,7 +103,9 @@ td.boot span{color:var(--t3);font-size:12.5px}
 .topline{display:flex;align-items:flex-start;gap:10px}
 .bar{flex:1;min-width:0;display:flex;gap:6px;row-gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
 .chips{display:contents}
-.toc{display:flex;gap:2px;margin-left:8px;min-width:0;
+/* -12px cancels the first link's own padding, so its LABEL starts exactly at the gutter,
+   flush with the hamburger glyph above it (which does the same trick with its margin) */
+.toc{display:flex;gap:2px;margin-left:-12px;min-width:0;
   flex-wrap:nowrap;overflow-x:auto;                 /* never wrap: scroll instead */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .toc::-webkit-scrollbar{display:none}
@@ -299,20 +301,31 @@ td.pos{padding-right:14px}
 
 /* ---- pages: a naked hamburger, its popover, and the three data pages ----
    Pills FILTER the table; the menu NAVIGATES between pages. Different species on purpose. */
-.pgnav{position:relative;display:flex;align-items:center;flex:none}
+.pgnav{display:flex;align-items:center;flex:none}
 .pgbtn{display:flex;align-items:center;justify-content:center;width:auto;height:auto;
   padding:8px 7px;margin-left:-7px;background:none;border:none;border-radius:8px;color:var(--t2)}
 .pgbtn:hover{background:none;color:var(--txt)}
-.pmenu{position:absolute;top:calc(100% + 7px);left:-7px;z-index:60;min-width:186px;padding:6px;
-  background:var(--bg);border:.5px solid var(--btn-b);border-radius:14px;
-  box-shadow:0 12px 34px rgba(0,0,0,.18)}
-.pmenu .mi{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;
-  padding:11px 13px;font-size:13.5px;font-weight:550;color:var(--t2);
-  background:none;border:none;border-radius:10px;text-align:left}
-.pmenu .mi:hover{background:var(--btn-h);color:var(--txt)}
-.pmenu .mi.on{color:var(--txt);font-weight:650}
-.pmenu .mi.on::after{content:"\2713";font-size:11px}
-.msep{height:.5px;background:var(--line2);margin:4px 8px}
+/* the hamburger spins while the tab strip unfolds beside it. The strip is ONE animated
+   element (rule 7): nothing else has to agree with its easing. */
+.pgbtn svg{transition:transform .35s cubic-bezier(.3,.9,.3,1)}
+html[data-menu=open] .pgbtn svg{transform:rotate(180deg)}
+html[data-menu=open] .pgbtn{color:var(--txt)}
+.ptabs{flex:1;min-width:0;display:flex;align-items:center;gap:2px;
+  flex-wrap:nowrap;overflow-x:auto;                /* never wrap: scroll, like the toc */
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.ptabs::-webkit-scrollbar{display:none}
+html:not([data-menu=open]) .ptabs{display:none}
+html[data-menu=open] .srch,html[data-menu=open] .chips,html[data-menu=open] .ptitle,
+html[data-menu=open] .toc,html[data-menu=open] .tspace{display:none}
+@keyframes unfold{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+html[data-menu=open] .ptabs{animation:unfold .3s cubic-bezier(.2,.9,.25,1)}
+.pt{font-family:inherit;font-size:13.5px;font-weight:550;padding:9px 13px;white-space:nowrap;
+  background:none;border:none;border-radius:9px;color:var(--t3);cursor:pointer;position:relative;
+  letter-spacing:-.005em;transition:color .14s}
+.pt:hover{color:var(--txt)}
+.pt.on{color:var(--txt);font-weight:700}
+.pt.on::after{content:"";position:absolute;left:13px;right:13px;bottom:3px;height:2px;
+  border-radius:2px;background:var(--sol)}
 .ptitle{font-size:13.5px;font-weight:650;letter-spacing:-.015em;color:var(--txt);
   padding:5px 2px;white-space:nowrap}
 /* off the markers page, everything table-flavoured folds away with it */
@@ -427,8 +440,12 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
 }
 /* pages, on a phone: the hamburger slims down so row 1 stays ONE row with all three pills */
 @media(max-width:900px),(max-height:560px){
-  .pgbtn{padding:4px 4px;margin-left:-4px}
+  .pgbtn{padding:6px 5px;margin-left:-5px}
   .ptitle{font-size:12.5px;padding:2px}
+  .toc{margin-left:-11px}                     /* narrow .nav padding is 11px, not 12 */
+  .ptabs{margin-right:38px}                   /* clear the pinned theme toggle */
+  .pt{font-size:12.5px;padding:8px 11px}
+  .pt.on::after{left:11px;right:11px}
   .pgh{font-size:16px}
   .rht{width:40px}
   .rem{width:40px;font-size:12px}
@@ -449,20 +466,19 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
     <div class="topline">
     <div class="bar">
     <span class="pgnav">
-      <button class="pgbtn" id="pgbtn" aria-label="Pages" aria-haspopup="true" aria-expanded="false">
+      <button class="pgbtn" id="pgbtn" aria-label="Pages" aria-expanded="false">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
-      <div class="pmenu" id="pmenu" hidden>
-        <button class="mi on" data-pg="markers" onclick="setPage('markers')">Markers</button>
-        <div class="msep"></div>
-        <button class="mi" data-pg="stack" onclick="setPage('stack')">Stack</button>
-        <button class="mi" data-pg="routine" onclick="setPage('routine')">Routine</button>
-        <button class="mi" data-pg="diet" onclick="setPage('diet')">Diet</button>
-        <button class="mi" data-pg="training" onclick="setPage('training')">Training</button>
-      </div>
     </span>
     <span class="ptitle" id="ptitle"></span>
+    <nav class="ptabs" id="ptabs" aria-label="Pages">
+      <button class="pt on" data-pg="markers" onclick="setPage('markers')">Markers</button>
+      <button class="pt" data-pg="stack" onclick="setPage('stack')">Stack</button>
+      <button class="pt" data-pg="routine" onclick="setPage('routine')">Routine</button>
+      <button class="pt" data-pg="diet" onclick="setPage('diet')">Diet</button>
+      <button class="pt" data-pg="training" onclick="setPage('training')">Training</button>
+    </nav>
     <div class="srch" id="srch">
       <button class="sicon" id="sbtn" aria-label="Search markers" title="Search  ( / )">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -913,16 +929,22 @@ const PAGES={markers:'Markers',stack:'Stack',routine:'Routine',diet:'Diet',train
 let page='markers';
 document.documentElement.dataset.page=page;
 const PGEL=document.getElementById('pages'),PTITLE=document.getElementById('ptitle'),
-      PBTN=document.getElementById('pgbtn'),PMENU=document.getElementById('pmenu');
-function pmClose(){PMENU.hidden=true;PBTN.setAttribute('aria-expanded','false');}
-function pmToggle(){PMENU.hidden=!PMENU.hidden;PBTN.setAttribute('aria-expanded',String(!PMENU.hidden));}
+      PBTN=document.getElementById('pgbtn'),PTABS=document.getElementById('ptabs');
+// open = the tab strip stands in for the filter row; html[data-menu=open] drives ALL of it
+let menuOpen=false;
+function pmSet(open){menuOpen=open;
+  if(open)document.documentElement.dataset.menu='open';
+  else delete document.documentElement.dataset.menu;
+  PBTN.setAttribute('aria-expanded',String(open));
+}
+function pmClose(){pmSet(false);}
 function setPage(p){
   if(!PAGES[p]||p===page){pmClose();return;}
   page=p;
   document.documentElement.dataset.page=p;
   PTITLE.textContent=p==='markers'?'':PAGES[p];   // the controls say 'markers'; the title says the rest
   PGEL.hidden=p==='markers';
-  document.querySelectorAll('#pmenu .mi').forEach(b=>b.classList.toggle('on',b.dataset.pg===p));
+  document.querySelectorAll('#ptabs .pt').forEach(b=>b.classList.toggle('on',b.dataset.pg===p));
   if(p!=='markers')renderPage(p);
   pmClose();
   window.scrollTo({top:0});
@@ -979,9 +1001,9 @@ function renderPage(p){
   }
   PGEL.innerHTML=h||`<div class="pgh">${esc(PAGES[p]||p)}</div><div class="pgsub">No data block in bloodwork.js yet.</div>`;
 }
-PBTN.addEventListener('click',e=>{e.stopPropagation();pmToggle();});
+PBTN.addEventListener('click',e=>{e.stopPropagation();pmSet(!menuOpen);});
 document.addEventListener('click',e=>{
-  if(!PMENU.hidden&&!(e.target.closest&&e.target.closest('.pgnav')))pmClose();});
+  if(menuOpen&&!(e.target.closest&&e.target.closest('.pgnav,.ptabs')))pmClose();});
 
 const TB=document.getElementById('topbar'),WRAP=document.querySelector('.wrap');
 const R0=document.documentElement.style;
@@ -1036,7 +1058,7 @@ document.getElementById('sbtn').addEventListener('click',()=>{
   if(SRCH.classList.contains('open')&&!q)sShut(); else QI.focus();});
 document.getElementById('qx').addEventListener('click',()=>{QI.value='';onQ('');QI.focus();});
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&!PMENU.hidden)pmClose();
+  if(e.key==='Escape'&&menuOpen)pmClose();
   else if(e.key==='Escape'&&SRCH.classList.contains('open'))sShut();
   else if(e.key==='/'&&document.activeElement!==QI&&page==='markers'){e.preventDefault();QI.focus();}});
 QI.placeholder='Search markers…';
