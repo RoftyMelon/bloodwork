@@ -35,6 +35,11 @@ list below **passed a syntax check and shipped a broken page**:
 - `.ccard b` (the card TITLE) matched **every `<b>` in the card** — 84 set numbers and 34
   kg/reps legends silently rendered at 16px title style, uppercase included. Scope
   container rules to the child: `.ccard>b`.
+- `new ResizeObserver(setTop).observe(TB)` with **no reference held** silently died on
+  iOS — `--toph` went stale on tab switch and a 40px phantom gap opened under the bar.
+  Hold the observer in a variable AND re-measure explicitly at the mutation site
+  (setPage). Related: the Preview pane throttles rendering — rAF/ResizeObserver
+  callbacks may never run there; only synchronous reads are trustworthy in it.
 - `position:static` killed sticky on **both** axes when only the horizontal was wanted
 - `--thh` was **circular**: the header was sized from it and it was measured back from the header
 - `offsetLeft` on a table cell resolves against a **different origin** depending on the cell's

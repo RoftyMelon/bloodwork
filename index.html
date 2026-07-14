@@ -1071,6 +1071,11 @@ function setPage(p){
   document.querySelectorAll('#ptabs .pt').forEach(b=>b.classList.toggle('on',b.dataset.pg===p));
   if(p!=='markers')renderPage(p);
   pmSet(p!=='markers');   // the strip PERSISTS on pages; only Markers swaps it back for filters
+  // The topbar changes composition here (toc + pills vs tabs), so --toph must be
+  // re-measured HERE. The ResizeObserver alone proved unreliable (unreferenced
+  // observers can be GC'd), and a stale --toph leaves a phantom gap under the bar.
+  requestAnimationFrame(()=>setTop());
+  setTimeout(()=>setTop(),400);   // again once the .34s strip swap has settled
   window.scrollTo({top:0});
 }
 function renderPage(p){
@@ -1194,7 +1199,8 @@ const setTop=()=>{
   // it back would be circular, and any drift opens a gap the frozen cells shine through.
 };
 setGut(); setTop();
-if(window.ResizeObserver)new ResizeObserver(setTop).observe(TB);
+let tbRO;   // hold the reference: an unreferenced ResizeObserver is GC-bait (Safari)
+if(window.ResizeObserver){tbRO=new ResizeObserver(setTop);tbRO.observe(TB);}
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{setTop();setGut();});
 let _stuck=false;
 // The frozen marker column narrows PROGRESSIVELY as you scroll sideways: 164px -> 112px
