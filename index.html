@@ -425,6 +425,9 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px}
   .chip .cn{margin-left:5px;font-size:10.5px}
   .srch{width:34px;height:34px}
   .srch .sicon{width:32px;height:32px}
+  /* iOS Safari auto-zooms the page when focusing an input whose font-size is under
+     16px. 16px exactly is the threshold that leaves the viewport alone. */
+  .srch input{font-size:16px}
   button.ic{width:34px;height:34px}
   .nav{padding:5px 11px;font-size:12px}
   /* The toggle leaves the flex row and pins to the top-right, overlaying row 1's slack
