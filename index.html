@@ -762,7 +762,7 @@ function audit(j){
   // lifestyle blocks are optional, but if present they obey the same contract: exact or rejected
   if(j.STACK){
     const cids=new Set((j.STACK.cats||[]).map(c=>c.id));
-    const ST=['taking','candidate','stopped','dropped','planned'],SL=['breakfast','lunch','dinner'];
+    const ST=['taking','candidate','stopped','dropped','planned'],SL=['breakfast','lunch','dinner','evening'];
     (j.STACK.items||[]).forEach(s=>{
       if(!cids.has(s.cat))bad.push(`STACK "${s.name}": category "${s.cat}" is not in STACK.cats`);
       if(!ST.includes(s.status))bad.push(`STACK "${s.name}": status "${s.status}" is not one of ${ST.join('/')}`);
