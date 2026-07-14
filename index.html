@@ -76,7 +76,8 @@ html.tfade *::before,html.tfade *::after{
              fill .22s ease,stroke .22s ease !important}
 .wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 20px 110px}
 .topbar{position:fixed;top:0;left:0;width:100%;z-index:50;background:var(--bg);
-  padding:3px var(--gut,20px) 0;   /* the strip rides the top of the screen: ~5px to the tabs */
+  padding:12px var(--gut,20px) 0;   /* ONE constant height for the row — pills and tabs share
+                                       the station; it must not shift between states */
   transition:border-color .2s ease;border-bottom:.5px solid transparent}
 .topspacer{height:var(--toph,112px)}   /* fixed takes it out of flow; hold its place */
 .topbar.stuck{border-bottom-color:var(--line)}
@@ -112,8 +113,7 @@ td.boot span{color:var(--t3);font-size:15px}
 
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
-.topline{display:flex;align-items:flex-start;gap:10px;
-  transition:margin-top .34s cubic-bezier(.2,.7,.3,1)}   /* rides the strip swap */
+.topline{display:flex;align-items:flex-start;gap:10px}
 .bar{flex:1;min-width:0;display:flex;gap:6px;row-gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:2px}
 .chips{display:contents}
 /* -5px lines the first link's LABEL up with the hamburger glyph above it: the 28px glyph
@@ -379,8 +379,6 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 /* .swap is a scroller for the Markers pills; on pages the tabs scroll INSIDE .ptabs,
    and .swap clipping would shear the first tab's hover pill at the column edge */
 html:not([data-page=markers]) .swap{overflow:visible}
-/* pills + hamburger want headroom; the tab strip stays at 5px from the top */
-html[data-page=markers] .topline{margin-top:9px}
 
 .pgs{max-width:780px;padding:0 0 40px}
 .pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:2px 0 3px}
