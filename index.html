@@ -39,13 +39,15 @@
 }
 :root{--thh:30px; --nm:180px; --hh:64px}   /* sizing: theme-independent, must not sit in a theme block */
 /* TYPE SCALE — one rationale across every tab:
-   22 page title (.pgh) · 19 card/session title (.ccard>b) · 16 body & controls
-   (content rows, subtitles, tabs, chips, names, search) · 15 secondary (doses,
-   notes, links, buy-links) · 14 caps section labels (.pgst/.cgrp) + hints ·
-   ~13 micro data (hour marks, kg, supplement pills, counts, column heads) ·
-   11.5 absolute floor (chart bracket/axis micro-labels only).
-   Mobile may step ONE notch down for density (names 15, table group titles 14.5,
-   page title 21) and never below the floor. Zoom is disabled: sizes stand alone. */
+   26 page title (.pgh — caps card titles gain ~40% optical size, so the title
+   needs real distance to LOOK biggest) · 19 card/session title (.ccard>b) ·
+   16 body & controls (content rows, page-intro .lead notes, subtitles, tabs,
+   chips, names, search) · 15 secondary (doses, caveat notes, links) · 14 caps
+   section labels (.pgst/.cgrp) + hints · ~13 micro data (hour marks, kg,
+   supplement pills, counts, column heads) · 11.5 absolute floor (chart
+   bracket/axis micro-labels only). Mobile may step ONE notch down for density
+   (names 15, table group titles 14.5, page title 24) and never below the floor.
+   Zoom is disabled: sizes stand alone. */
 :root,[data-theme=light]{--chrome:#FFFFFF;   /* pre-compensates Safari's darkening; see paint() */
   
   /* Claude cream: warm ivory paper, warm near-black ink */
@@ -375,7 +377,7 @@ html:not([data-page=markers]) .pgnav{width:0;margin-right:-6px;opacity:0;visibil
 html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .34s cubic-bezier(.2,.7,.3,1)}
 
 .pgs{max-width:780px;padding:6px 0 40px}
-.pgh{font-size:22px;font-weight:700;letter-spacing:-.02em;margin:18px 0 3px}
+.pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:18px 0 3px}
 .pgsub{font-size:16px;color:var(--t3)}
 .pgsp{padding-top:8px}   /* a subtitle sitting under a bordered .pgst needs its own air */
 .pgsec{margin-top:22px}
@@ -421,6 +423,9 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .rhint{font-size:14px;color:var(--t4);margin-top:8px;font-style:italic;line-height:1.5}
 /* a category's own caveat, straight from the data */
 .cnote{font-size:15px;color:var(--t4);font-style:italic;line-height:1.55;padding:8px 2px 2px}
+/* lead: an intro note under a page's section header is CONTENT, not a footnote —
+   body size, readable contrast */
+.cnote.lead{font-size:16px;color:var(--t2)}
 /* cards sit NEXT TO each other and the row slides sideways when they overflow */
 .care{display:flex;flex-wrap:nowrap;gap:14px;margin:14px 0 26px;
   overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -532,7 +537,7 @@ li.open .exinfo{display:block}
   .pt{font-size:16px;padding:8px 8px}
   .pt.on::after{left:8px;right:8px}
   html:not([data-page=markers]) .ptabs{margin-left:-8px}   /* narrow .pt padding is 8px */
-  .pgh{font-size:21px}
+  .pgh{font-size:24px}
   .rht{width:56px}
 }
 /* On an actual phone, row 1 must still hold hamburger + search + all three pills clear of
@@ -1156,9 +1161,9 @@ function renderPage(p){
     h+=cardRow(CARE.filter(c=>!c.top));   // the protocol cards close the page
   } else if(p==='training'&&TRAINING&&TRAINING.cards&&TRAINING.cards.length){
     h=`<div class="pgh">Training</div>`+
-      (TRAINING.cardio?`<div class="pgst">Cardio</div><div class="cnote">${esc(TRAINING.cardio).replace(/\n/g,'<br>')}</div>`:'')+
+      (TRAINING.cardio?`<div class="pgst">Cardio</div><div class="cnote lead">${esc(TRAINING.cardio).replace(/\n/g,'<br>')}</div>`:'')+
       `<div class="pgst">Resistance</div><div class="pgsub pgsp">${TRAINING.cards.map(c=>esc(c.t)).join(' · ')}</div>`+
-      (TRAINING.note?`<div class="cnote">${esc(TRAINING.note)}</div>`:'')+
+      (TRAINING.note?`<div class="cnote lead">${esc(TRAINING.note)}</div>`:'')+
       cardRow(TRAINING.cards);
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
