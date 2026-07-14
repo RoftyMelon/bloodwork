@@ -405,13 +405,22 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .rhint{font-size:11px;color:var(--t4);margin-top:8px;font-style:italic;line-height:1.5}
 /* a category's own caveat, straight from the data */
 .cnote{font-size:11.5px;color:var(--t4);font-style:italic;line-height:1.55;padding:8px 2px 2px}
-/* cards WRAP — side by side where they fit, stacking full-width on a phone; a clipped
-   card mid-screen read as a bug, so nothing scrolls sideways here anymore */
-.care{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 26px}
-.ccard{flex:1 1 240px;min-width:min(240px,100%);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
+/* cards sit NEXT TO each other and the row slides sideways when they overflow */
+.care{display:flex;flex-wrap:nowrap;gap:14px;margin:14px 0 26px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.care::-webkit-scrollbar{display:none}
+.ccard{flex:0 0 clamp(250px,82vw,310px);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
 /* muscle-group sub-headers inside training cards */
-.cgrp{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t4);text-transform:uppercase;
-  padding:10px 0 1px}
+.cgrp{font-size:12.5px;font-weight:700;letter-spacing:.07em;color:var(--t3);text-transform:uppercase;
+  padding:12px 0 2px}
+/* the info tip: a small circled i, details unfold below on tap */
+.infob{display:inline-flex;width:16px;height:16px;margin-left:6px;border-radius:50%;flex:none;
+  align-items:center;justify-content:center;background:none;border:1px solid var(--t4);
+  color:var(--t3);font-size:10px;font-style:italic;font-weight:700;cursor:pointer;
+  vertical-align:-2px;padding:0;font-family:Georgia,serif}
+.infob:hover{background:var(--btn-h)}
+.exinfo{display:none;font-size:11.5px;color:var(--t4);line-height:1.55;margin:3px 0 2px}
+li.open .exinfo{display:block}
 /* the gridless set table: a column per set, weight over reps, tabular and quiet */
 .exn{line-height:1.45}
 .exsets{display:flex;flex-wrap:wrap;gap:1px 4px;margin:3px 0 1px}
@@ -420,7 +429,7 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .exset b{font-size:12px;font-weight:650;color:var(--txt);font-variant-numeric:tabular-nums;line-height:1.4}
 .exset.exlbl{align-items:flex-start;min-width:0;padding-right:2px}
 .exset.exlbl i,.exset.exlbl b{font-size:8.5px;font-weight:600;color:var(--t4);letter-spacing:.05em}
-.ccard b{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
+.ccard b{font-size:16.5px;font-weight:750;letter-spacing:.05em;color:var(--txt);text-transform:uppercase}
 .ccard ul{margin:7px 0 0;padding:0;list-style:none}
 .ccard li{font-size:12.5px;color:var(--t2);line-height:1.7;padding:3px 0;border-bottom:.5px solid var(--line2)}
 .ccard li:last-child{border-bottom:none}
@@ -1036,14 +1045,18 @@ function setPage(p){
   window.scrollTo({top:0});
 }
 function renderPage(p){
-  // an exercise renders as a gridless set table: one column per set, kg over reps
+  // an exercise renders as a gridless set table: one column per set, kg over reps.
+  // Long protocol details hide behind an info tip so the cards stay narrow.
   const exRow=x=>{
     if(typeof x==='string')return `<li>${esc(x)}</li>`;
     const sets=x.sets&&x.sets.length
       ?`<div class="exsets"><span class="exset exlbl"><i>kg</i><b>reps</b></span>`+
        x.sets.map(s=>`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`
       :'';
-    return `<li><div class="exn">${esc(x.n)}</div>${sets}</li>`;};
+    const tip=x.info?`<button class="infob" title="${esc(x.info)}" aria-label="Details"
+      onclick="this.closest('li').classList.toggle('open')">i</button>`:'';
+    const detail=x.info?`<div class="exinfo">${esc(x.info)}</div>`:'';
+    return `<li><div class="exn">${esc(x.n)}${tip}</div>${detail}${sets}</li>`;};
   const cardRow=list=>!list.length?'':`<div class="care">`+list.map(c=>{
     const inner=c.groups
       ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(exRow).join('')}</ul>`).join('')
