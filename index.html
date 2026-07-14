@@ -77,7 +77,7 @@ button.solid{background:var(--sol);color:var(--sol-t);border-color:transparent;f
 button.solid:hover{opacity:.9;background:var(--sol)}
 button.warn{color:var(--out);border-color:var(--out);background:transparent}
 button.warn:hover{background:var(--out);color:#fff}
-button.ic{padding:0;width:30px;height:30px;border-radius:50%;flex:none;
+button.ic{padding:0;width:36px;height:36px;border-radius:50%;flex:none;
   display:flex;align-items:center;justify-content:center;color:var(--t2)}
 button.ic:hover{color:var(--txt)}
 
@@ -90,8 +90,8 @@ button.ic:hover{color:var(--txt)}
 .orbit-disc{position:absolute;inset:0;transform-origin:50% 104%}
 .orbit-layer{position:absolute;inset:0}
 .orbit-layer.sun-side{transform:rotate(180deg);transform-origin:50% 104%}
-.icon-moon{position:absolute;left:calc(50% - 7.5px);top:calc(50% - 7.5px)}
-.icon-sun{position:absolute;left:calc(50% - 9.5px);top:calc(50% - 9.5px)}
+.icon-moon{position:absolute;left:calc(50% - 8.5px);top:calc(50% - 8.5px)}
+.icon-sun{position:absolute;left:calc(50% - 10.5px);top:calc(50% - 10.5px)}
 .orbit-disc,.icon-moon,.icon-sun{transition:transform .85s cubic-bezier(.55,.05,.22,1)}
 button:focus-visible{outline:2px solid var(--info);outline-offset:2px}
 
@@ -109,29 +109,29 @@ td.boot span{color:var(--t3);font-size:12.5px}
 .toc::-webkit-scrollbar{display:none}
 .tspace{display:none}   /* only used on narrow screens, see the media query */
 .nav{flex:none}
-.srch{display:flex;align-items:center;flex:none;width:30px;height:30px;border-radius:99px;overflow:hidden;
+.srch{display:flex;align-items:center;flex:none;width:36px;height:36px;border-radius:99px;overflow:hidden;
   background:var(--btn);border:.5px solid var(--btn-b);
   transition:width .3s cubic-bezier(.2,.9,.25,1),border-color .16s}
-.srch.open{width:186px;border-color:var(--txt)}
-.srch .sicon{flex:none;width:28px;height:28px; display:flex;align-items:center;justify-content:center;
+.srch.open{width:210px;border-color:var(--txt)}
+.srch .sicon{flex:none;width:34px;height:34px; display:flex;align-items:center;justify-content:center;
   padding:0;border:none;background:none;border-radius:50%;color:var(--t3)}
 .srch .sicon:hover{background:none;color:var(--txt)}
 .srch.open .sicon{color:var(--t2);cursor:default}
 .srch input{flex:1;min-width:0;height:100%;padding:0;border:none;background:none;border-radius:0;outline:none;
-  font-family:inherit;font-size:12.5px;font-weight:450;color:var(--txt);
+  font-family:inherit;font-size:13.5px;font-weight:450;color:var(--txt);
   opacity:0;transition:opacity .16s ease .1s}
 .srch.open input{opacity:1}
 .srch input::placeholder{color:var(--t3)}
 .srch input:focus-visible{outline:none}
-.srch .qx{display:none;flex:none;width:22px;height:22px;margin-right:5px;padding:0;line-height:20px;
-  text-align:center;font-size:16px;font-weight:400;border:none;background:none;border-radius:50%;color:var(--t3)}
+.srch .qx{display:none;flex:none;width:26px;height:26px;margin-right:5px;padding:0;line-height:24px;
+  text-align:center;font-size:18px;font-weight:400;border:none;background:none;border-radius:50%;color:var(--t3)}
 .srch .qx:hover{background:var(--btn-h);color:var(--txt)}
 .srch.has .qx{display:block}
-.chip{font-family:inherit;font-size:12px;font-weight:520;padding:7px 13px;border-radius:99px;cursor:pointer;
+.chip{font-family:inherit;font-size:13px;font-weight:520;padding:9px 16px;border-radius:99px;cursor:pointer;
   background:var(--btn);border:.5px solid var(--btn-b);color:var(--t2);transition:.16s}
 .chip:hover{background:var(--btn-h);color:var(--txt)}
 .chip[aria-pressed=true]{background:var(--sol);color:var(--sol-t);border-color:transparent;font-weight:600}
-.cn{font-size:10.5px;font-weight:700;margin-left:6px;opacity:.45;font-variant-numeric:tabular-nums}
+.cn{font-size:11px;font-weight:700;margin-left:6px;opacity:.45;font-variant-numeric:tabular-nums}
 .cn.hot{color:var(--out);opacity:1}
 .chip[aria-pressed=true] .cn{color:inherit;opacity:.55}
 
@@ -293,7 +293,7 @@ td.pos{padding-right:14px}
 .top:hover{background:var(--frost-h);color:var(--txt)}
 
 /* the categories navigate, they do not filter */
-.nav{font-family:inherit;font-size:12px;font-weight:500;padding:5px 10px;border-radius:99px;cursor:pointer;
+.nav{font-family:inherit;font-size:12.5px;font-weight:500;padding:7px 12px;border-radius:99px;cursor:pointer;
   background:none;border:.5px solid transparent;color:var(--t3);transition:.14s}
 .nav:hover{background:var(--btn);border-color:var(--btn-b);color:var(--txt);transform:none}
 
@@ -301,14 +301,14 @@ td.pos{padding-right:14px}
    Pills FILTER the table; the menu NAVIGATES between pages. Different species on purpose. */
 .pgnav{position:relative;display:flex;align-items:center;flex:none}
 .pgbtn{display:flex;align-items:center;justify-content:center;width:auto;height:auto;
-  padding:6px 5px;margin-left:-5px;background:none;border:none;border-radius:8px;color:var(--t2)}
+  padding:8px 7px;margin-left:-7px;background:none;border:none;border-radius:8px;color:var(--t2)}
 .pgbtn:hover{background:none;color:var(--txt)}
-.pmenu{position:absolute;top:calc(100% + 7px);left:-5px;z-index:60;min-width:158px;padding:5px;
-  background:var(--bg);border:.5px solid var(--btn-b);border-radius:13px;
+.pmenu{position:absolute;top:calc(100% + 7px);left:-7px;z-index:60;min-width:186px;padding:6px;
+  background:var(--bg);border:.5px solid var(--btn-b);border-radius:14px;
   box-shadow:0 12px 34px rgba(0,0,0,.18)}
 .pmenu .mi{display:flex;width:100%;align-items:center;justify-content:space-between;gap:12px;
-  padding:8px 11px;font-size:12.5px;font-weight:550;color:var(--t2);
-  background:none;border:none;border-radius:9px;text-align:left}
+  padding:11px 13px;font-size:13.5px;font-weight:550;color:var(--t2);
+  background:none;border:none;border-radius:10px;text-align:left}
 .pmenu .mi:hover{background:var(--btn-h);color:var(--txt)}
 .pmenu .mi.on{color:var(--txt);font-weight:650}
 .pmenu .mi.on::after{content:"\2713";font-size:11px}
@@ -339,10 +339,10 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
 .sb.strong{border-width:1px;color:var(--t2)}
 .sb.weak{border-style:dashed;color:var(--t4)}
 .sfill{flex:1}
-.slink{font-size:11.5px;color:var(--info);text-decoration:none;white-space:nowrap}
+.slink{font-size:12.5px;color:var(--info);text-decoration:none;white-space:nowrap;padding:5px 0}
 .slink:hover{text-decoration:underline}
-.smk{font-family:inherit;font-size:11.5px;color:var(--t3);background:none;cursor:pointer;
-  border:.5px solid transparent;border-radius:99px;padding:3px 9px;white-space:nowrap}
+.smk{font-family:inherit;font-size:12.5px;color:var(--t3);background:none;cursor:pointer;
+  border:.5px solid transparent;border-radius:99px;padding:6px 12px;white-space:nowrap}
 .smk:hover{background:var(--btn);border-color:var(--btn-b);color:var(--txt)}
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;border-bottom:.5px solid var(--line2)}
@@ -388,16 +388,16 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
   :root{--thh:26px}
   .topbar{padding-top:8px}
   .bar{margin-bottom:6px;row-gap:4px}
-  .chip{padding:4px 10px;font-size:11px}
-  .chip .cn{margin-left:5px;font-size:10px}
-  .srch{width:24px;height:24px}
-  .srch .sicon{width:22px;height:22px}
-  button.ic{width:24px;height:24px}
-  .nav{padding:2px 8px;font-size:11px}
+  .chip{padding:8px 12px;font-size:12.5px}
+  .chip .cn{margin-left:5px;font-size:10.5px}
+  .srch{width:34px;height:34px}
+  .srch .sicon{width:32px;height:32px}
+  button.ic{width:34px;height:34px}
+  .nav{padding:5px 11px;font-size:12px}
   /* The toggle leaves the flex row and pins to the top-right, so the TOC on row 2 gets
-     the bar's FULL width. A 34px spacer holds its place on row 1 and forces the wrap. */
+     the bar's FULL width. A 38px spacer holds its place on row 1 and forces the wrap. */
   .topline{display:block}
-  .tspace{display:block;flex:none;width:34px;margin-left:auto}
+  .tspace{display:block;flex:none;width:38px;margin-left:auto}
   button.ic{position:absolute;top:8px;right:var(--gut,10px)}
   /* The section bar is PINNED the whole time you're inside a section, so its height is
      permanently spent. Drop the marker count and tighten it: 60px -> 32px. */
@@ -433,11 +433,14 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
   .rht{width:40px}
   .rem{width:40px;font-size:12px}
 }
-/* On an actual phone the hamburger ate row 1's slack: tighten the pills so they clear the
-   pinned theme toggle (x≈341 at 375px) even when a flag count grows a digit. */
+/* On an actual phone, row 1 must still hold hamburger + search + all three pills clear of
+   the pinned toggle. Bigger buttons everywhere, so the pills give back width here: the two
+   counts that never change (All / By supplement) hide; Flagged keeps its count — it's the
+   one that carries signal. Chip order is fixed in render(): all, flag, crit. */
 @media(max-width:430px){
-  .chip{padding:4px 9px}
+  .chip{padding:8px 10px;font-size:12px}
   .bar{gap:5px}
+  #chips .chip:nth-child(1) .cn,#chips .chip:nth-child(3) .cn{display:none}
 }
 </style>
 
@@ -447,7 +450,7 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
     <div class="bar">
     <span class="pgnav">
       <button class="pgbtn" id="pgbtn" aria-label="Pages" aria-haspopup="true" aria-expanded="false">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
       </button>
       <div class="pmenu" id="pmenu" hidden>
@@ -462,7 +465,7 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
     <span class="ptitle" id="ptitle"></span>
     <div class="srch" id="srch">
       <button class="sicon" id="sbtn" aria-label="Search markers" title="Search  ( / )">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
           stroke-width="2.2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
       </button>
       <input id="q" type="text" autocomplete="off" spellcheck="false">
@@ -476,12 +479,12 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
       <span class="orbit">
         <span class="orbit-disc" id="odisc">
           <span class="orbit-layer">
-            <svg class="icon-moon" id="omoon" width="15" height="15" viewBox="0 0 24 24" fill="none"
+            <svg class="icon-moon" id="omoon" width="17" height="17" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </span>
           <span class="orbit-layer sun-side">
-            <svg class="icon-sun" id="osun" width="19" height="19" viewBox="0 0 24 24" fill="none"
+            <svg class="icon-sun" id="osun" width="21" height="21" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4.6"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
