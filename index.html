@@ -415,9 +415,12 @@ html[data-page=markers] .topline{margin-top:9px}
 .rhl.lt::after{content:"";position:absolute;left:44px;top:7px;height:.5px;
   width:min(calc(100% - 44px),410px);background:var(--t4);opacity:.55}
   /* 410px = the longest row text ("Gym - phone stays OFF...") — the line matches it */
-/* every row centres its content between the boundary lines of its span — the lines
-   sit 7px below the cell tops they belong to, hence 2x7 top padding */
-.rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:14px 0 0}
+/* every row centres its content between the boundary lines of its span. UNIFORM
+   HEIGHT IS THE CONTRACT: the padding must leave a 2-line row (07:00) and a
+   two-event hour (17:00, 21:00) fitting inside one --hh cell — a row that
+   stretches breaks the ruler silently. */
+.rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:12px 0 0}
+.rhr.multi .rcell{padding-top:3px}   /* two stacked events ride higher, cell stays 64px */
 /* blocks need no rule of their own: the base .rcell centres every row vertically,
    and align-items is left at stretch so ALL text shares the same left edge.
    (A legacy row-direction align-items:center here turned into HORIZONTAL centring
@@ -1201,7 +1204,7 @@ function renderPage(p){
            `<div class="rev"><div class="rbody"><div class="rdo">${esc(block.do)}</div></div></div></div></div>`;
         hr=endH;continue;
       }
-      h+=`<div class="rhr${evs.length?'':' rempty'}${hr===H1?' rlast':''}"><span class="rht">${mark(hr)}</span><div class="rcell">`+
+      h+=`<div class="rhr${evs.length?'':' rempty'}${evs.length>1?' multi':''}${hr===H1?' rlast':''}"><span class="rht">${mark(hr)}</span><div class="rcell">`+
         evs.map(r=>{
           let sup='';
           if(r.slot&&STACK){
