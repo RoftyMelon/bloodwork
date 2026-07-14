@@ -307,13 +307,14 @@ td.pos{padding-right:14px}
   padding:0;background:none;border:none;border-radius:10px;color:var(--t2)}
 .pgbtn:hover{background:none;color:var(--txt)}
 /* the hamburger spins and crossfades into an X — the whole morph lives ON the one svg
-   (rule 7), and it keys off aria-expanded so it reacts at TAP time, not swap time */
+   (rule 7). The X means "collapse the strip", which only exists on Markers: land on any
+   other tab and the glyph spins back to the hamburger (the strip there is permanent). */
 .pgbtn svg{transition:transform .5s cubic-bezier(.3,.7,.2,1)}
 .pgbtn .ham,.pgbtn .x{transition:opacity .3s ease}
 .pgbtn .x{opacity:0}
-.pgbtn[aria-expanded=true] svg{transform:rotate(180deg)}
-.pgbtn[aria-expanded=true] .ham{opacity:0}
-.pgbtn[aria-expanded=true] .x{opacity:1}
+html[data-page=markers] .pgbtn[aria-expanded=true] svg{transform:rotate(180deg)}
+html[data-page=markers] .pgbtn[aria-expanded=true] .ham{opacity:0}
+html[data-page=markers] .pgbtn[aria-expanded=true] .x{opacity:1}
 .pgbtn[aria-expanded=true]{color:var(--txt)}
 .ptabs{flex:1;min-width:0;display:flex;align-items:center;gap:2px;
   flex-wrap:nowrap;overflow-x:auto;                /* never wrap: scroll, like the toc */
