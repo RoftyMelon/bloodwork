@@ -463,6 +463,7 @@ html[data-page=markers] .topline{margin-top:9px}
   color:var(--t3);font-size:12px;font-style:italic;font-weight:700;cursor:pointer;
   vertical-align:middle;margin-top:-2px;padding:0;font-family:Georgia,serif}
 .infob:hover{background:var(--btn-h)}
+.srow .infob{margin-left:-4px}   /* the row's 10px flex gap already separates; net ~6px like the cards */
 .exinfo{display:none;position:absolute;z-index:6;top:0;right:0;width:max-content;max-width:60%;
   background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 11px 9px;
   font-size:14.5px;color:var(--t2);line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.16)}
@@ -571,6 +572,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 @media(min-width:901px){
   .care{flex-wrap:wrap;max-width:none;
     width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
+  .care.grid2{width:auto;max-width:634px}   /* 2 cards (310px) + gap: the 4 supp cards sit 2x2 */
 }
 @media(max-width:430px){
   .chip{padding:8px 10px;font-size:14.5px}
@@ -1138,7 +1140,7 @@ function renderPage(p){
       onclick="tip(this)">i</button>`:'';
     const detail=x.info?`<div class="exinfo">${esc(x.info)}</div>`:'';
     return `<li><div class="exn">${esc(x.n)}${tip}</div>${detail}${sets}</li>`;};
-  const cardRow=list=>!list.length?'':`<div class="care">`+list.map(c=>{
+  const cardRow=(list,cls)=>!list.length?'':`<div class="care${cls?' '+cls:''}">`+list.map(c=>{
     const inner=c.groups
       ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(exRow).join('')}</ul>`).join('')
       :(c.items.length?`<ul>${c.items.map(exRow).join('')}</ul>`:`<div class="cempty">&mdash;</div>`);
@@ -1189,7 +1191,7 @@ function renderPage(p){
     h=`<div class="pgh">Daily routine</div><div class="pgsub">`+
       `${ROUTINE[ROUTINE.length-1].t} &rarr; ${ROUTINE[0].t} · ${24-(H1-H0)}h bed time<br>`+
       `${ROUTINE[0].t} &rarr; ${ROUTINE[ROUTINE.length-1].t} · ${H1-H0}h wake time</div>`;
-    h+=cardRow(CARE.filter(c=>c.top));   // the meal-supps cards lead the page
+    h+=cardRow(CARE.filter(c=>c.top),'grid2');   // the meal-supps cards lead the page, 2x2 on desktop
     let hr=H0;
     while(hr<=H1){
       const evs=ROUTINE.filter(r=>parseInt(r.t)===hr);
