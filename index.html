@@ -40,7 +40,7 @@
 :root{--thh:30px; --nm:180px; --hh:64px}   /* sizing: theme-independent, must not sit in a theme block */
 /* TYPE SCALE — one rationale across every tab:
    26 page title (.pgh — caps card titles gain ~40% optical size, so the title
-   needs real distance to LOOK biggest) · 19 card/session title (.ccard>b) ·
+   needs real distance to LOOK biggest) · 17 card/session title (.ccard>b) ·
    16 body & controls (content rows, page-intro .lead notes, subtitles, tabs,
    chips, names, search) · 15 secondary (doses, caveat notes, links) · 14 caps
    section labels (.pgst/.cgrp) + hints · ~13 micro data (hour marks, kg,
@@ -375,6 +375,9 @@ html:not([data-page=markers]) .pgnav{width:0;margin-right:-6px;opacity:0;visibil
 /* with the hamburger collapsed, the first tab's LABEL takes over the gutter alignment;
    zero delay in THIS direction — leaving Markers slides at once */
 html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .34s cubic-bezier(.2,.7,.3,1)}
+/* .swap is a scroller for the Markers pills; on pages the tabs scroll INSIDE .ptabs,
+   and .swap clipping would shear the first tab's hover pill at the column edge */
+html:not([data-page=markers]) .swap{overflow:visible}
 
 .pgs{max-width:780px;padding:6px 0 40px}
 .pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:18px 0 3px}
@@ -459,7 +462,7 @@ li.open .exinfo{display:block}
 .exset b{font-size:14.5px;font-weight:650;color:var(--txt);font-variant-numeric:tabular-nums;line-height:1.4}
 /* >b : the title is the card's DIRECT child. A bare `.ccard b` swallows every <b>
    in the card — all set numbers and kg/reps legends rendered at title size */
-.ccard>b{font-size:19px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
+.ccard>b{font-size:17px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
 .ccard ul{margin:7px 0 12px;padding:0;list-style:none}
 .ccard ul:last-child{margin-bottom:0}
 .ccard li{font-size:16px;color:var(--txt);line-height:1.65;padding:3.5px 0;border-bottom:.5px solid var(--line2);position:relative}
@@ -550,6 +553,12 @@ li.open .exinfo{display:block}
    the pinned toggle. Bigger buttons everywhere, so the pills give back width here: the two
    counts that never change (All / By supplement) hide; Flagged keeps its count — it's the
    one that carries signal. Chip order is fixed in render(): all, flag, crit. */
+/* wide screens: the card row WRAPS instead of scrolling — every card stays visible.
+   Width escapes the 780px prose measure but never the 1400px content column. */
+@media(min-width:901px){
+  .care{flex-wrap:wrap;max-width:none;
+    width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
+}
 @media(max-width:430px){
   .chip{padding:8px 10px;font-size:14.5px}
   .bar{gap:4px}
