@@ -400,9 +400,11 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px}
 .rhint{font-size:11px;color:var(--t4);margin-top:8px;font-style:italic;line-height:1.5}
 /* a category's own caveat, straight from the data */
 .cnote{font-size:11.5px;color:var(--t4);font-style:italic;line-height:1.55;padding:8px 2px 2px}
-/* care protocols: cards, side by side where there's room */
-.care{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:28px}
-.ccard{background:var(--grp);border-radius:12px;padding:13px 16px 15px}
+/* care protocols: one row of cards, scrolling sideways when they don't fit */
+.care{display:flex;flex-wrap:nowrap;gap:14px;margin:14px 0 26px;
+  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.care::-webkit-scrollbar{display:none}
+.ccard{flex:0 0 clamp(240px,74vw,300px);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
 .ccard b{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
 .ccard ul{margin:7px 0 0;padding:0;list-style:none}
 .ccard li{font-size:12.5px;color:var(--t2);line-height:1.7;padding:3px 0;border-bottom:.5px solid var(--line2)}
@@ -1036,6 +1038,9 @@ function renderPage(p){
     // hours take up (a little) space and the day reads as time, not as glued-together events
     const H0=parseInt(ROUTINE[0].t),H1=parseInt(ROUTINE[ROUTINE.length-1].t);
     h=`<div class="pgh">Daily routine</div><div class="pgsub">${ROUTINE[0].t} &rarr; ${ROUTINE[ROUTINE.length-1].t} · ${H1-H0} hours</div>`;
+    // care cards lead the page; the hour ruler follows
+    if(CARE.length)h+=`<div class="care">`+CARE.map(c=>
+      `<div class="ccard"><b>${esc(c.t)}</b><ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')+`</div>`;
     for(let hr=H0;hr<=H1;hr++){
       const evs=ROUTINE.filter(r=>parseInt(r.t)===hr);
       h+=`<div class="rhr${evs.length?'':' rempty'}"><span class="rht">${String(hr).padStart(2,'0')}:00</span><div class="rcell">`+
@@ -1050,9 +1055,6 @@ function renderPage(p){
           return `<div class="rev"><span class="rem">${r.t}</span><div class="rbody"><div class="rdo">${esc(r.do)}</div>${sup}</div></div>`;
         }).join('')+`</div></div>`;
     }
-    // the care protocols are cards, NOT hour rows: they'd duplicate across the day
-    if(CARE.length)h+=`<div class="care">`+CARE.map(c=>
-      `<div class="ccard"><b>${esc(c.t)}</b><ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')+`</div>`;
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
       DIET.meals.map(m=>`<div class="meal"><div class="pgst">${esc(m.t)}<small>${esc(m.at||'')}</small></div>`+
