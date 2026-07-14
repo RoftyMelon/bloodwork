@@ -408,11 +408,14 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .rhint{font-size:11px;color:var(--t4);margin-top:8px;font-style:italic;line-height:1.5}
 /* a category's own caveat, straight from the data */
 .cnote{font-size:11.5px;color:var(--t4);font-style:italic;line-height:1.55;padding:8px 2px 2px}
-/* care protocols: one row of cards, scrolling sideways when they don't fit */
-.care{display:flex;flex-wrap:nowrap;gap:14px;margin:14px 0 26px;
-  overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-.care::-webkit-scrollbar{display:none}
-.ccard{flex:0 0 clamp(240px,74vw,300px);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
+/* cards WRAP — side by side where they fit, stacking full-width on a phone; a clipped
+   card mid-screen read as a bug, so nothing scrolls sideways here anymore */
+.care{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 26px}
+.ccard{flex:1 1 240px;min-width:min(240px,100%);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
+/* exercise monogram: the workout app's own letter-tile fallback, honestly reproduced */
+.xmono{display:inline-flex;width:20px;height:20px;border-radius:6px;align-items:center;justify-content:center;
+  background:var(--btn);border:.5px solid var(--btn-b);font-size:10.5px;font-weight:700;color:var(--t3);
+  margin-right:8px;vertical-align:-4px;flex:none}
 .ccard b{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
 .ccard ul{margin:7px 0 0;padding:0;list-style:none}
 .ccard li{font-size:12.5px;color:var(--t2);line-height:1.7;padding:3px 0;border-bottom:.5px solid var(--line2)}
@@ -584,7 +587,7 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 // ---- DATA LIVES IN bloodwork.json ----
 // One source of truth. The dashboard reads it; so does any AI you hand it to.
 // To add a draw, edit that file. Never edit data in here.
-let MARK=[],DECS=[],CATS=[],DATA={draws:[]},STACK=null,ROUTINE=[],DIET=null,CARE=[],TRAINING=[];
+let MARK=[],DECS=[],CATS=[],DATA={draws:[]},STACK=null,ROUTINE=[],DIET=null,CARE=[],TRAINING=null;
 
 // Accent-folding, so "hemoglobine" finds "Hémoglobine". NFKD splits the accent off the
 // letter; the range then strips it. œ/æ have no decomposition, so they're folded by hand.
@@ -689,7 +692,7 @@ function audit(j){
   if(j.CARE)j.CARE.forEach(c=>{
     if(!Array.isArray(c.items))bad.push(`CARE "${c.t}": items must be an array (empty is fine)`);
   });
-  if(j.TRAINING)j.TRAINING.forEach(c=>{
+  if(j.TRAINING)(j.TRAINING.cards||[]).forEach(c=>{
     if(!Array.isArray(c.items))bad.push(`TRAINING "${c.t}": items must be an array (empty is fine)`);
   });
   return bad;
@@ -706,7 +709,7 @@ function boot(j,cache){
     return;                                   // refuse to render rather than render a lie
   }
   MARK=j.MARK; DECS=j.DECS; CATS=j.CATS; DATA=j.DATA;
-  STACK=j.STACK||null; ROUTINE=j.ROUTINE||[]; DIET=j.DIET||null; CARE=j.CARE||[]; TRAINING=j.TRAINING||[];
+  STACK=j.STACK||null; ROUTINE=j.ROUTINE||[]; DIET=j.DIET||null; CARE=j.CARE||[]; TRAINING=j.TRAINING||null;
   S.draws=DATA.draws;
   MARK.forEach(m=>m._h=norm(m.en+' '+m.fr+' '+m.us));   // search index, derived
   // Remember it, so opening from disk on a phone doesn't mean re-picking the file
@@ -1021,9 +1024,9 @@ function setPage(p){
   window.scrollTo({top:0});
 }
 function renderPage(p){
-  const cardRow=list=>!list.length?'':`<div class="care">`+list.map(c=>
+  const cardRow=(list,mono)=>!list.length?'':`<div class="care">`+list.map(c=>
     `<div class="ccard"><b>${esc(c.t)}</b>${c.items.length
-      ?`<ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`
+      ?`<ul>${c.items.map(x=>`<li>${mono?`<span class="xmono">${esc((x.trim()[0]||'').toUpperCase())}</span>`:''}${esc(x)}</li>`).join('')}</ul>`
       :`<div class="cempty">&mdash;</div>`}</div>`).join('')+`</div>`;
   let h='';
   if(p==='stack'&&STACK){
@@ -1088,9 +1091,10 @@ function renderPage(p){
       hr++;
     }
     h+=cardRow(CARE.filter(c=>!c.top));   // the protocol cards close the page
-  } else if(p==='training'&&TRAINING.length){
-    h=`<div class="pgh">Training</div><div class="pgsub">${TRAINING.map(c=>esc(c.t)).join(' · ')}</div>`+
-      cardRow(TRAINING);
+  } else if(p==='training'&&TRAINING&&TRAINING.cards&&TRAINING.cards.length){
+    h=`<div class="pgh">Training</div><div class="pgsub">${TRAINING.cards.map(c=>esc(c.t)).join(' · ')}</div>`+
+      cardRow(TRAINING.cards,true)+
+      (TRAINING.note?`<div class="cnote">${esc(TRAINING.note)}</div>`:'');
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
       DIET.meals.map(m=>`<div class="meal"><div class="pgst">${esc(m.t)}<small>${esc(m.at||'')}</small></div>`+
