@@ -341,8 +341,7 @@ html[data-page=markers] .pgbtn[aria-expanded=true] .x{opacity:1}
 .pgbtn[aria-expanded=true]{color:var(--txt)}
 .ptabs{flex:1;min-width:0;display:flex;align-items:center;gap:2px;position:relative;
   flex-wrap:nowrap;overflow-x:auto;                /* never wrap: scroll, like the toc */
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
-  transition:margin-left .34s cubic-bezier(.2,.7,.3,1) .22s}   /* delayed like the button's return */
+  scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .ptabs::-webkit-scrollbar{display:none}
 /* the strip is PERSISTENT off the Markers page: it hides only when collapsed on Markers,
    where the filters take its place. Only the filter/view row ever swaps; the toc holds still. */
@@ -378,7 +377,8 @@ html:not([data-page=markers]) .pgnav{width:0;margin-right:-6px;opacity:0;visibil
              opacity .22s ease,visibility .34s}
 /* with the hamburger collapsed, the first tab's LABEL takes over the gutter alignment;
    zero delay in THIS direction — leaving Markers slides at once */
-html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .34s cubic-bezier(.2,.7,.3,1)}
+/* the strip starts AT the gutter: tab pill BOXES align with the page edge (like the
+   chips), so the first tab's hover pill never juts into the margin or off-screen */
 /* .swap is a scroller for the Markers pills; on pages the tabs scroll INSIDE .ptabs,
    and .swap clipping would shear the first tab's hover pill at the column edge */
 html:not([data-page=markers]) .swap{overflow:visible}
@@ -571,7 +571,6 @@ li.open .exinfo,.srow.open .exinfo{display:block}
   .ptabs{margin-right:12px}                   /* tight: all five tabs should FIT, not scroll */
   .swap{padding-right:44px}                   /* scrolled pills end clear of the toggle too */
   .pt{font-size:16px;padding:8px 8px}
-  html:not([data-page=markers]) .ptabs{margin-left:-8px}   /* narrow .pt padding is 8px */
   .pgh{font-size:24px}
   .rht{width:56px}
 }
