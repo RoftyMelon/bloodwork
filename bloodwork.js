@@ -127,9 +127,7 @@ window.BLOODWORK =
   ]
  },
  "ROUTINE": [
-  {"t": "07:00", "do": "Wake + 10 min walk, direct sunlight in the eyes"},
-  {"t": "07:10", "do": "Hot + cold shower — quick, 2 min max"},
-  {"t": "07:15", "do": "Breakfast + supplements", "slot": "breakfast"},
+  {"t": "07:00", "do": "10 min walk, sunlight, cold shower\nBreakfast + supplements", "slot": "breakfast"},
   {"t": "12:00", "do": "Lunch + supplements", "slot": "lunch"},
   {"t": "17:00", "do": "Dinner + supplements", "slot": "dinner"},
   {"t": "17:45", "do": "Shower + flossing + skincare"},

@@ -1059,7 +1059,7 @@ function renderPage(p){
               ?`<div class="rsup">${list.map(s=>`<span class="rs">${esc(s.name)}${s.dose?' · '+esc(s.dose):''}</span>`).join('')}</div>`
               :`<div class="rhint">which supplements? not assigned yet — set "when":"${r.slot}" on STACK items</div>`;
           }
-          return `<div class="rev"><span class="rem">${r.t}</span><div class="rbody"><div class="rdo">${esc(r.do)}</div>${sup}</div></div>`;
+          return `<div class="rev"><span class="rem">${r.t}</span><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div>${sup}</div></div>`;
         }).join('')+`</div></div>`;
     }
   } else if(p==='diet'&&DIET){
