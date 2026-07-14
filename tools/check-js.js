@@ -81,6 +81,12 @@ setTimeout(()=>{
     ok(`routine shows ${DATA.CARE.length} care cards`, count(n.pages.innerHTML,'ccard')===DATA.CARE.length,
       count(n.pages.innerHTML,'ccard')+' cards'); }
   catch(e){ ok('routine ruler',false,e.message); }
+  // training cards are organised in muscle-group sub-sections
+  try{ setPage('training');
+    const grps=DATA.TRAINING.cards.reduce((a,c)=>a+(c.groups?c.groups.length:0),0);
+    ok(`training shows ${grps} muscle groups`, count(n.pages.innerHTML,'cgrp')===grps,
+      count(n.pages.innerHTML,'cgrp')+' groups'); }
+  catch(e){ ok('training groups',false,e.message); }
   try{ setPage('markers'); ok('back to markers', n.pages.hidden===true); }
   catch(e){ ok('back to markers',false,e.message); }
   const j2=JSON.parse(JSON.stringify(DATA)); j2.STACK.items[0].status='yolo';

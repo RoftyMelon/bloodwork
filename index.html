@@ -409,16 +409,9 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
    card mid-screen read as a bug, so nothing scrolls sideways here anymore */
 .care{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 26px}
 .ccard{flex:1 1 240px;min-width:min(240px,100%);background:var(--grp);border-radius:12px;padding:13px 16px 15px}
-/* exercise tiles: an icon when the name matches one, a letter tile otherwise.
-   30px and full-strength ink — detailed silhouettes turn to mud below ~24px. */
-.xico,.xmono{display:inline-flex;width:30px;height:30px;border-radius:8px;align-items:center;justify-content:center;
-  background:var(--btn);border:.5px solid var(--btn-b);font-size:12.5px;font-weight:700;color:var(--t2);flex:none}
-.xico svg{width:22px;height:22px}
-/* illustration tiles keep their white artwork background in both themes */
-.xico.ximg{background:#fff;overflow:hidden;padding:1px}
-.xico.ximg img{width:100%;height:100%;object-fit:contain;display:block}
-.ccard li{display:flex;align-items:flex-start;gap:10px}
-.ccard li .xico,.ccard li .xmono{margin-top:1px}
+/* muscle-group sub-headers inside training cards */
+.cgrp{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t4);text-transform:uppercase;
+  padding:10px 0 1px}
 .ccard b{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
 .ccard ul{margin:7px 0 0;padding:0;list-style:none}
 .ccard li{font-size:12.5px;color:var(--t2);line-height:1.7;padding:3px 0;border-bottom:.5px solid var(--line2)}
@@ -695,7 +688,10 @@ function audit(j){
     if(!Array.isArray(c.items))bad.push(`CARE "${c.t}": items must be an array (empty is fine)`);
   });
   if(j.TRAINING)(j.TRAINING.cards||[]).forEach(c=>{
-    if(!Array.isArray(c.items))bad.push(`TRAINING "${c.t}": items must be an array (empty is fine)`);
+    if(c.groups)c.groups.forEach(g=>{
+      if(!Array.isArray(g.items)||!g.items.length)bad.push(`TRAINING "${c.t}" / "${g.t}": group needs items`);
+    });
+    else if(!Array.isArray(c.items))bad.push(`TRAINING "${c.t}": items must be an array (empty is fine)`);
   });
   return bad;
 }
@@ -993,47 +989,6 @@ function gotoDec(gi){
    into #pages from the STACK / ROUTINE / DIET blocks, and the table-only controls
    fold away via html[data-page] (see the CSS). Nothing here touches table geometry. */
 const PAGES={markers:'Markers',stack:'Stack',routine:'Routine',diet:'Diet',training:'Training'};
-// Exercise pictograms: hand-drawn stick figures in each lift's actual posture (24-grid,
-// stroke idiom of the UI glyphs; heads are filled dots), plus two Material Design
-// Icons (Pictogrammers, Apache 2.0): weight-lifter for the overhead press, yoga for
-// the warm-up. Matched by exercise name; unmatched names fall back to a letter tile.
-const XIS=d=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`;
-const XIF=d=>`<svg viewBox="0 0 24 24"><path d="${d}" fill="currentColor"/></svg>`;
-const XICONS=[
- [/warm.?up|stretch/,XIF('M13 2C11.9 2 11 2.9 11 4C11 5.11 11.9 6 13 6C14.11 6 15 5.11 15 4C15 2.9 14.11 2 13 2M4 7V9H10V15L4.93 20.07L6.34 21.5L13.06 14.77L17 17.13V21H19V16.57C19 16.21 18.82 15.89 18.5 15.71L15 13.6V9H21V7H4Z')],
- [/explosive|chin.?up|pull.?up/,XIS('<path d="M4 3.5h16"/><path d="M9 3.5l1.7 3M15 3.5l-1.7 3"/><circle cx="12" cy="8.2" r="1.9" fill="currentColor" stroke="none"/><path d="M12 10.1v5"/><path d="M12 15.1l-.5 4.6"/>')],
- [/hang/,XIS('<path d="M4 3.5h16"/><path d="M11 3.5v3.6"/><circle cx="11" cy="9" r="1.9" fill="currentColor" stroke="none"/><path d="M11 10.9v4.6"/><path d="M11 15.5l-1.7 4.5M11 15.5l1.7 4.5"/><path d="M12.9 11.5l1.8 3.2"/>')],
- [/face pull/,XIS('<circle cx="20.3" cy="4.7" r="1" fill="currentColor" stroke="none"/><path d="M19.6 5.4l-7 3.6"/><circle cx="8" cy="7.4" r="1.9" fill="currentColor" stroke="none"/><path d="M8 9.3v6.2"/><path d="M8 15.5l-1.7 4.8M8 15.5l1.7 4.8"/><path d="M8 10.4l2.6 1 2-2.4"/>')],
- [/pushdown/,XIS('<path d="M15 3v8.3"/><circle cx="9" cy="6.2" r="1.9" fill="currentColor" stroke="none"/><path d="M9 8.1v7"/><path d="M9 15.1l-1.7 4.9M9 15.1l1.7 4.9"/><path d="M9 9.6l3.4 1.9"/><path d="M12.4 11.5l4.4-.1"/>')],
- [/overhead tricep/,XIS('<circle cx="11.5" cy="8.4" r="1.9" fill="currentColor" stroke="none"/><path d="M11.5 10.3v5.5"/><path d="M11.5 15.8l-1.7 4.8M11.5 15.8l1.7 4.8"/><path d="M11.5 10.8l-1.4-4.6"/><path d="M10.1 6.2l3.5-2.2"/><circle cx="14.9" cy="3.4" r="1.3" fill="currentColor" stroke="none"/>')],
- [/military|overhead press|shoulder press/,XIF('M12 5C10.89 5 10 5.89 10 7S10.89 9 12 9 14 8.11 14 7 13.11 5 12 5M22 1V6H20V4H4V6H2V1H4V3H20V1H22M15 11.26V23H13V18H11V23H9V11.26C6.93 10.17 5.5 8 5.5 5.5L5.5 5H7.5L7.5 5.5C7.5 8 9.5 10 12 10S16.5 8 16.5 5.5L16.5 5H18.5L18.5 5.5C18.5 8 17.07 10.17 15 11.26Z')],
- [/row\b/,XIS('<path d="M9.5 15h8"/><path d="M11 15v3.2M16 15v3.2"/><path d="M6.8 8.6h8.4"/><circle cx="17" cy="8" r="1.9" fill="currentColor" stroke="none"/><path d="M15.2 8.6l.6 6.4"/><path d="M6.8 8.6L5.6 19"/><path d="M11 8.6v4"/><path d="M9.5 13.2h3"/><circle cx="8.8" cy="13.2" r="1.1" fill="currentColor" stroke="none"/><circle cx="13.2" cy="13.2" r="1.1" fill="currentColor" stroke="none"/>')],
- [/back extension/,XIS('<path d="M4 15.8h6.4"/><path d="M5.5 15.8v3.6M9 15.8v3.6"/><circle cx="5" cy="14.2" r="1" fill="currentColor" stroke="none"/><path d="M10.4 15.6l5.6-5.6"/><circle cx="17.4" cy="8.6" r="1.9" fill="currentColor" stroke="none"/>')],
- [/leg curl|nordic/,XIS('<path d="M4.5 14.5h12"/><path d="M6 14.5v3.4M14.5 14.5v3.4"/><circle cx="5.9" cy="12.6" r="1.9" fill="currentColor" stroke="none"/><path d="M7.8 13.2h7.2"/><path d="M15 13.2l1.7-4.4"/><circle cx="17.2" cy="7.4" r="1.1" fill="currentColor" stroke="none"/>')],
- [/leg extension/,XIS('<circle cx="8.6" cy="6" r="1.9" fill="currentColor" stroke="none"/><path d="M8.6 7.9v5.3"/><path d="M8.6 13.2h4.6"/><path d="M13.2 13.2l4.4-2.6"/><circle cx="18.5" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M6 13.2v5M6 18.2h5"/>')],
- [/squat/,XIS('<path d="M5 7.6h9.4"/><circle cx="3.9" cy="7.6" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="7.6" r="1.2" fill="currentColor" stroke="none"/><circle cx="9.7" cy="5.4" r="1.9" fill="currentColor" stroke="none"/><path d="M9.7 7.4l-1.3 5"/><path d="M8.4 12.4l4.6 .6"/><path d="M13 13l0 5.6"/><path d="M13 18.6h2.4"/>')],
- [/calf/,XIS('<circle cx="11.6" cy="4.4" r="1.9" fill="currentColor" stroke="none"/><path d="M11.6 6.3v8"/><path d="M11.6 8.4l-1.6 4M11.6 8.4l1.6 4"/><path d="M11.6 14.3l-.4 3.7"/><path d="M11.2 18l2.6 2.4"/><path d="M5.5 20.8h11"/>')],
- [/hip thrust/,XIS('<path d="M3.2 17.8h17"/><path d="M4 12h3M4.6 12v5.8"/><circle cx="3.7" cy="9.9" r="1.9" fill="currentColor" stroke="none"/><path d="M6.4 11.6l5.6-.6"/><path d="M12 11l3 1.6"/><path d="M15 12.6v5.2"/><circle cx="12.2" cy="8.8" r="1.3" fill="currentColor" stroke="none"/>')],
- [/abduction|adduction/,XIS('<circle cx="12" cy="5" r="1.9" fill="currentColor" stroke="none"/><path d="M12 6.9v5.6"/><path d="M12 12.5l-4 3.7-1 4M12 12.5l4 3.7 1 4"/>')],
- [/knee raise/,XIS('<circle cx="11" cy="4.6" r="1.9" fill="currentColor" stroke="none"/><path d="M11 6.5v7"/><path d="M11 13.5v6.5"/><path d="M11 13.5l4-1.6"/><path d="M15 11.9l.6 3.6"/>')],
- [/crunch/,XIS('<path d="M4 18.6h16"/><path d="M12.6 17.6l3.2-3.6"/><path d="M15.8 14l2.4 3.6"/><path d="M12.6 17.6c-1.6-.5-3.6-1.6-4.2-3.4"/><circle cx="7.6" cy="12.8" r="1.9" fill="currentColor" stroke="none"/>')],
- [/curl/,XIS('<circle cx="9.5" cy="5" r="1.9" fill="currentColor" stroke="none"/><path d="M9.5 6.9v8"/><path d="M9.5 14.9l-1.6 5M9.5 14.9l1.6 5"/><path d="M9.5 9.2l1.9 3.4"/><path d="M11.4 12.6l3.4-3.4"/><circle cx="15.6" cy="8.4" r="1.4" fill="currentColor" stroke="none"/>')],
- [/shrug/,XIS('<circle cx="12" cy="4.6" r="1.9" fill="currentColor" stroke="none"/><path d="M8.4 8h7.2"/><path d="M12 8v6"/><path d="M12 14l-1.8 5.6M12 14l1.8 5.6"/><path d="M8.4 8v6.3M15.6 8v6.3"/><path d="M6.7 15.4h3.4M13.9 15.4h3.4"/>')],
- [/pull.?over/,XIS('<path d="M5.5 15.2h11"/><path d="M7 15.2v3.2M15 15.2v3.2"/><circle cx="16.8" cy="13.2" r="1.9" fill="currentColor" stroke="none"/><path d="M14 13.4h-4"/><path d="M10 13.4L7.4 8.8"/><circle cx="6.8" cy="7.4" r="1.3" fill="currentColor" stroke="none"/>')],
- [/lateral|deltoid/,XIS('<circle cx="12" cy="4.6" r="1.9" fill="currentColor" stroke="none"/><path d="M12 6.5v7.5"/><path d="M12 14l-1.8 5.6M12 14l1.8 5.6"/><path d="M12 8H5.6M12 8h6.4"/><circle cx="4.4" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="19.6" cy="8" r="1.2" fill="currentColor" stroke="none"/>')],
- [/fly|chest press|bench/,XIS('<path d="M5 17.6h13.5"/><path d="M7 17.6v2.6M16 17.6v2.6"/><circle cx="5.8" cy="13.6" r="1.9" fill="currentColor" stroke="none"/><path d="M8 14.4h8"/><path d="M12 14.2V9.6"/><path d="M8.6 9.2h6.8"/><circle cx="7.3" cy="9.2" r="1.2" fill="currentColor" stroke="none"/><circle cx="16.7" cy="9.2" r="1.2" fill="currentColor" stroke="none"/>')]
-];
-// User-supplied open-source exercise illustrations (small thumbnails in ex/). Checked
-// FIRST — the drawn figures above stay as fallback until each one gets its illustration.
-const XIMG=[
- [/explosive/,'ex/explosive-pull-up.jpeg'],
- [/chin.?up/,'ex/chin-up.jpeg']
-];
-const xicon=s=>{const n=s.toLowerCase();
-  const img=XIMG.find(([re])=>re.test(n));
-  if(img)return `<span class="xico ximg"><img src="${img[1]}" alt="" loading="lazy"></span>`;
-  const hit=XICONS.find(([re])=>re.test(n));
-  return hit?`<span class="xico">${hit[1]}</span>`:null;};
 let page='markers';
 document.documentElement.dataset.page=page;
 const PGEL=document.getElementById('pages'),
@@ -1067,10 +1022,11 @@ function setPage(p){
   window.scrollTo({top:0});
 }
 function renderPage(p){
-  const cardRow=(list,mono)=>!list.length?'':`<div class="care">`+list.map(c=>
-    `<div class="ccard"><b>${esc(c.t)}</b>${c.items.length
-      ?`<ul>${c.items.map(x=>`<li>${mono?(xicon(x)||`<span class="xmono">${esc((x.trim()[0]||'').toUpperCase())}</span>`):''}${esc(x)}</li>`).join('')}</ul>`
-      :`<div class="cempty">&mdash;</div>`}</div>`).join('')+`</div>`;
+  const cardRow=list=>!list.length?'':`<div class="care">`+list.map(c=>{
+    const inner=c.groups
+      ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('')
+      :(c.items.length?`<ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<div class="cempty">&mdash;</div>`);
+    return `<div class="ccard"><b>${esc(c.t)}</b>${inner}</div>`;}).join('')+`</div>`;
   let h='';
   if(p==='stack'&&STACK){
     const n=st=>STACK.items.filter(s=>s.status===st).length;
@@ -1135,9 +1091,8 @@ function renderPage(p){
     h+=cardRow(CARE.filter(c=>!c.top));   // the protocol cards close the page
   } else if(p==='training'&&TRAINING&&TRAINING.cards&&TRAINING.cards.length){
     h=`<div class="pgh">Training</div><div class="pgsub">${TRAINING.cards.map(c=>esc(c.t)).join(' · ')}</div>`+
-      cardRow(TRAINING.cards,true)+
-      (TRAINING.note?`<div class="cnote">${esc(TRAINING.note)}</div>`:'')+
-      `<div class="cnote">Exercise figures drawn for this page &middot; two icons from Material Design Icons (Apache 2.0)</div>`;
+      cardRow(TRAINING.cards)+
+      (TRAINING.note?`<div class="cnote">${esc(TRAINING.note)}</div>`:'');
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
       DIET.meals.map(m=>`<div class="meal"><div class="pgst">${esc(m.t)}<small>${esc(m.at||'')}</small></div>`+
