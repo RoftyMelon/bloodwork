@@ -37,7 +37,7 @@
   --mg:rgba(245,244,239,.07);
   --frost:rgba(48,48,46,.72); --frost-b:rgba(245,244,239,.14); --frost-h:rgba(59,59,55,.9);
 }
-:root{--thh:30px; --nm:180px; --hh:44px}   /* sizing: theme-independent, must not sit in a theme block */
+:root{--thh:30px; --nm:180px; --hh:56px}   /* sizing: theme-independent, must not sit in a theme block */
 :root,[data-theme=light]{--chrome:#FFFFFF;   /* pre-compensates Safari's darkening; see paint() */
   
   /* Claude cream: warm ivory paper, warm near-black ink */
@@ -390,16 +390,16 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .rht{flex:none;width:64px;font-size:11px;font-weight:600;color:var(--t4);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
 /* the ruler is drawn with TICS, all the same thin weight. Where a block starts or ends,
-   the tick continues PAST the hour text, all the way across the rail. */
-.rhl{display:flex;align-items:center;gap:6px;height:var(--hh);white-space:nowrap}   /* one hour per cell */
-.rhl::before{content:"";flex:none;width:7px;height:1px;background:var(--t4);opacity:.55}
-.rhl.lt::after{content:"";flex:1;height:1px;background:var(--t4);opacity:.55;margin-right:-10px}
-.rhr.rempty .rhl{height:auto;padding:5px 0}       /* truly free hours stay slim */
-.rcell{flex:1;min-width:0;padding:5px 0 7px}
-.rhr.rempty .rcell{padding:0}
-/* block text centres BETWEEN the boundary tics. Labels sit mid-cell, so the visual
-   midpoint of an n-hour block is the box centre + half a cell: pad one cell on top. */
-.rhr.rblockrow .rcell{display:flex;align-items:center;padding:var(--hh) 0 0}
+   the tick continues PAST the hour text, all the way across the rail.
+   Calendar convention: a label anchors at the TOP of its cell and marks the hour's
+   START; row content hangs below its hour line. Every hour is exactly --hh tall. */
+.rhl{display:flex;align-items:flex-start;gap:6px;height:var(--hh);white-space:nowrap}
+.rhl::before{content:"";flex:none;width:7px;height:1px;background:var(--t4);opacity:.55;margin-top:7px}
+.rhl.lt::after{content:"";flex:1;height:1px;background:var(--t4);opacity:.55;margin-right:-10px;margin-top:7px}
+.rcell{flex:1;min-width:0;padding:2px 0 4px}
+/* block text centres BETWEEN the boundary tic lines, which sit 7px below the cell
+   tops they belong to — so the midpoint is the box centre + 7px: pad 2x7 on top. */
+.rhr.rblockrow .rcell{display:flex;align-items:center;padding:14px 0 0}
 .rev{display:flex;gap:12px;align-items:baseline;padding:4px 0}
 .rbody{min-width:0}
 .rdo{font-size:13.5px;color:var(--t2);line-height:1.5}
