@@ -319,9 +319,10 @@ td.pos{padding-right:14px}
   flex-wrap:nowrap;overflow-x:auto;                /* never wrap: scroll, like the toc */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .ptabs::-webkit-scrollbar{display:none}
-html:not([data-menu=open]) .ptabs{display:none}
-/* only the filter/view row swaps for the tabs; the toc holds still and stays put */
-html[data-menu=open] .srch,html[data-menu=open] .chips,html[data-menu=open] .ptitle{display:none}
+/* the strip is PERSISTENT off the Markers page: it hides only when collapsed on Markers,
+   where the filters take its place. Only the filter/view row ever swaps; the toc holds still. */
+html[data-page=markers]:not([data-menu=open]) .ptabs{display:none}
+html[data-menu=open] .srch,html[data-menu=open] .chips{display:none}
 /* .swap wraps ONLY the swappable row-1 content (title / tabs / search / pills), so the
    hamburger and the toc sit outside the animation and hold still. One element animates,
    both directions (rule 7); exit eases IN (.24s), entry eases OUT (.34s) — the asymmetry
@@ -337,8 +338,6 @@ html[data-menu=open] .srch,html[data-menu=open] .chips,html[data-menu=open] .pti
 .pt.on{color:var(--txt);font-weight:700}
 .pt.on::after{content:"";position:absolute;left:13px;right:13px;bottom:3px;height:2px;
   border-radius:2px;background:var(--sol)}
-.ptitle{font-size:13.5px;font-weight:650;letter-spacing:-.015em;color:var(--txt);
-  padding:5px 2px;white-space:nowrap}
 /* off the markers page, everything table-flavoured folds away with it */
 html:not([data-page=markers]) .srch,html:not([data-page=markers]) .chips,
 html:not([data-page=markers]) .toc,
@@ -452,7 +451,6 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
 /* pages, on a phone: the hamburger slims down so row 1 stays ONE row with all three pills */
 @media(max-width:900px),(max-height:560px){
   .pgbtn{width:38px;height:38px}
-  .ptitle{font-size:12.5px;padding:2px}
   .ptabs{margin-right:38px}                   /* clear the pinned theme toggle */
   .pt{font-size:12.5px;padding:8px 11px}
   .pt.on::after{left:11px;right:11px}
@@ -485,7 +483,6 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
       </button>
     </span>
     <div class="swap" id="swap">
-    <span class="ptitle" id="ptitle"></span>
     <nav class="ptabs" id="ptabs" aria-label="Pages">
       <button class="pt on" data-pg="markers" onclick="setPage('markers')">Markers</button>
       <button class="pt" data-pg="stack" onclick="setPage('stack')">Stack</button>
@@ -942,7 +939,7 @@ function gotoDec(gi){
 const PAGES={markers:'Markers',stack:'Stack',routine:'Routine',diet:'Diet',training:'Training'};
 let page='markers';
 document.documentElement.dataset.page=page;
-const PGEL=document.getElementById('pages'),PTITLE=document.getElementById('ptitle'),
+const PGEL=document.getElementById('pages'),
       PBTN=document.getElementById('pgbtn'),PTABS=document.getElementById('ptabs');
 // open = the tab strip stands in for the filter row; html[data-menu=open] drives ALL of it.
 // The swap is choreographed: aria flips at TAP time (the icon reacts instantly), the bar
@@ -962,14 +959,14 @@ function pmSet(open){
 }
 function pmClose(){pmSet(false);}
 function setPage(p){
-  if(!PAGES[p]||p===page){pmClose();return;}
+  if(!PAGES[p])return;
+  if(p===page){if(p==='markers')pmSet(false);return;}   // re-tapping Markers folds the strip
   page=p;
   document.documentElement.dataset.page=p;
-  PTITLE.textContent=p==='markers'?'':PAGES[p];   // the controls say 'markers'; the title says the rest
   PGEL.hidden=p==='markers';
   document.querySelectorAll('#ptabs .pt').forEach(b=>b.classList.toggle('on',b.dataset.pg===p));
   if(p!=='markers')renderPage(p);
-  pmClose();
+  pmSet(p!=='markers');   // the strip PERSISTS on pages; only Markers swaps it back for filters
   window.scrollTo({top:0});
 }
 function renderPage(p){
@@ -1024,9 +1021,11 @@ function renderPage(p){
   }
   PGEL.innerHTML=h||`<div class="pgh">${esc(PAGES[p]||p)}</div><div class="pgsub">No data block in bloodwork.js yet.</div>`;
 }
-PBTN.addEventListener('click',e=>{e.stopPropagation();pmSet(!menuOpen);});
-document.addEventListener('click',e=>{
-  if(menuOpen&&!(e.target.closest&&e.target.closest('.pgnav,.ptabs')))pmClose();});
+PBTN.addEventListener('click',e=>{e.stopPropagation();
+  if(page!=='markers')setPage('markers');            // the X on a page = back to the table
+  else pmSet(!menuOpen);});
+document.addEventListener('click',e=>{               // outside-click folds it on Markers only
+  if(menuOpen&&page==='markers'&&!(e.target.closest&&e.target.closest('.pgnav,.ptabs')))pmClose();});
 
 const TB=document.getElementById('topbar'),WRAP=document.querySelector('.wrap');
 const R0=document.documentElement.style;
@@ -1081,7 +1080,7 @@ document.getElementById('sbtn').addEventListener('click',()=>{
   if(SRCH.classList.contains('open')&&!q)sShut(); else QI.focus();});
 document.getElementById('qx').addEventListener('click',()=>{QI.value='';onQ('');QI.focus();});
 document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'&&menuOpen)pmClose();
+  if(e.key==='Escape'&&menuOpen&&page==='markers')pmClose();
   else if(e.key==='Escape'&&SRCH.classList.contains('open'))sShut();
   else if(e.key==='/'&&document.activeElement!==QI&&page==='markers'){e.preventDefault();QI.focus();}});
 QI.placeholder='Search markers…';
