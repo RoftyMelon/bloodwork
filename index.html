@@ -428,8 +428,6 @@ li.open .exinfo{display:block}
 .exset{display:flex;flex-direction:column;align-items:center;min-width:26px;padding:1px 2px}
 .exset i{font-style:normal;font-size:10.5px;color:var(--t2);font-variant-numeric:tabular-nums;line-height:1.5}
 .exset b{font-size:12px;font-weight:650;color:var(--txt);font-variant-numeric:tabular-nums;line-height:1.4}
-.exset.exlbl{align-items:flex-start;min-width:0;padding-right:2px}
-.exset.exlbl i,.exset.exlbl b{font-size:8.5px;font-weight:600;color:var(--t4);letter-spacing:.05em}
 /* >b : the title is the card's DIRECT child. A bare `.ccard b` swallows every <b>
    in the card — all set numbers and kg/reps legends rendered at title size */
 .ccard>b{font-size:16px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
@@ -1053,8 +1051,8 @@ function renderPage(p){
   const exRow=x=>{
     if(typeof x==='string')return `<li>${esc(x)}</li>`;
     const sets=x.sets&&x.sets.length
-      ?`<div class="exsets"><span class="exset exlbl"><i>kg</i><b>reps</b></span>`+
-       x.sets.map(s=>`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`
+      ?`<div class="exsets">`+
+       x.sets.map(s=>`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))+'kg'}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`
       :'';
     const tip=x.info?`<button class="infob" title="${esc(x.info)}" aria-label="Details"
       onclick="this.closest('li').classList.toggle('open')">i</button>`:'';

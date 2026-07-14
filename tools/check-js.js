@@ -86,13 +86,13 @@ setTimeout(()=>{
     const grps=DATA.TRAINING.cards.reduce((a,c)=>a+(c.groups?c.groups.length:0),0);
     ok(`training shows ${grps} muscle groups`, count(n.pages.innerHTML,'cgrp')===grps,
       count(n.pages.innerHTML,'cgrp')+' groups');
-    let setsN=0,lblN=0;
+    let setsN=0,kgN=0;
     DATA.TRAINING.cards.forEach(c=>(c.groups||[]).forEach(g=>g.items.forEach(x=>{
-      if(x.sets&&x.sets.length){setsN+=x.sets.length;lblN++;}})));
+      if(x.sets&&x.sets.length){setsN+=x.sets.length;x.sets.forEach(s=>{if(s[0]!=null)kgN++;});}})));
     ok(`training renders ${setsN} set columns`, count(n.pages.innerHTML,'exset"')===setsN,
       count(n.pages.innerHTML,'exset"')+' columns');
-    ok(`training renders ${lblN} kg/reps legends`, count(n.pages.innerHTML,'exset exlbl')===lblN,
-      count(n.pages.innerHTML,'exset exlbl')+' legends'); }
+    const kgSeen=(n.pages.innerHTML.match(/kg<\/i>/g)||[]).length;
+    ok(`training suffixes ${kgN} weights with kg`, kgSeen===kgN, kgSeen+' suffixed'); }
   catch(e){ ok('training groups',false,e.message); }
   try{ setPage('markers'); ok('back to markers', n.pages.hidden===true); }
   catch(e){ ok('back to markers',false,e.message); }
