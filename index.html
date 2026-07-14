@@ -386,9 +386,12 @@ html[data-page=markers] .topline{margin-top:9px}
 .pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:2px 0 3px}
 .pgsub{font-size:16px;color:var(--t3)}
 .pgsp{padding-top:8px}   /* a subtitle sitting under a bordered .pgst needs its own air */
-.pgsec{margin-top:22px}
+/* THE MEASURE RULE: rules and rows hug their CONTENT, never the 780px container.
+   Text-list sections (stack rows, diet meals, section headers) cap at 620px, so
+   separators end near the text and right-anchored links stay near the names. */
+.pgsec{margin-top:22px;max-width:620px}
 /* section titles uppercase like the table's group bars — doses NEVER go through this (µ -> M) */
-.pgst{font-size:14px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--info);
+.pgst{font-size:14px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--info);max-width:620px;
   padding:7px 0;border-bottom:.5px solid var(--line);display:flex;align-items:baseline;gap:9px}
 .pgst small{font-weight:500;letter-spacing:0;font-size:13.5px;color:var(--t4);text-transform:none}
 .srow{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:.5px solid var(--line2);flex-wrap:wrap;position:relative}
@@ -484,7 +487,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 .ccard li:last-child{border-bottom:none}
 .cempty{font-size:15px;color:var(--t4);padding:8px 0 2px}
 /* diet */
-.meal{margin-top:18px}
+.meal{margin-top:18px;max-width:620px}
 .mfoods{margin:8px 0 0;padding:0;list-style:none}
 .mfoods li{font-size:16px;color:var(--t2);padding:7px 0;border-bottom:.5px solid var(--line2);line-height:1.45}
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
