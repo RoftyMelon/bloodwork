@@ -671,7 +671,12 @@ try{if(matchMedia('(prefers-color-scheme: dark)').matches){
     stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
 </button>
 
-<script src="./bloodwork.js"></script>
+<script>
+/* The data file inherits the page's query string, so a cache-busted visit
+   (?fresh) fetches BOTH files fresh — otherwise a new viewer can pair with a
+   10-minute-stale bloodwork.js off the CDN and render a mixed version. */
+document.write('<script src="./bloodwork.js'+(location.search||'')+'"><\/script>');
+</script>
 <script>
 // ---- DATA LIVES IN bloodwork.json ----
 // One source of truth. The dashboard reads it; so does any AI you hand it to.
