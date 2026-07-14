@@ -42,7 +42,7 @@
    26 page title (.pgh — caps card titles gain ~40% optical size, so the title
    needs real distance to LOOK biggest) · 17 card/session title (.ccard>b) ·
    16 body & controls (content rows, page-intro .lead notes, subtitles, tabs,
-   chips, names, search) · 15 secondary (doses, caveat notes, links) · 14 caps
+   names, search) · 15 secondary (doses, caveat notes, links, 14.5 filter chips) · 14 caps
    section labels (.pgst/.cgrp) + hints · ~13 micro data (hour marks, kg,
    supplement pills, counts, column heads) · 11.5 absolute floor (chart
    bracket/axis micro-labels only). Mobile may step ONE notch down for density
@@ -142,12 +142,12 @@ td.boot span{color:var(--t3);font-size:15px}
   text-align:center;font-size:20px;font-weight:400;border:none;background:none;border-radius:50%;color:var(--t3)}
 .srch .qx:hover{background:var(--btn-h);color:var(--txt)}
 .srch.has .qx{display:block}
-.chip{font-family:inherit;font-size:15.5px;font-weight:520;padding:9px 16px;border-radius:99px;cursor:pointer;
+.chip{font-family:inherit;font-size:14.5px;font-weight:520;padding:8px 14px;border-radius:99px;cursor:pointer;
   flex:none;white-space:nowrap;   /* scroll past the row's edge, never shrink or wrap */
   background:var(--btn);border:.5px solid var(--btn-b);color:var(--t2);transition:.16s}
 .chip:hover{background:var(--btn-h);color:var(--txt)}
 .chip[aria-pressed=true]{background:var(--sol);color:var(--sol-t);border-color:transparent;font-weight:600}
-.cn{font-size:13px;font-weight:700;margin-left:6px;opacity:.45;font-variant-numeric:tabular-nums}
+.cn{font-size:12.5px;font-weight:700;margin-left:6px;opacity:.45;font-variant-numeric:tabular-nums}
 .cn.hot{color:var(--out);opacity:1}
 .chip[aria-pressed=true] .cn{color:inherit;opacity:.55}
 
@@ -409,7 +409,7 @@ html:not([data-page=markers]) .swap{overflow:visible}
    It positions against .rhr at the first label's line — safe because the hour-walk
    guarantees a boundary hour always STARTS its row. The tabular HH:00 ends ~31px;
    left:0 would strike THROUGH it. */
-.rhl.lt::after{content:"";position:absolute;left:44px;right:0;top:7px;height:1px;background:var(--t4);opacity:.55}
+.rhl.lt::after{content:"";position:absolute;left:44px;right:0;top:7px;height:.5px;background:var(--t4);opacity:.55}
 /* every row centres its content between the boundary lines of its span — the lines
    sit 7px below the cell tops they belong to, hence 2x7 top padding */
 .rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:14px 0 0}
@@ -417,6 +417,10 @@ html:not([data-page=markers]) .swap{overflow:visible}
    and align-items is left at stretch so ALL text shares the same left edge.
    (A legacy row-direction align-items:center here turned into HORIZONTAL centring
    when .rcell went flex-direction:column — blocks drifted to the middle.) */
+/* the day's LAST hour is a terminal point, not a span: its text sits ON the line
+   beside the label, and the row carries no empty hour below it */
+.rhr.rlast .rhl{height:auto}
+.rhr.rlast .rcell{justify-content:flex-start;padding-top:0}
 .rev{display:flex;gap:12px;align-items:baseline;padding:2px 0}
 .rbody{min-width:0}
 .rdo{font-size:16px;color:var(--t2);line-height:1.5}
@@ -1191,7 +1195,7 @@ function renderPage(p){
            `<div class="rev"><div class="rbody"><div class="rdo">${esc(block.do)}</div></div></div></div></div>`;
         hr=endH;continue;
       }
-      h+=`<div class="rhr${evs.length?'':' rempty'}"><span class="rht">${mark(hr)}</span><div class="rcell">`+
+      h+=`<div class="rhr${evs.length?'':' rempty'}${hr===H1?' rlast':''}"><span class="rht">${mark(hr)}</span><div class="rcell">`+
         evs.map(r=>{
           let sup='';
           if(r.slot&&STACK){
