@@ -81,11 +81,18 @@ setTimeout(()=>{
     ok(`routine shows ${DATA.CARE.length} care cards`, count(n.pages.innerHTML,'ccard')===DATA.CARE.length,
       count(n.pages.innerHTML,'ccard')+' cards'); }
   catch(e){ ok('routine ruler',false,e.message); }
-  // training cards are organised in muscle-group sub-sections
+  // training cards are organised in muscle-group sub-sections; every set renders a column
   try{ setPage('training');
     const grps=DATA.TRAINING.cards.reduce((a,c)=>a+(c.groups?c.groups.length:0),0);
     ok(`training shows ${grps} muscle groups`, count(n.pages.innerHTML,'cgrp')===grps,
-      count(n.pages.innerHTML,'cgrp')+' groups'); }
+      count(n.pages.innerHTML,'cgrp')+' groups');
+    let setsN=0,lblN=0;
+    DATA.TRAINING.cards.forEach(c=>(c.groups||[]).forEach(g=>g.items.forEach(x=>{
+      if(x.sets&&x.sets.length){setsN+=x.sets.length;lblN++;}})));
+    ok(`training renders ${setsN} set columns`, count(n.pages.innerHTML,'exset"')===setsN,
+      count(n.pages.innerHTML,'exset"')+' columns');
+    ok(`training renders ${lblN} kg/reps legends`, count(n.pages.innerHTML,'exset exlbl')===lblN,
+      count(n.pages.innerHTML,'exset exlbl')+' legends'); }
   catch(e){ ok('training groups',false,e.message); }
   try{ setPage('markers'); ok('back to markers', n.pages.hidden===true); }
   catch(e){ ok('back to markers',false,e.message); }

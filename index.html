@@ -412,6 +412,14 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 /* muscle-group sub-headers inside training cards */
 .cgrp{font-size:10px;font-weight:700;letter-spacing:.08em;color:var(--t4);text-transform:uppercase;
   padding:10px 0 1px}
+/* the gridless set table: a column per set, weight over reps, tabular and quiet */
+.exn{line-height:1.45}
+.exsets{display:flex;flex-wrap:wrap;gap:1px 4px;margin:3px 0 1px}
+.exset{display:flex;flex-direction:column;align-items:center;min-width:26px;padding:1px 2px}
+.exset i{font-style:normal;font-size:10px;color:var(--t4);font-variant-numeric:tabular-nums;line-height:1.5}
+.exset b{font-size:12px;font-weight:650;color:var(--txt);font-variant-numeric:tabular-nums;line-height:1.4}
+.exset.exlbl{align-items:flex-start;min-width:0;padding-right:2px}
+.exset.exlbl i,.exset.exlbl b{font-size:8.5px;font-weight:600;color:var(--t4);letter-spacing:.05em}
 .ccard b{font-size:10.5px;font-weight:700;letter-spacing:.08em;color:var(--t3);text-transform:uppercase}
 .ccard ul{margin:7px 0 0;padding:0;list-style:none}
 .ccard li{font-size:12.5px;color:var(--t2);line-height:1.7;padding:3px 0;border-bottom:.5px solid var(--line2)}
@@ -689,7 +697,13 @@ function audit(j){
   });
   if(j.TRAINING)(j.TRAINING.cards||[]).forEach(c=>{
     if(c.groups)c.groups.forEach(g=>{
-      if(!Array.isArray(g.items)||!g.items.length)bad.push(`TRAINING "${c.t}" / "${g.t}": group needs items`);
+      if(!Array.isArray(g.items)||!g.items.length){bad.push(`TRAINING "${c.t}" / "${g.t}": group needs items`);return;}
+      g.items.forEach(x=>{
+        if(typeof x==='string')return;
+        if(!x.n)bad.push(`TRAINING "${c.t}" / "${g.t}": exercise needs a name`);
+        if(x.sets!=null&&(!Array.isArray(x.sets)||x.sets.some(s=>!Array.isArray(s)||s.length!==2)))
+          bad.push(`TRAINING "${x.n}": sets must be [kg,reps] pairs`);
+      });
     });
     else if(!Array.isArray(c.items))bad.push(`TRAINING "${c.t}": items must be an array (empty is fine)`);
   });
@@ -1022,10 +1036,18 @@ function setPage(p){
   window.scrollTo({top:0});
 }
 function renderPage(p){
+  // an exercise renders as a gridless set table: one column per set, kg over reps
+  const exRow=x=>{
+    if(typeof x==='string')return `<li>${esc(x)}</li>`;
+    const sets=x.sets&&x.sets.length
+      ?`<div class="exsets"><span class="exset exlbl"><i>kg</i><b>reps</b></span>`+
+       x.sets.map(s=>`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`
+      :'';
+    return `<li><div class="exn">${esc(x.n)}</div>${sets}</li>`;};
   const cardRow=list=>!list.length?'':`<div class="care">`+list.map(c=>{
     const inner=c.groups
-      ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`).join('')
-      :(c.items.length?`<ul>${c.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:`<div class="cempty">&mdash;</div>`);
+      ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(exRow).join('')}</ul>`).join('')
+      :(c.items.length?`<ul>${c.items.map(exRow).join('')}</ul>`:`<div class="cempty">&mdash;</div>`);
     return `<div class="ccard"><b>${esc(c.t)}</b>${inner}</div>`;}).join('')+`</div>`;
   let h='';
   if(p==='stack'&&STACK){

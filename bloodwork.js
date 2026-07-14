@@ -30,7 +30,7 @@ window.BLOODWORK =
    "supervision": "none"
   },
   "stack": "Moved to the STACK block below — structured, with dose, status, category, meal slot and purchase URL. STACK is the single source of truth for supplements; do not re-list them here.",
-  "lifestyle_blocks": "STACK, ROUTINE, CARE and DIET are structured lifestyle data, same contract as the rest of the file: exact, never inferred. STACK is organised in protocol phases: most items are status 'planned', gated on the first or second blood test of the new protocol (their category says which). STACK.items[].status is one of taking/candidate/stopped/dropped/planned. .when is the meal a supplement is taken with (breakfast/lunch/dinner) — null means NOT YET ASSIGNED, never guess it. .dec ties an item to its DECS group (verbatim label) so the dashboard can cross-link; null means no blood marker bears on it (see confounds). A category's .note is the user's own caveat, shown under the section header. ROUTINE times are HH:MM ascending; an entry's .until marks the end of a BLOCK (gym, work) and must be later than its .t; a routine entry's .slot pulls the matching STACK items at render time, so meal supplement lists are derived, never written twice. CARE holds the dental / face protocols, rendered as cards on the Routine page — deliberately NOT hour-by-hour events, they would duplicate. TRAINING is {note, cards}: the gym program as Pull / Push / Legs cards, each organised in muscle-group .groups ('Accessory' holds what resists categorising); every item is one exercise, sets×reps @ load, copied exactly from the user's workout app — plus .note for the cardio baseline. Doses write micrograms as mcg, never µg — µ uppercases into M and becomes a 1000x reading error.",
+  "lifestyle_blocks": "STACK, ROUTINE, CARE and DIET are structured lifestyle data, same contract as the rest of the file: exact, never inferred. STACK is organised in protocol phases: most items are status 'planned', gated on the first or second blood test of the new protocol (their category says which). STACK.items[].status is one of taking/candidate/stopped/dropped/planned. .when is the meal a supplement is taken with (breakfast/lunch/dinner) — null means NOT YET ASSIGNED, never guess it. .dec ties an item to its DECS group (verbatim label) so the dashboard can cross-link; null means no blood marker bears on it (see confounds). A category's .note is the user's own caveat, shown under the section header. ROUTINE times are HH:MM ascending; an entry's .until marks the end of a BLOCK (gym, work) and must be later than its .t; a routine entry's .slot pulls the matching STACK items at render time, so meal supplement lists are derived, never written twice. CARE holds the dental / face protocols, rendered as cards on the Routine page — deliberately NOT hour-by-hour events, they would duplicate. TRAINING is {note, cards}: the gym program as Pull / Push / Legs cards, each organised in muscle-group .groups ('Accessory' holds what resists categorising). Every item is {n, sets:[[kg,reps],...]} — one pair per set, kg null = bodyweight, a '+' prefix = added weight, reps may be a duration like '0:30', sets [] = a protocol without logged sets. Copied exactly from the user's workout app; .note is the cardio baseline. Doses write micrograms as mcg, never µg — µ uppercases into M and becomes a 1000x reading error.",
   "never_measured": "26 markers have no value in any draw. Highest value first: cystatin C (settles eGFR outright), ApoB and Lp(a), homocysteine (NAC raises it, TMG lowers it, net never seen), anti-TPO + free T4 (300mcg iodine; historical draws were ALSO under iodine-fortified Huel, since dropped), selenium, copper and zinc (BEFORE starting zinc), omega-3 index.",
   "self_check_before_returning_the_file": [
    "Every markerId in the new draw exists in MARK.",
@@ -163,69 +163,69 @@ window.BLOODWORK =
   "cards": [
   {"id": "pull", "t": "Pull", "groups": [
    {"t": "Back", "items": [
-    "Chin up — 3×5 @ +30kg",
-    "Explosive pull ups — 3×2",
-    "Cable rope face pull — 2×10 @ 40kg",
-    "Dumbbell single arm row — 2×8 @ 40kg",
-    "Back extension — 2×12 @ 40kg"
+    {"n": "Chin up", "sets": [["+30",5],["+30",5],["+30",5]]},
+    {"n": "Explosive pull ups", "sets": [[null,2],[null,2],[null,2]]},
+    {"n": "Cable rope face pull", "sets": [[40,10],[40,10]]},
+    {"n": "Dumbbell single arm row", "sets": [[40,8],[40,8]]},
+    {"n": "Back extension", "sets": [[40,12],[40,12]]}
    ]},
    {"t": "Biceps", "items": [
-    "Dumbbell bicep curl — 2×8 @ 20kg",
-    "Dumbbell bicep curl, neutral grip — 2×6 @ 20kg",
-    "Machine preacher curl — 2×12 @ 40kg"
+    {"n": "Dumbbell bicep curl", "sets": [[20,8],[20,8]]},
+    {"n": "Dumbbell bicep curl, neutral grip", "sets": [[20,6],[20,6]]},
+    {"n": "Machine preacher curl", "sets": [[40,12],[40,12]]}
    ]},
    {"t": "Traps & neck", "items": [
-    "Dumbbell shrug — 2×50 @ 40kg",
-    "Neck extensions — 2×10 @ 20kg"
+    {"n": "Dumbbell shrug", "sets": [[40,50],[40,50]]},
+    {"n": "Neck extensions", "sets": [[20,10],[20,10]]}
    ]},
    {"t": "Accessory", "items": [
-    "Pull-over + trap-3 raise — 2×10 @ 10kg",
-    "One arm hang — 2×0:30, bodyweight"
+    {"n": "Pull-over + trap-3 raise", "sets": [[10,10],[10,10]]},
+    {"n": "One arm hang", "sets": [[null,"0:30"],[null,"0:30"]]}
    ]}
   ]},
   {"id": "push", "t": "Push", "groups": [
    {"t": "Warm-up", "items": [
-    "Shoulder prep (figure 8, push-ups, ext. rotations w/ band or dumbbell, skin the cat, dislocates, gymnast seated stretch)"
+    {"n": "Shoulder prep (figure 8, push-ups, ext. rotations w/ band or dumbbell, skin the cat, dislocates, gymnast seated stretch)", "sets": []}
    ]},
    {"t": "Shoulders", "items": [
-    "Barbell standing military press — 3×5 @ 50kg",
-    "Dumbbell standing lateral raise — 3×10 @ 12kg",
-    "Machine deltoid raise — 3×5 @ 50kg",
-    "Rear deltoid — 3×15 @ 20kg"
+    {"n": "Barbell standing military press", "sets": [[50,5],[50,5],[50,5]]},
+    {"n": "Dumbbell standing lateral raise", "sets": [[12,10],[12,10],[12,10]]},
+    {"n": "Machine deltoid raise", "sets": [[50,5],[50,5],[50,5]]},
+    {"n": "Rear deltoid", "sets": [[20,15],[20,15],[20,15]]}
    ]},
    {"t": "Triceps", "items": [
-    "Cable tricep pushdown — 2×20 @ 25kg",
-    "Cable rope overhead tricep extension — 2×10 @ 20kg"
+    {"n": "Cable tricep pushdown", "sets": [[25,20],[25,20]]},
+    {"n": "Cable rope overhead tricep extension", "sets": [[20,10],[20,10]]}
    ]},
    {"t": "Chest", "items": [
-    "Dumbbell incline bench press — 2×6 @ 30kg",
-    "Leverage incline chest press — 2×6 @ 80kg",
-    "Machine fly — 2×15 @ 25kg"
+    {"n": "Dumbbell incline bench press", "sets": [[30,6],[30,6]]},
+    {"n": "Leverage incline chest press", "sets": [[80,6],[80,6]]},
+    {"n": "Machine fly", "sets": [[25,15],[25,15]]}
    ]}
   ]},
   {"id": "legs", "t": "Legs", "groups": [
    {"t": "Calves", "items": [
-    "Machine seated calf raise — 3×20 @ 80kg",
-    "Machine standing calf raises — 3×20 @ 200kg"
+    {"n": "Machine seated calf raise", "sets": [[80,20],[80,20],[80,20]]},
+    {"n": "Machine standing calf raises", "sets": [[200,20],[200,20],[200,20]]}
    ]},
    {"t": "Quads", "items": [
-    "Shrimp squat — 6×5, bodyweight",
-    "Leverage squat — 3×8 @ 80kg",
-    "Machine leg extension — 2×12 @ 80kg"
+    {"n": "Shrimp squat", "sets": [[null,5],[null,5],[null,5],[null,5],[null,5],[null,5]]},
+    {"n": "Leverage squat", "sets": [[80,8],[80,8],[80,8]]},
+    {"n": "Machine leg extension", "sets": [[80,12],[80,12]]}
    ]},
    {"t": "Glutes", "items": [
-    "Leverage hip thrust — 3×10 @ 160kg",
-    "Standing abduction — 3×20 @ 100kg",
-    "Machine hip abduction — 3×15 @ 100kg"
+    {"n": "Leverage hip thrust", "sets": [[160,10],[160,10],[160,10]]},
+    {"n": "Standing abduction", "sets": [[100,20],[100,20],[100,20]]},
+    {"n": "Machine hip abduction", "sets": [[100,15],[100,15],[100,15]]}
    ]},
    {"t": "Hamstrings & groin", "items": [
-    "Nordic curl — 2×8 @ 20kg",
-    "Machine lying leg curl — 2×12 @ 50kg",
-    "Machine hip adduction — 2×12 @ 80kg"
+    {"n": "Nordic curl", "sets": [[20,8],[20,8]]},
+    {"n": "Machine lying leg curl", "sets": [[50,12],[50,12]]},
+    {"n": "Machine hip adduction", "sets": [[80,12],[80,12]]}
    ]},
    {"t": "Core", "items": [
-    "Psoas knee raise — 2×10 @ 16kg",
-    "Machine crunch — 2×12 @ 20kg"
+    {"n": "Psoas knee raise", "sets": [[16,10],[16,10]]},
+    {"n": "Machine crunch", "sets": [[20,12],[20,12]]}
    ]}
   ]}
   ]
