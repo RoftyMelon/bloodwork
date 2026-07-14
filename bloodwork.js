@@ -175,7 +175,18 @@ window.BLOODWORK =
    "Neck extensions — 2×10 @ 20kg",
    "One arm hang — 2×0:30, bodyweight"
   ]},
-  {"id": "push", "t": "Push", "items": []},
+  {"id": "push", "t": "Push", "items": [
+   "Warm-up: shoulder prep (figure 8, push-ups, ext. rotations w/ band or dumbbell, skin the cat, dislocates, gymnast seated stretch)",
+   "Barbell standing military press — 3×5 @ 50kg",
+   "Cable tricep pushdown — 2×20 @ 25kg",
+   "Cable rope overhead tricep extension — 2×10 @ 20kg",
+   "Dumbbell standing lateral raise — 3×10 @ 12kg",
+   "Machine deltoid raise — 3×5 @ 50kg",
+   "Rear deltoid — 3×15 @ 20kg",
+   "Dumbbell incline bench press — 2×6 @ 30kg",
+   "Leverage incline chest press — 2×6 @ 80kg",
+   "Machine fly — 2×15 @ 25kg"
+  ]},
   {"id": "legs", "t": "Legs", "items": []}
   ]
  },
