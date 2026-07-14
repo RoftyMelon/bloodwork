@@ -90,13 +90,20 @@ setTimeout(()=>{
     const grps=DATA.TRAINING.cards.reduce((a,c)=>a+(c.groups?c.groups.length:0),0);
     ok(`training shows ${grps} muscle groups`, count(n.pages.innerHTML,'cgrp')===grps,
       count(n.pages.innerHTML,'cgrp')+' groups');
-    let setsN=0,kgN=0;
+    // mirror the renderer: a uniform weight hoists to the name (one exkg tag),
+    // mixed weights stay in the per-set columns (kg</i> suffixes)
+    let setsN=0,kgHoist=0,kgCols=0;
     DATA.TRAINING.cards.forEach(c=>(c.groups||[]).forEach(g=>g.items.forEach(x=>{
-      if(x.sets&&x.sets.length){setsN+=x.sets.length;x.sets.forEach(s=>{if(s[0]!=null)kgN++;});}})));
+      if(x.sets&&x.sets.length){setsN+=x.sets.length;
+        const uni=new Set(x.sets.map(s=>String(s[0]))).size===1;
+        if(uni){if(x.sets[0][0]!=null)kgHoist++;}
+        else x.sets.forEach(s=>{if(s[0]!=null)kgCols++;});}})));
     ok(`training renders ${setsN} set columns`, count(n.pages.innerHTML,'exset"')===setsN,
       count(n.pages.innerHTML,'exset"')+' columns');
+    ok(`training hoists ${kgHoist} uniform weights`, count(n.pages.innerHTML,'exkg')===kgHoist,
+      count(n.pages.innerHTML,'exkg')+' hoisted');
     const kgSeen=(n.pages.innerHTML.match(/kg<\/i>/g)||[]).length;
-    ok(`training suffixes ${kgN} weights with kg`, kgSeen===kgN, kgSeen+' suffixed'); }
+    ok(`training keeps ${kgCols} per-set weights`, kgSeen===kgCols, kgSeen+' in columns'); }
   catch(e){ ok('training groups',false,e.message); }
   try{ setPage('markers'); ok('back to markers', n.pages.hidden===true); }
   catch(e){ ok('back to markers',false,e.message); }

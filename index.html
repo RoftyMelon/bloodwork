@@ -474,6 +474,7 @@ html[data-page=markers] .topline{margin-top:9px}
 li.open .exinfo,.srow.open .exinfo{display:block}
 /* the gridless set table: a column per set, weight over reps, tabular and quiet */
 .exn{line-height:1.3;font-weight:520}
+.exkg{margin-left:8px;font-size:13px;font-weight:450;color:var(--t2);font-variant-numeric:tabular-nums}
 .exsets{display:flex;flex-wrap:wrap;gap:1px 4px;margin:1px 0 0}
 .exset{display:flex;flex-direction:column;align-items:center;min-width:26px;padding:0 2px}
 .exset i{font-style:normal;font-size:13px;color:var(--t2);font-variant-numeric:tabular-nums;line-height:1.2}
@@ -1136,14 +1137,20 @@ function renderPage(p){
   // Long protocol details hide behind an info tip so the cards stay narrow.
   const exRow=x=>{
     if(typeof x==='string')return `<li>${esc(x)}</li>`;
+    // one weight across all sets (the usual case) hoists next to the NAME and the
+    // set row shows reps only; mixed weights keep the per-set kg/reps columns
+    const uni=x.sets&&x.sets.length&&new Set(x.sets.map(s=>String(s[0]))).size===1;
+    const kgTag=uni&&x.sets[0][0]!=null?`<span class="exkg">${esc(String(x.sets[0][0]))}kg</span>`:'';
     const sets=x.sets&&x.sets.length
       ?`<div class="exsets">`+
-       x.sets.map(s=>`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))+'kg'}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`
+       x.sets.map(s=>uni
+         ?`<span class="exset"><b>${esc(String(s[1]))}</b></span>`
+         :`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))+'kg'}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`
       :'';
     const tip=x.info?`<button class="infob" title="${esc(x.info)}" aria-label="Details"
       onclick="tip(this)">i</button>`:'';
     const detail=x.info?`<div class="exinfo">${esc(x.info)}</div>`:'';
-    return `<li><div class="exn">${esc(x.n)}${tip}</div>${detail}${sets}</li>`;};
+    return `<li><div class="exn">${esc(x.n)}${kgTag}${tip}</div>${detail}${sets}</li>`;};
   const cardRow=(list,cls)=>!list.length?'':`<div class="care${cls?' '+cls:''}">`+list.map(c=>{
     const inner=c.groups
       ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(exRow).join('')}</ul>`).join('')
