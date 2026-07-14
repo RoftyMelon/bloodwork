@@ -242,7 +242,8 @@ window.BLOODWORK =
     "200g mozzarella di bufala",
     "6-10 eggs",
     "Air-fried potatoes in duck grease (or other grease)",
-    "Frozen reheated vegetables"
+    "Frozen reheated vegetables",
+    "Fruit (apple, pear, peach, apricots…)"
    ]},
    {"id": "dinner", "t": "Dinner", "at": "17:00", "items": [
     "200g mozzarella di bufala",
