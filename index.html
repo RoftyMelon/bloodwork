@@ -1017,7 +1017,7 @@ function renderPage(p){
           return `<div class="srow${dead?' off':''}">`+
             `<span class="sn">${esc(s.name)}</span>`+
             (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+
-            `<span class="sb ${s.status}">${s.status}</span>`+
+            (s.status!=='planned'?`<span class="sb ${s.status}">${s.status}</span>`:'')+   // the phase headers already say it
             (s.ev?`<span class="sb ${s.ev}" title="Evidence behind adding it">${s.ev} evidence</span>`:'')+
             `<span class="sfill"></span>`+
             (gi>=0?`<button class="smk" onclick="gotoDec(${gi})" title="Jump to the markers this bears on">markers &#8599;</button>`:'')+
