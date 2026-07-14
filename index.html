@@ -40,7 +40,7 @@
 :root{--thh:30px; --nm:180px; --hh:64px}   /* sizing: theme-independent, must not sit in a theme block */
 /* TYPE SCALE — one rationale across every tab:
    26 page title (.pgh — caps card titles gain ~40% optical size, so the title
-   needs real distance to LOOK biggest) · 17 card/session title (.ccard>b) ·
+   needs real distance to LOOK biggest) · 15 card/session title (.ccard>b) ·
    16 body & controls (content rows, page-intro .lead notes, subtitles, tabs,
    names, search) · 15 secondary (doses, caveat notes, links, 14.5 filter chips) · 14 caps
    section labels (.pgst/.cgrp) + hints · ~13 micro data (hour marks, kg,
@@ -76,7 +76,7 @@ html.tfade *::before,html.tfade *::after{
              fill .22s ease,stroke .22s ease !important}
 .wrap{position:relative;z-index:1;max-width:1440px;margin:0 auto;padding:0 20px 110px}
 .topbar{position:fixed;top:0;left:0;width:100%;z-index:50;background:var(--bg);
-  padding:20px var(--gut,20px) 0;
+  padding:8px var(--gut,20px) 0;   /* the strip rides the top of the screen */
   transition:border-color .2s ease;border-bottom:.5px solid transparent}
 .topspacer{height:var(--toph,112px)}   /* fixed takes it out of flow; hold its place */
 .topbar.stuck{border-bottom-color:var(--line)}
@@ -379,8 +379,8 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
    and .swap clipping would shear the first tab's hover pill at the column edge */
 html:not([data-page=markers]) .swap{overflow:visible}
 
-.pgs{max-width:780px;padding:6px 0 40px}
-.pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:18px 0 3px}
+.pgs{max-width:780px;padding:2px 0 40px}
+.pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:8px 0 3px}
 .pgsub{font-size:16px;color:var(--t3)}
 .pgsp{padding-top:8px}   /* a subtitle sitting under a bordered .pgst needs its own air */
 .pgsec{margin-top:22px}
@@ -409,7 +409,8 @@ html:not([data-page=markers]) .swap{overflow:visible}
    It positions against .rhr at the first label's line — safe because the hour-walk
    guarantees a boundary hour always STARTS its row. The tabular HH:00 ends ~31px;
    left:0 would strike THROUGH it. */
-.rhl.lt::after{content:"";position:absolute;left:44px;right:0;top:7px;height:.5px;background:var(--t4);opacity:.55}
+.rhl.lt::after{content:"";position:absolute;left:44px;top:7px;height:.5px;
+  width:min(calc(100% - 44px),560px);background:var(--t4);opacity:.55}   /* short line, not a full-bleed rule */
 /* every row centres its content between the boundary lines of its span — the lines
    sit 7px below the cell tops they belong to, hence 2x7 top padding */
 .rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:14px 0 0}
@@ -466,7 +467,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 .exset b{font-size:14.5px;font-weight:650;color:var(--txt);font-variant-numeric:tabular-nums;line-height:1.4}
 /* >b : the title is the card's DIRECT child. A bare `.ccard b` swallows every <b>
    in the card — all set numbers and kg/reps legends rendered at title size */
-.ccard>b{font-size:17px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
+.ccard>b{font-size:15px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
 .ccard ul{margin:7px 0 12px;padding:0;list-style:none}
 .ccard ul:last-child{margin-bottom:0}
 .ccard li{font-size:16px;color:var(--txt);line-height:1.65;padding:3.5px 0;border-bottom:.5px solid var(--line2);position:relative}
