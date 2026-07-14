@@ -389,22 +389,21 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .rhr{display:flex;gap:14px;position:relative}   /* anchors the full-width boundary lines */
 .rht{flex:none;width:64px;font-size:11px;font-weight:600;color:var(--t4);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
-/* the ruler is drawn with TICS, all the same thin weight. Where a block starts or ends,
-   the tick continues PAST the hour text, all the way across the rail.
-   Calendar convention: a label anchors at the TOP of its cell and marks the hour's
-   START; row content hangs below its hour line. Every hour is exactly --hh tall. */
+/* calendar convention: a label anchors at the TOP of its cell and marks the hour's
+   START; only block boundaries draw a line. Every hour is exactly --hh tall. */
 .rhl{display:flex;align-items:flex-start;gap:6px;height:var(--hh);white-space:nowrap}
-.rhl::before{content:"";flex:none;width:7px;height:1px;background:var(--t4);opacity:.55;margin-top:7px}
-/* a boundary line runs from just past the label to the row's right edge. It positions
-   against .rhr at the first label's line — safe because the hour-walk guarantees a
-   boundary hour always STARTS its row. left:48px clears the tabular HH:00 text;
+/* a boundary line runs from a clear step past the label to the row's right edge.
+   It positions against .rhr at the first label's line — safe because the hour-walk
+   guarantees a boundary hour always STARTS its row. The tabular HH:00 ends ~31px;
    left:0 would strike THROUGH it. */
-.rhl.lt::after{content:"";position:absolute;left:48px;right:0;top:7px;height:1px;background:var(--t4);opacity:.55}
-.rcell{flex:1;min-width:0;padding:10px 0 4px}   /* text hangs just under its hour line */
+.rhl.lt::after{content:"";position:absolute;left:44px;right:0;top:7px;height:1px;background:var(--t4);opacity:.55}
+/* every row centres its content between the boundary lines of its span — the lines
+   sit 7px below the cell tops they belong to, hence 2x7 top padding */
+.rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:14px 0 0}
 /* block text centres BETWEEN the boundary tic lines, which sit 7px below the cell
    tops they belong to — so the midpoint is the box centre + 7px: pad 2x7 on top. */
 .rhr.rblockrow .rcell{display:flex;align-items:center;padding:14px 0 0}
-.rev{display:flex;gap:12px;align-items:baseline;padding:4px 0}
+.rev{display:flex;gap:12px;align-items:baseline;padding:2px 0}
 .rbody{min-width:0}
 .rdo{font-size:13.5px;color:var(--t2);line-height:1.5}
 .rsup{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}

@@ -156,8 +156,8 @@ window.BLOODWORK =
   ]},
   {"id": "face", "t": "Face", "groups": [
    {"t": "Daily", "items": [
-    "Morning: serum, then day cream",
-    "After dinner: 1% retinol, then night cream, then petroleum (Vaseline)",
+    "Morning: serum → day cream",
+    "After dinner: 1% retinol → night cream → petroleum (Vaseline)",
     "Full body hydrating cream after shower"
    ]},
    {"t": "Weekly", "items": [
