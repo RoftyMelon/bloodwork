@@ -165,6 +165,7 @@ window.BLOODWORK =
    {"t": "Back", "items": [
     "Chin up — 3×5 @ +30kg",
     "Explosive pull ups — 3×2",
+    "Cable rope face pull — 2×10 @ 40kg",
     "Dumbbell single arm row — 2×8 @ 40kg",
     "Back extension — 2×12 @ 40kg"
    ]},
@@ -178,7 +179,6 @@ window.BLOODWORK =
     "Neck extensions — 2×10 @ 20kg"
    ]},
    {"t": "Accessory", "items": [
-    "Cable rope face pull — 2×10 @ 40kg",
     "Pull-over + trap-3 raise — 2×10 @ 10kg",
     "One arm hang — 2×0:30, bodyweight"
    ]}
