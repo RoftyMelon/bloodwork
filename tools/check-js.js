@@ -43,28 +43,27 @@ setTimeout(()=>{
   onQ('');
   // the three data pages render from their blocks, and every entry survives the trip
   const count=(h,c)=>(h.match(new RegExp(`class="${c}`,'g'))||[]).length;
-  const want={stack:['srow',DATA.STACK.items.length],routine:['rev',DATA.ROUTINE.length],diet:['meal',DATA.DIET.meals.length]};
+  const want={stack:['srow',DATA.STACK.items.length],
+    routine:['rev',DATA.ROUTINE.filter(r=>!r.until).length],   // blocks render as boxes, not events
+    diet:['meal',DATA.DIET.meals.length]};
   Object.entries(want).forEach(([p,[cls,n2]])=>{
     try{ setPage(p);
       ok(`page "${p}" renders ${n2} ${cls}`, count(n.pages.innerHTML,cls)===n2,
         count(n.pages.innerHTML,cls)+' rendered'); }
     catch(e){ ok(`page "${p}"`,false,e.message); } });
-  // the routine is a RULER: one mark per hour from wake to lights-out, empty hours included
+  // the routine is a RULER: every hour from wake to lights-out gets a rail mark, and a
+  // gym/work block renders as ONE box owning its whole span of hours
   try{ setPage('routine');
-    const span=parseInt(DATA.ROUTINE[DATA.ROUTINE.length-1].t)-parseInt(DATA.ROUTINE[0].t)+1;
-    ok(`routine shows ${span} hour marks`, count(n.pages.innerHTML,'rhr')===span,
-      count(n.pages.innerHTML,'rhr')+' marks');
+    const R=DATA.ROUTINE;
+    const hours=parseInt(R[R.length-1].t)-parseInt(R[0].t)+1;
+    const blocks=R.filter(r=>r.until).length;
+    ok(`routine marks ${hours} hours on the rail`, count(n.pages.innerHTML,'rhl')===hours,
+      count(n.pages.innerHTML,'rhl')+' marks');
+    ok(`routine draws ${blocks} span blocks`, count(n.pages.innerHTML,'rblock')===blocks,
+      count(n.pages.innerHTML,'rblock')+' blocks');
     ok(`routine shows ${DATA.CARE.length} care cards`, count(n.pages.innerHTML,'ccard')===DATA.CARE.length,
-      count(n.pages.innerHTML,'ccard')+' cards');
-    // hours inside a gym/work block (t < hour < until, no event of their own) must be tinted
-    const R=DATA.ROUTINE,H0=parseInt(R[0].t),H1=parseInt(R[R.length-1].t);
-    let spanned=0;
-    for(let hr=H0;hr<=H1;hr++){
-      if(!R.some(r=>parseInt(r.t)===hr)&&R.some(r=>r.until&&hr>parseInt(r.t)&&hr<parseInt(r.until)))spanned++;
-    }
-    ok(`routine tints ${spanned} in-block hours`, count(n.pages.innerHTML,'rhr rempty rspan')===spanned,
-      count(n.pages.innerHTML,'rhr rempty rspan')+' tinted'); }
-  catch(e){ ok('routine hour marks',false,e.message); }
+      count(n.pages.innerHTML,'ccard')+' cards'); }
+  catch(e){ ok('routine ruler',false,e.message); }
   try{ setPage('markers'); ok('back to markers', n.pages.hidden===true); }
   catch(e){ ok('back to markers',false,e.message); }
   const j2=JSON.parse(JSON.stringify(DATA)); j2.STACK.items[0].status='yolo';

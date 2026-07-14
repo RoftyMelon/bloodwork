@@ -386,15 +386,20 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 .smk:hover{background:var(--btn);border-color:var(--btn-b);color:var(--txt)}
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;border-bottom:.5px solid var(--line2)}
-.rht{flex:none;width:48px;padding:9px 0;font-size:11px;font-weight:600;color:var(--t4);
+.rht{flex:none;width:48px;font-size:11px;font-weight:600;color:var(--t4);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
-.rhr.rempty .rht{padding:5px 0}
+.rhl{display:block;height:44px;padding-top:9px}   /* the hour rhythm: 44px per mark */
+.rhr.rempty .rhl{height:auto;padding:5px 0}       /* truly free hours stay slim */
 .rcell{flex:1;min-width:0;padding:5px 0 7px}
 .rhr.rempty .rcell{padding:0}
 .rev{display:flex;gap:12px;padding:4px 0;align-items:baseline}
 .rem{flex:none;width:44px;font-size:12.5px;font-weight:650;color:var(--txt);font-variant-numeric:tabular-nums}
 .ru{display:block;font-size:10px;font-weight:550;color:var(--t4);margin-top:1px}   /* a block's END time */
-.rhr.rspan{background:color-mix(in srgb,var(--grp) 55%,transparent)}   /* hour inside a block: occupied */
+/* a block (gym, work) is ONE box spanning its whole duration, 44px per hour */
+.rblock{background:var(--grp);border-radius:11px;padding:10px 14px;margin:7px 0;
+  display:flex;flex-direction:column;gap:2px}
+.rblock b{font-size:13.5px;font-weight:650;color:var(--txt);letter-spacing:-.01em}
+.rbr{font-size:11px;color:var(--t3);font-variant-numeric:tabular-nums}
 .rbody{min-width:0}
 .rdo{font-size:13.5px;color:var(--t2);line-height:1.5}
 .rsup{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
@@ -1042,11 +1047,21 @@ function renderPage(p){
     // hours take up (a little) space and the day reads as time, not as glued-together events
     const H0=parseInt(ROUTINE[0].t),H1=parseInt(ROUTINE[ROUTINE.length-1].t);
     h=`<div class="pgh">Daily routine</div><div class="pgsub">${ROUTINE[0].t} &rarr; ${ROUTINE[ROUTINE.length-1].t} · ${H1-H0} hours</div>`;
-    for(let hr=H0;hr<=H1;hr++){
+    let hr=H0;
+    while(hr<=H1){
       const evs=ROUTINE.filter(r=>parseInt(r.t)===hr);
-      // an hour with no event of its own can still be INSIDE a block (gym, work): tint it
-      const spanned=!evs.length&&ROUTINE.some(r=>r.until&&hr>parseInt(r.t)&&hr<parseInt(r.until));
-      h+=`<div class="rhr${evs.length?'':' rempty'}${spanned?' rspan':''}"><span class="rht">${String(hr).padStart(2,'0')}:00</span><div class="rcell">`+
+      // a BLOCK (gym, work) owns its whole span: it swallows its interior hours, stacks
+      // their labels on the rail, and draws one box whose height is proportional to time
+      const block=evs.length===1&&evs[0].until?evs[0]:null;
+      if(block){
+        const endH=Math.min(parseInt(block.until),H1+1),span=Math.max(1,endH-hr);
+        const labels=Array.from({length:span},(_,i)=>`<i class="rhl">${String(hr+i).padStart(2,'0')}:00</i>`).join('');
+        h+=`<div class="rhr rblockrow"><span class="rht">${labels}</span><div class="rcell">`+
+           `<div class="rblock" style="min-height:${span*44-14}px"><b>${esc(block.do)}</b>`+
+           `<span class="rbr">${block.t} &ndash; ${block.until}</span></div></div></div>`;
+        hr=endH;continue;
+      }
+      h+=`<div class="rhr${evs.length?'':' rempty'}"><span class="rht"><i class="rhl">${String(hr).padStart(2,'0')}:00</i></span><div class="rcell">`+
         evs.map(r=>{
           let sup='';
           if(r.slot&&STACK){
@@ -1057,6 +1072,7 @@ function renderPage(p){
           }
           return `<div class="rev"><span class="rem">${r.t}${r.until?`<span class="ru">&ndash;${r.until}</span>`:''}</span><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div>${sup}</div></div>`;
         }).join('')+`</div></div>`;
+      hr++;
     }
     // care cards close the page, below the day; an empty card is a deliberate placeholder
     if(CARE.length)h+=`<div class="care">`+CARE.map(c=>
