@@ -400,9 +400,10 @@ html:not([data-page=markers]) .ptabs{margin-left:-13px;transition:margin-left .3
 /* every row centres its content between the boundary lines of its span — the lines
    sit 7px below the cell tops they belong to, hence 2x7 top padding */
 .rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:14px 0 0}
-/* block text centres BETWEEN the boundary tic lines, which sit 7px below the cell
-   tops they belong to — so the midpoint is the box centre + 7px: pad 2x7 on top. */
-.rhr.rblockrow .rcell{display:flex;align-items:center;padding:14px 0 0}
+/* blocks need no rule of their own: the base .rcell centres every row vertically,
+   and align-items is left at stretch so ALL text shares the same left edge.
+   (A legacy row-direction align-items:center here turned into HORIZONTAL centring
+   when .rcell went flex-direction:column — blocks drifted to the middle.) */
 .rev{display:flex;gap:12px;align-items:baseline;padding:2px 0}
 .rbody{min-width:0}
 .rdo{font-size:13.5px;color:var(--t2);line-height:1.5}
