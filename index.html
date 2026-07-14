@@ -1139,7 +1139,7 @@ function renderPage(p){
     h+=cardRow(CARE.filter(c=>!c.top));   // the protocol cards close the page
   } else if(p==='training'&&TRAINING&&TRAINING.cards&&TRAINING.cards.length){
     h=`<div class="pgh">Training</div>`+
-      (TRAINING.cardio?`<div class="pgst">Cardio</div><div class="cnote">${esc(TRAINING.cardio)}</div>`:'')+
+      (TRAINING.cardio?`<div class="pgst">Cardio</div><div class="cnote">${esc(TRAINING.cardio).replace(/\n/g,'<br>')}</div>`:'')+
       `<div class="pgst">Resistance</div><div class="pgsub pgsp">${TRAINING.cards.map(c=>esc(c.t)).join(' · ')}</div>`+
       (TRAINING.note?`<div class="cnote">${esc(TRAINING.note)}</div>`:'')+
       cardRow(TRAINING.cards);
