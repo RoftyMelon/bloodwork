@@ -402,9 +402,6 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .sfill{flex:1}
 .slink{font-size:15px;color:var(--info);text-decoration:none;white-space:nowrap;padding:5px 0}
 .slink:hover{text-decoration:underline}
-.smk{font-family:inherit;font-size:15px;color:var(--t3);background:none;cursor:pointer;
-  border:.5px solid transparent;border-radius:99px;padding:6px 12px;white-space:nowrap}
-.smk:hover{background:var(--btn);border-color:var(--btn-b);color:var(--txt)}
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;position:relative}   /* anchors the full-width boundary lines */
 .rht{flex:none;width:64px;font-size:13px;font-weight:600;color:var(--t4);
@@ -1101,11 +1098,6 @@ function goto(cat){
   else scrollToSec(cat);
 }
 // from a Stack row to the By-supplement group of markers it bears on
-function gotoDec(gi){
-  setPage('markers');
-  if(filter!=='crit'||q){setF('crit');requestAnimationFrame(()=>requestAnimationFrame(()=>scrollToSec('dec'+gi)));}
-  else scrollToSec('dec'+gi);
-}
 /* ---- pages ----
    'markers' is the whole table experience, filters and all. The other three render
    into #pages from the STACK / ROUTINE / DIET blocks, and the table-only controls
@@ -1207,14 +1199,12 @@ function renderPage(p){
         (c.note?`<div class="cnote">${esc(c.note)}</div>`:'')+
         items.map(s=>{
           const dead=s.status==='stopped'||s.status==='dropped';
-          const gi=s.dec?DECS.indexOf(s.dec):-1;
           return `<div class="srow${dead?' off':''}">`+
             `<span class="sn">${esc(s.name)}</span>`+
             (s.info?`<button class="infob" title="${esc(s.info)}" aria-label="Details" onclick="tip(this)">i</button>`+
                     `<div class="exinfo">${esc(s.info)}</div>`:'')+
             (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+   // no status badges: the sections carry it
             `<span class="sfill"></span>`+
-            (gi>=0?`<button class="smk" onclick="gotoDec(${gi})" title="Jump to the markers this bears on">markers &#8599;</button>`:'')+
             (s.url?`<a class="slink" href="${esc(s.url)}" target="_blank" rel="noopener">buy &#8599;</a>`:'')+
           `</div>`;}).join('')+`</div>`;
     });
