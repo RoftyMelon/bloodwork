@@ -1331,25 +1331,38 @@ function renderPage(p){
            `<div class="rev"><div class="rbody"><div class="rdo">${esc(block.do)}</div></div></div></div></div>`;
         hr=endH;continue;
       }
+      // a span that STARTS mid-hour but runs on through whole EMPTY hours cannot live in
+      // its first hour's row — its label would own a half-hour sliver and the hours below
+      // would render blank. It leaves the row (rowEvs) and claims those hours as its own
+      // block row after it; centering over the whole hours lands on the true midpoint,
+      // since both trimmed ends are the same fraction.
+      let carried=null,carriedEnd=0;
+      const rowEvs=evs.filter(r=>{
+        if(carried||!r.until||parseInt(r.t.slice(3),10)===0)return true;
+        let e=Math.min(parseInt(r.until),H1+1);
+        for(let x=hr+1;x<e;x++)if(ROUTINE.some(q=>parseInt(q.t)===x)){e=x;break;}
+        if(e<=hr+1)return true;   // no whole empty hour to claim — stays a card
+        carried=r;carriedEnd=e;return false;
+      });
       // SUB-HOUR TRUTH: when every event in the hour declares a span that ends inside
       // it (or exactly on the next hour), each event sits at its actual minutes and
       // the fractional boundaries (12:30, 17:30) get their own hairlines.
       const mins=t=>parseInt(t.slice(3),10)/60;
-      const spans=evs.map(r=>{let em=null;
+      const spans=rowEvs.map(r=>{let em=null;
         if(r.until){const uh=parseInt(r.until);
           em=uh===hr?mins(r.until):(uh>hr?1:null);}   // continuing past this hour fills it
         return {sm:mins(r.t),em};});
-      const prop=evs.length>0&&spans.every(x=>x.em!=null);
+      const prop=rowEvs.length>0&&spans.every(x=>x.em!=null);
       // a cut is drawn only where a span ends into EMPTY time: a boundary that is both
       // one event's end and the next one's start needs no line — the texts separate
       const st2=new Set(spans.map(x=>x.sm)),en2=new Set(spans.map(x=>x.em));
       const cuts=prop?[...new Set(spans.flatMap(x=>[x.sm,x.em])
         .filter(f=>f>0&&f<1&&!(st2.has(f)&&en2.has(f))))]:[];
-      h+=`<div class="rhr${evs.length?'':' rempty'}${evs.length>1?' multi':''}${hr===H1?' rlast':''}${prop?' rprop':''}">`+
+      h+=`<div class="rhr${rowEvs.length?'':' rempty'}${rowEvs.length>1?' multi':''}${hr===H1?' rlast':''}${prop?' rprop':''}">`+
         `<span class="rht">${mark(hr)}</span>`+
         cuts.map(f=>`<i class="rln" style="top:calc(var(--hh)*${f} + 7px)"></i>`).join('')+
         `<div class="rcell">`+
-        evs.map((r,i)=>{
+        rowEvs.map((r,i)=>{
           let sup='';
           if(r.slot&&STACK){
             const list=STACK.items.filter(s=>s.status==='taking'&&s.when===r.slot);
@@ -1358,6 +1371,12 @@ function renderPage(p){
           const pos=prop?` style="top:calc(var(--hh)*${(spans[i].sm+spans[i].em)/2} - ${spans[i].sm>0?7:6}px)"`:'';
           return `<div class="rev"${pos}><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div>${sup}</div></div>`;
         }).join('')+`</div></div>`;
+      if(carried){
+        const labels=Array.from({length:carriedEnd-(hr+1)},(_,i)=>mark(hr+1+i)).join('');
+        h+=`<div class="rhr rblockrow"><span class="rht">${labels}</span><div class="rcell">`+
+           `<div class="rev"><div class="rbody"><div class="rdo">${esc(carried.do)}</div></div></div></div></div>`;
+        hr=carriedEnd;continue;
+      }
       hr++;
     }
     h+=cardRow(CARE.filter(c=>!c.top),'wide');   // the protocol cards close the page

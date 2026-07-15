@@ -51,7 +51,18 @@ setTimeout(()=>{
     const evs=R0.filter(r=>parseInt(r.t)===_hr);
     const b=evs.length===1&&evs[0].until&&parseInt(evs[0].until)>_hr&&parseInt(evs[0].t.slice(3),10)===0?evs[0]:null;
     if(b){tallN++;_hr=Math.min(parseInt(b.until),_hEnd+1);continue;}
-    cardN+=evs.length;_hr++;
+    // mirror the carried-block rule: the first mid-hour span claiming whole empty
+    // hours leaves its row and renders them as its own block row
+    let cEnd=0;
+    for(const r of evs){
+      if(!r.until||parseInt(r.t.slice(3),10)===0)continue;
+      let e=Math.min(parseInt(r.until),_hEnd+1);
+      for(let x=_hr+1;x<e;x++)if(R0.some(q=>parseInt(q.t)===x)){e=x;break;}
+      if(e>_hr+1){cEnd=e;break;}
+    }
+    cardN+=evs.length;
+    if(cEnd){tallN++;_hr=cEnd;continue;}
+    _hr++;
   }
   const want={prescription:['srow',DATA.PRESCRIPTION.items.length],
     stack:['srow',DATA.STACK.items.length],
@@ -94,9 +105,18 @@ setTimeout(()=>{
     // hairlines at the fractional boundaries (12:30-style cuts)
     let rlnN=0,hr3=H0;
     while(hr3<=H1){
-      const evs3=R.filter(r=>parseInt(r.t)===hr3);
-      const b3=evs3.length===1&&evs3[0].until&&parseInt(evs3[0].until)>hr3&&parseInt(evs3[0].t.slice(3),10)===0?evs3[0]:null;
+      const evsAll=R.filter(r=>parseInt(r.t)===hr3);
+      const b3=evsAll.length===1&&evsAll[0].until&&parseInt(evsAll[0].until)>hr3&&parseInt(evsAll[0].t.slice(3),10)===0?evsAll[0]:null;
       if(b3){hr3=Math.min(parseInt(b3.until),H1+1);continue;}
+      // mirror the carried-block rule: the carried span leaves this hour's row
+      let car3=null,cEnd3=0;
+      const evs3=evsAll.filter(r=>{
+        if(car3||!r.until||parseInt(r.t.slice(3),10)===0)return true;
+        let e=Math.min(parseInt(r.until),H1+1);
+        for(let x=hr3+1;x<e;x++)if(R.some(q=>parseInt(q.t)===x)){e=x;break;}
+        if(e<=hr3+1)return true;
+        car3=r;cEnd3=e;return false;
+      });
       const mins=t=>parseInt(t.slice(3),10)/60;
       const sp=evs3.map(r=>{let em=null;
         if(r.until){const uh=parseInt(r.until);em=uh===hr3?mins(r.until):(uh>hr3?1:null);}
@@ -106,6 +126,7 @@ setTimeout(()=>{
         rlnN+=new Set(sp.flatMap(x=>[x.sm,x.em])
           .filter(f=>f>0&&f<1&&!(st.has(f)&&en.has(f)))).size;
       }
+      if(car3){hr3=cEnd3;continue;}
       hr3++;
     }
     ok(`routine cuts ${rlnN} half-hour lines`, count(n.pages.innerHTML,'rln')===rlnN,
