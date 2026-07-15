@@ -202,7 +202,7 @@ window.BLOODWORK =
    {"t": "Shoulders", "items": [
     {"n": "Overhead press", "sets": [[50,5],[50,5],[50,5]]},
     {"n": "Lateral raise", "sets": [[12,10],[12,10],[12,10]]},
-    {"n": "Deltoid raise", "sets": [[50,5],[50,5],[50,5]]},
+    {"n": "Machine deltoid raise", "sets": [[50,5],[50,5],[50,5]]},
     {"n": "Rear deltoid", "sets": [[20,15],[20,15],[20,15]]}
    ]},
    {"t": "Triceps", "items": [
