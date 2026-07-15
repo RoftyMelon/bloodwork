@@ -76,6 +76,16 @@ setTimeout(()=>{
     const H0=parseInt(R[0].t),H1=parseInt(R[R.length-1].t),lt=new Set();
     R.forEach(r=>{if(r.until){lt.add(parseInt(r.t));lt.add(parseInt(r.until));}});
     lt.add(H0);   // mirror the renderer: the day's start draws a boundary line
+    // mirror the suppression rule: an hour whose predecessor ended mid-hour
+    // with its own cut draws no boundary line
+    {let hh=H0;const mm=t=>parseInt(t.slice(3),10)/60;
+     while(hh<=H1){const e2=R.filter(r=>parseInt(r.t)===hh);
+       const b2=e2.length===1&&e2[0].until&&parseInt(e2[0].until)>hh?e2[0]:null;
+       if(b2){hh=Math.min(parseInt(b2.until),H1+1);continue;}
+       const em2=e2.map(r=>{if(!r.until)return null;const uh=parseInt(r.until);
+         return uh===hh?mm(r.until):(uh===hh+1&&mm(r.until)===0?1:null);});
+       if(e2.length&&em2.every(x=>x!=null)&&Math.max(...em2)<1)lt.delete(hh+1);
+       hh++;}}
     const ltN=[...lt].filter(hh=>hh>=H0&&hh<=H1).length;
     ok(`routine draws ${ltN} long tics`, count(n.pages.innerHTML,'rhl lt')===ltN,
       count(n.pages.innerHTML,'rhl lt')+' long tics');
@@ -90,8 +100,11 @@ setTimeout(()=>{
       const sp=evs3.map(r=>{let em=null;
         if(r.until){const uh=parseInt(r.until);em=uh===hr3?mins(r.until):(uh===hr3+1&&mins(r.until)===0?1:null);}
         return {sm:mins(r.t),em};});
-      if(evs3.length&&sp.every(x=>x.em!=null))
-        rlnN+=new Set(sp.flatMap(x=>[x.sm,x.em]).filter(f=>f>0&&f<1)).size;
+      if(evs3.length&&sp.every(x=>x.em!=null)){
+        const st=new Set(sp.map(x=>x.sm)),en=new Set(sp.map(x=>x.em));
+        rlnN+=new Set(sp.flatMap(x=>[x.sm,x.em])
+          .filter(f=>f>0&&f<1&&!(st.has(f)&&en.has(f)))).size;
+      }
       hr3++;
     }
     ok(`routine cuts ${rlnN} half-hour lines`, count(n.pages.innerHTML,'rln')===rlnN,

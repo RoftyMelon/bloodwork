@@ -1231,7 +1231,19 @@ function renderPage(p){
     const lt=new Set();
     ROUTINE.forEach(r=>{if(r.until){lt.add(parseInt(r.t));lt.add(parseInt(r.until));}});
     lt.add(H0);   // the day's start earns a boundary line too
-    const mark=hh=>`<i class="rhl${lt.has(hh)?' lt':''}">${String(hh).padStart(2,'0')}:00</i>`;
+    // a boundary line is REDUNDANT when the hour before it already ended mid-hour
+    // with its own cut (lunch ends 12:30 -> no 13:00 line; the shower runs to 18:00
+    // exactly, so 18:00 keeps its line)
+    const supr=new Set();
+    {let hh=H0;const mm=t=>parseInt(t.slice(3),10)/60;
+     while(hh<=H1){const e2=ROUTINE.filter(r=>parseInt(r.t)===hh);
+       const b2=e2.length===1&&e2[0].until&&parseInt(e2[0].until)>hh?e2[0]:null;
+       if(b2){hh=Math.min(parseInt(b2.until),H1+1);continue;}
+       const em2=e2.map(r=>{if(!r.until)return null;const uh=parseInt(r.until);
+         return uh===hh?mm(r.until):(uh===hh+1&&mm(r.until)===0?1:null);});
+       if(e2.length&&em2.every(x=>x!=null)&&Math.max(...em2)<1)supr.add(hh+1);
+       hh++;}}
+    const mark=hh=>`<i class="rhl${lt.has(hh)&&!supr.has(hh)?' lt':''}">${String(hh).padStart(2,'0')}:00</i>`;
     h=`<div class="pgh">Daily routine</div><div class="pgsub">`+
       `${ROUTINE[ROUTINE.length-1].t} &rarr; ${ROUTINE[0].t} · ${24-(H1-H0)}h bed time<br>`+
       `${ROUTINE[0].t} &rarr; ${ROUTINE[ROUTINE.length-1].t} · ${H1-H0}h wake time</div>`;
@@ -1259,7 +1271,11 @@ function renderPage(p){
           em=uh===hr?mins(r.until):(uh===hr+1&&mins(r.until)===0?1:null);}
         return {sm:mins(r.t),em};});
       const prop=evs.length>0&&spans.every(x=>x.em!=null);
-      const cuts=prop?[...new Set(spans.flatMap(x=>[x.sm,x.em]).filter(f=>f>0&&f<1))]:[];
+      // a cut is drawn only where a span ends into EMPTY time: a boundary that is both
+      // one event's end and the next one's start needs no line — the texts separate
+      const st2=new Set(spans.map(x=>x.sm)),en2=new Set(spans.map(x=>x.em));
+      const cuts=prop?[...new Set(spans.flatMap(x=>[x.sm,x.em])
+        .filter(f=>f>0&&f<1&&!(st2.has(f)&&en2.has(f))))]:[];
       h+=`<div class="rhr${evs.length?'':' rempty'}${evs.length>1?' multi':''}${hr===H1?' rlast':''}${prop?' rprop':''}">`+
         `<span class="rht">${mark(hr)}</span>`+
         cuts.map(f=>`<i class="rln" style="top:calc(var(--hh)*${f} + 7px)"></i>`).join('')+
