@@ -415,19 +415,22 @@ html:not([data-page=markers]) .swap{overflow:visible}
    guarantees a boundary hour always STARTS its row. The tabular HH:00 ends ~31px;
    left:0 would strike THROUGH it. */
 .rhl.lt::after{content:"";position:absolute;left:44px;top:7px;height:.5px;
-  width:min(calc(100% - 44px),410px);background:var(--t4);opacity:.55}
+  width:min(calc(100% - 44px),250px);background:var(--t4);opacity:.55}
   /* 410px = the longest row text ("Gym - phone stays OFF...") — the line matches it */
 /* every row centres its content between the boundary lines of its span. UNIFORM
    HEIGHT IS THE CONTRACT: the padding must leave a 2-line row (07:00) and a
    two-event hour (17:00, 21:00) fitting inside one --hh cell — a row that
    stretches breaks the ruler silently. */
 .rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:12px 0 0}
-.rhr.multi .rcell{padding-top:5px}   /* 5 + 28 + 1 + 28 = 62: inside one 64px cell */
-.rhr.multi:not(.rprop) .rev+.rev{margin-top:-1px}   /* centres the middle moment between its neighbours */
+/* stacked point-pairs share the EXACT geometry of the sub-hour span pairs:
+   absolute revs, text centres at 22px and 53px of the cell, no row stretch */
+.rhr.multi:not(.rprop) .rcell{position:relative;padding:0}
+.rhr.multi:not(.rprop) .rev{position:absolute;left:0;right:0;padding:0;top:10px}
+.rhr.multi:not(.rprop) .rev+.rev{top:41px}
 /* sub-hour rows: events sit at their real minutes; hairlines cut the fractions */
 .rhr.rprop .rcell{position:relative;padding:0}
 .rhr.rprop .rev{position:absolute;left:0;right:0;padding:0}
-.rln{position:absolute;left:44px;width:min(calc(100% - 44px),410px);height:.5px;
+.rln{position:absolute;left:44px;width:min(calc(100% - 44px),250px);height:.5px;
   background:var(--t4);opacity:.55}
 /* blocks need no rule of their own: the base .rcell centres every row vertically,
    and align-items is left at stretch so ALL text shares the same left edge.
@@ -513,6 +516,8 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 .cempty{font-size:15px;color:var(--t4);padding:8px 0 2px}
 /* diet */
 .cwhen{margin-left:8px;font-size:13px;font-weight:450;color:var(--t4);font-variant-numeric:tabular-nums}
+.care.col{flex-direction:column;overflow:visible;width:auto;max-width:none}
+.care.col .ccard{flex:none;width:min(340px,100%)}
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
 .dnotes b{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--t3)}
 .dnotes ul{margin:6px 0 0;padding:0;list-style:none}
@@ -1303,7 +1308,7 @@ function renderPage(p){
       cardRow(TRAINING.cards);
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
-      `<div class="care">`+DIET.meals.map(m=>
+      `<div class="care col">`+DIET.meals.map(m=>
         `<div class="ccard"><b>${esc(m.t)}</b>${m.at?`<span class="cwhen">${esc(m.at)}</span>`:''}`+
         `<ul>${m.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')+`</div>`;
     if(DIET.notes&&DIET.notes.length)

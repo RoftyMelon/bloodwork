@@ -112,7 +112,7 @@ window.BLOODWORK =
    {"id": "collagenc", "name": "Collagen + vitamin C", "dose": "10g", "cat": "skin", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
    {"id": "ha", "name": "Hyaluronic acid", "dose": "200mg", "cat": "skin", "status": "planned", "when": null, "url": null, "dec": null},
    {"id": "brazilnut", "name": "Brazil nut", "dose": "1 per day", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": null},
-   {"id": "mglthr", "name": "Magnesium L-threonate", "dose": "2000mg (150mg elemental)", "cat": "essentials", "status": "planned", "when": "evening", "url": null, "dec": "Magnesium L-threonate"},
+   {"id": "mglthr", "name": "Magnesium L-threonate", "dose": "2000mg", "info": "150mg elemental", "cat": "essentials", "status": "planned", "when": "evening", "url": null, "dec": "Magnesium L-threonate"},
    {"id": "minoxidil", "name": "Minoxidil (topical)", "dose": "5-10%, 1mL 2x/day", "cat": "hair", "status": "taking", "when": null, "url": null, "dec": null},
    {"id": "finasteride", "name": "Finasteride (topical)", "dose": "0.1%, 1mL 2x/day", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": "Finasteride (topical) 0.1% - 1mL",
     "info": "Topical application as a serum = fewer side effects. Finasteride 0.1% is a low dose, but stay aware of potential effects on libido, erectile function and mood (including depression) during the first 6 months."},
@@ -131,7 +131,7 @@ window.BLOODWORK =
  "ROUTINE": [
   {"t": "07:00", "do": "Walk, sunlight, cold shower"},
   {"t": "07:15", "do": "Breakfast + supplements", "slot": "breakfast"},
-  {"t": "08:00", "until": "10:00", "do": "Gym - phone stays OFF until session is completed"},
+  {"t": "08:00", "until": "10:00", "do": "Gym - phone stays OFF"},
   {"t": "10:00", "until": "12:00", "do": "Work"},
   {"t": "12:00", "until": "12:30", "do": "Lunch + supplements", "slot": "lunch"},
   {"t": "13:00", "until": "17:00", "do": "Work"},
