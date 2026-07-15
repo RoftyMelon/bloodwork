@@ -1271,7 +1271,7 @@ function renderPage(p){
         ?`<div class="pgsec">`+it.map(x=>`<div class="srow"><span class="sn">${esc(x)}</span></div>`).join('')+`</div>`
         :`<div class="cempty">&mdash;</div>`);
   } else if(p==='stack'&&STACK){
-    h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed</div>`;
+    h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed · Daily doses</div>`;
     STACK.cats.forEach(c=>{
       const items=STACK.items.filter(s=>s.cat===c.id);
       if(!items.length)return;
@@ -1289,6 +1289,7 @@ function renderPage(p){
             (s.url?`<a class="slink" href="${esc(s.url)}" target="_blank" rel="noopener">buy &#8599;</a>`:'')+
           `</div>`;}).join('')+`</div>`;
     });
+    h+=cardRow(CARE.filter(c=>!c.top),'wide');   // the dental/face protocol cards close the page
   } else if(p==='routine'&&ROUTINE.length){
     // an hour RULER, not a list: every hour from wake to lights-out gets a mark, so empty
     // hours take up (a little) space and the day reads as time, not as glued-together events
@@ -1379,7 +1380,6 @@ function renderPage(p){
       }
       hr++;
     }
-    h+=cardRow(CARE.filter(c=>!c.top),'wide');   // the protocol cards close the page
   } else if(p==='training'&&TRAINING&&TRAINING.cards&&TRAINING.cards.length){
     h=`<div class="pgh">Training</div>`+
       (TRAINING.cardio?`<div class="pgst">Cardio</div><div class="cnote lead">${esc(TRAINING.cardio).replace(/\n/g,'<br>')}</div>`:'')+
