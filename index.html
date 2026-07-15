@@ -36,6 +36,7 @@
   --sol:#F5F4EF; --sol-t:#262624;
   --mg:rgba(245,244,239,.07);
   --frost:rgba(48,48,46,.72); --frost-b:rgba(245,244,239,.14); --frost-h:rgba(59,59,55,.9);
+  --glass:rgba(48,48,46,.32); --glass-b:rgba(245,244,239,.22);
 }
 :root{--thh:30px; --nm:180px; --hh:64px}   /* sizing: theme-independent, must not sit in a theme block */
 /* TYPE SCALE — one rationale across every tab:
@@ -62,6 +63,7 @@
   --sol:#1F1E1D; --sol-t:#FAF9F5;
   --mg:rgba(31,30,29,.08);
   --frost:rgba(250,249,245,.75); --frost-b:rgba(31,30,29,.14); --frost-h:rgba(250,249,245,.95);
+  --glass:rgba(250,249,245,.35); --glass-b:rgba(255,255,255,.65);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg)}
@@ -92,9 +94,10 @@ button.warn{color:var(--out);border-color:var(--out);background:transparent}
 button.warn:hover{background:var(--out);color:#fff}
 button.ic{padding:0;width:40px;height:40px;border-radius:50%;flex:none;
   display:flex;align-items:center;justify-content:center;color:var(--t2);
-  background:var(--frost);border:.5px solid var(--frost-b);z-index:1;
-  -webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3)}
-button.ic:hover{color:var(--txt);background:var(--frost-h)}
+  background:var(--glass);border:.5px solid var(--glass-b);z-index:1;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 6px rgba(0,0,0,.08);
+  -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6)}
+button.ic:hover{color:var(--txt)}
 
 /* Orbit toggle. The clip circle IS the horizon: icons exist only inside it.
    The disc pivots BELOW the window (50% 104%), so they rise and set on a shallow
