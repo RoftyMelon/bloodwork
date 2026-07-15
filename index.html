@@ -405,6 +405,7 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .slink:hover{text-decoration:underline}
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;position:relative}   /* anchors the full-width boundary lines */
+.pgsub+.rhr{margin-top:18px}   /* the ruler breathes below the header (the old cards carried this gap) */
 .rht{flex:none;width:64px;font-size:13px;font-weight:600;color:var(--t4);
   font-variant-numeric:tabular-nums;letter-spacing:.02em}
 /* calendar convention: a label anchors at the TOP of its cell and marks the hour's
