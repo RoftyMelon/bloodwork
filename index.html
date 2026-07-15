@@ -1432,7 +1432,10 @@ window.addEventListener('resize',()=>{setTop();setGut();fitChart();movePtu();},{
 // gesture must be claimed BEFORE the native latch (~10px) via an early axis lock.
 {const sw=document.querySelector('.swap'),tc=document.getElementById('toc');
  if(sw&&tc&&sw.addEventListener){let _tx=null,_ty=null,_axis=null;
-  sw.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;_axis=null;},{passive:true});
+  sw.addEventListener('touchstart',e=>{
+    // the tab strip scrolls natively — its gestures are not ours to redirect
+    if(e.target.closest&&e.target.closest('.ptabs')){_tx=null;return;}
+    _tx=e.touches[0].clientX;_ty=e.touches[0].clientY;_axis=null;},{passive:true});
   sw.addEventListener('touchmove',e=>{
     if(_tx==null)return;
     const x=e.touches[0].clientX,y=e.touches[0].clientY;
