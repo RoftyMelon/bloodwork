@@ -1138,7 +1138,7 @@ const PGEL=document.getElementById('pages'),
 // reveal a clipped tab WITH a sliver of its neighbour, so hidden tabs announce
 // themselves; a tab at either end reveals plainly. (.ptu after the last tab is
 // not a .pt, so the guard treats the last tab as edge.)
-function revealTab(b){
+function revealTab(b,instant){
   // Every activation aims for the BOTH-ENDS state — a sliver of the first tab AND
   // of the last tab on screen, so the strip always advertises what's hidden in
   // either direction — then the ACTIVE tab's own visibility clamps the result.
@@ -1155,7 +1155,11 @@ function revealTab(b){
   const keepFirst=first.offsetLeft+first.offsetWidth-peek;   // first tab keeps a sliver
   const t=Math.max(0,Math.min(need,keepFirst));      // the both-ends ideal
   const x=Math.min(Math.max(t,minX),Math.max(maxX,minX));
-  if(x!==sc.scrollLeft&&sc.scrollTo)sc.scrollTo({left:x,behavior:'smooth'});
+  if(x!==sc.scrollLeft){
+    // a strip revealed THIS frame drops smooth scrolls (Safari): set it instantly
+    if(instant)sc.scrollLeft=x;
+    else if(sc.scrollTo)sc.scrollTo({left:x,behavior:'smooth'});
+  }
 }
 function movePtu(){   // slide the shared underline under the active tab
   const on=PTABS.querySelector('.pt.on'),u=document.getElementById('ptu');
@@ -1174,7 +1178,7 @@ function pmSet(open){
   PBTN.setAttribute('aria-expanded',String(open));
   requestAnimationFrame(()=>{movePtu();   // the strip may have just become visible
     const on=PTABS.querySelector('.pt.on');
-    if(on&&menuOpen)revealTab(on);});   // and it may carry a stale scroll: re-reveal the active tab
+    if(on&&menuOpen)revealTab(on,true);});   // stale scroll: snap the active tab into view instantly
   const apply=()=>{ if(open)document.documentElement.dataset.menu='open';
                     else delete document.documentElement.dataset.menu; };
   const B=document.getElementById('swap');
