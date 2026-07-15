@@ -423,6 +423,7 @@ html:not([data-page=markers]) .swap{overflow:visible}
    stretches breaks the ruler silently. */
 .rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:12px 0 0}
 .rhr.multi .rcell{padding-top:8px}   /* two events: 2x28 + 8 = exactly one 64px cell, clear of the line */
+.rhr.multi:not(.rprop) .rev+.rev{margin-top:-6px}   /* the later moment leans toward its hour-mate */
 /* sub-hour rows: events sit at their real minutes; hairlines cut the fractions */
 .rhr.rprop .rcell{position:relative;padding:0}
 .rhr.rprop .rev{position:absolute;left:0;right:0;padding:0}
@@ -1266,13 +1267,11 @@ function renderPage(p){
       // it (or exactly on the next hour), each event sits at its actual minutes and
       // the fractional boundaries (12:30, 17:30) get their own hairlines.
       const mins=t=>parseInt(t.slice(3),10)/60;
-      const spans=evs.map(r=>{const sm=mins(r.t);let em=sm;   // a point event is a zero-length span
+      const spans=evs.map(r=>{let em=null;
         if(r.until){const uh=parseInt(r.until);
           em=uh===hr?mins(r.until):(uh===hr+1&&mins(r.until)===0?1:null);}
-        return {sm,em};});
-      // proportional placement needs company or a span: a LONE point event (07:00's
-      // morning list) stays centred; pairs like Screens off / Bedtime sit at their minutes
-      const prop=spans.every(x=>x.em!=null)&&(evs.length>1||evs.some(r=>r.until));
+        return {sm:mins(r.t),em};});
+      const prop=evs.length>0&&spans.every(x=>x.em!=null);
       // a cut is drawn only where a span ends into EMPTY time: a boundary that is both
       // one event's end and the next one's start needs no line — the texts separate
       const st2=new Set(spans.map(x=>x.sm)),en2=new Set(spans.map(x=>x.em));
