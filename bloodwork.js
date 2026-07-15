@@ -129,7 +129,8 @@ window.BLOODWORK =
   ]
  },
  "ROUTINE": [
-  {"t": "07:00", "do": "Walk, sunlight, cold shower\nBreakfast + supplements", "slot": "breakfast"},
+  {"t": "07:00", "do": "Walk, sunlight, cold shower"},
+  {"t": "07:15", "do": "Breakfast + supplements", "slot": "breakfast"},
   {"t": "08:00", "until": "10:00", "do": "Gym - phone stays OFF until session is completed"},
   {"t": "10:00", "until": "12:00", "do": "Work"},
   {"t": "12:00", "until": "12:30", "do": "Lunch + supplements", "slot": "lunch"},
