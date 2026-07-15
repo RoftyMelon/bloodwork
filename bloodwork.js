@@ -18,15 +18,13 @@ window.BLOODWORK =
   "clin_ranges": "clin[] IS lab data, off the report.",
   "dec": "Which supplements a marker bears on. Many-to-many. Membership does NOT mean the supplement moves it: cystatin C is under Creatine precisely because creatine CANNOT distort it, albumin is under Vitamin D because calcium cannot be corrected without it, selenium is iodine's cofactor, B12/folate are TMG's pathway.",
   "confounds": [
-   "Creatine was active at the 2026 draw. It raises serum creatinine as substrate, not by damaging kidneys, and eGFR is CALCULATED from creatinine so it inherits the error. The eGFR of 61 is not readable as kidney disease. Cystatin C is immune and has never been drawn.",
-   "The 2026 draw date (2026-03-01) is a PLACEHOLDER. Replace it. Every age and trend downstream depends on it.",
-   "A free testosterone of 0.9 ng/dL (2023-01-30) was excluded as a suspected 10x transcription error.",
+   "Creatine was active at the March 2026 draw. It raises serum creatinine as substrate, not by damaging kidneys, and eGFR is CALCULATED from creatinine so it inherits the error. The eGFR of 61 is not readable as kidney disease. Cystatin C is immune and has never been drawn.",
    "Topical minoxidil appears in no supplement group. That is the finding, not an omission: it is a potassium-channel opener with ~1.4% systemic absorption and no hormonal mechanism. Astaxanthin, lycopene, hyaluronic acid and collagen are absent for the same reason. No blood marker can falsify them."
   ],
   "subject": {
    "sex": "male",
-   "country": "France (Strasbourg)",
-   "diet": "See the DIET block. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes; one Brazil nut/day. Huel Black: 90g/day as the pre-workout snack since 2026-07-15 (see DIET), after a brief drop earlier that month; it was regular through the earlier draws too. Its fortification (iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron) therefore rides along in the historical draws AND the current state.",
+   "country": "France",
+   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes; one Brazil nut/day. Huel Black: 90g/day as the pre-workout snack. Its fortification (iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron).",
    "supervision": "none"
   },
   "stack": "Moved to the STACK block below — structured, with dose, status, category, meal slot and purchase URL. STACK is the single source of truth for supplements; do not re-list them here.",
