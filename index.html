@@ -484,6 +484,9 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 .exkg .k{text-align:right}
 .exkg .d{text-align:center;color:var(--t4)}
 .exkg .r{text-align:left}
+/* an EMPTY first cell (bodyweight rows) exports no baseline, so the grid aligns by
+   its bottom edge and the spec rides high. A zero-width space restores the baseline. */
+.exkg .k:empty::before,.exkg .d:empty::before{content:"\200b"}
 .exsets{display:flex;flex-wrap:wrap;gap:1px 4px;margin:1px 0 0}
 .exset{display:flex;flex-direction:column;align-items:center;min-width:26px;padding:0 2px}
 .exset i{font-style:normal;font-size:13px;color:var(--t2);font-variant-numeric:tabular-nums;line-height:1.2}
