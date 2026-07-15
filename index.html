@@ -126,6 +126,8 @@ td.boot span{color:var(--t3);font-size:15px}
    flex-basis:100% pins the toc to its OWN flex line — otherwise the packing math is free to
    squeeze it inline and wrap the pills instead. */
 .toc{display:flex;gap:2px;min-width:0;flex-basis:100%;   /* pill BOXES align to the gutter */
+  padding-top:10px;margin-top:-10px;   /* the scroll surface covers the seam above:
+     a horizontal pan between the rows must grab a SCROLLER, never the table */
   flex-wrap:nowrap;overflow-x:auto;                 /* never wrap: scroll instead */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .toc::-webkit-scrollbar{display:none}
