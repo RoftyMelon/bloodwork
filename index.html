@@ -466,10 +466,11 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .infob:hover{background:var(--btn-h)}
 .srow .infob{margin-left:-4px;   /* the row's 10px flex gap already separates; net ~6px like the cards */
   align-self:center;margin-top:0}   /* baseline-aligning a circle by its tiny glyph sinks it; centre it */
-/* card bubbles anchor to the CARD's empty top-right corner (the li is no longer the
-   containing block), so the detail text covers no exercise rows. Stack rows keep
-   their own row-anchored bubble via .srow{position:relative}. */
-.exinfo{display:none;position:absolute;z-index:6;top:8px;right:10px;width:max-content;max-width:62%;
+/* card bubbles anchor to the CARD TOP (the li is no longer the containing block) and
+   span its width: three short lines that cover only the title and the tapped row's
+   own name — never the data rows below. Stack rows keep their row-anchored bubble
+   via .srow{position:relative}. */
+.exinfo{display:none;position:absolute;z-index:6;top:8px;left:10px;right:10px;
   background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 11px 9px;
   font-size:14.5px;color:var(--t2);line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.16)}
 li.open .exinfo,.srow.open .exinfo{display:block}
