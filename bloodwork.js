@@ -244,10 +244,10 @@ window.BLOODWORK =
   "meals": [
    {"id": "presnack", "t": "Pre-workout snack", "at": "07:15", "items": [
     {"n": "100g Huel Black", "info": {
-     "Per 100g": [["Energy","438 kcal"],["Protein","44 g"],["Fat","18 g"],["– PUFA","9.5 g"],["Carbs","20 g"],["– sugars","1.8 g"],["Fibre","9.3 g"]],
-     "Vitamins": [["D","176 IU"],["K","43 mcg"],["C","66 mg"],["Folate","88 mcg"],["B12","0.9 mcg"]],
-     "Minerals": [["Iodine","33 mcg"],["Selenium","36 mcg"],["Zinc","5 mg"],["Copper","0.5 mg"],["Iron","9.8 mg"],["Magnesium","96 mg"],["Calcium","263 mg"]],
-     "Actives": [["Choline","131 mg"],["Omega-3 (ALA)","4.5 g"],["Caffeine","76 mg"],["Green tea","140 mg"],["Probiotic","B. coagulans"]]
+     "Per 100g": [["Energy","438 kcal"],["Protein","44 g"],["Fat","18 g"],["– saturates","4.2 g"],["– monounsat.","3.9 g"],["– PUFA","9.5 g"],["Carbs","20 g"],["– sugars","1.8 g"],["Fibre","9.3 g"],["Salt","0.8 g"]],
+     "Vitamins": [["A","197 mcg"],["D","176 IU"],["E","4.4 mg"],["K","43 mcg"],["C","66 mg"],["Thiamin","0.24 mg"],["Riboflavin","0.31 mg"],["Niacin","3.5 mg"],["B6","0.31 mg"],["Pantoth.","1.3 mg"],["Folate","88 mcg"],["B12","0.9 mcg"],["Biotin","13 mcg"]],
+     "Minerals": [["Calcium","263 mg"],["Phosphorus","394 mg"],["Potassium","766 mg"],["Chloride","179 mg"],["Magnesium","96 mg"],["Iron","9.8 mg"],["Zinc","5 mg"],["Copper","0.5 mg"],["Manganese","1 mg"],["Selenium","36 mcg"],["Iodine","33 mcg"],["Chromium","13 mcg"],["Molybdenum","41 mcg"]],
+     "Other": [["Choline","131 mg"],["Omega-3 (ALA)","4.5 g"],["Omega-6","4.7 g"],["MCT","1.2 g"],["Caffeine","76 mg"],["Green tea","140 mg"],["Lutein","1.8 mg"],["Zeaxanthin","0.1 mg"],["B. coagulans","219 M"]]
     }},
     "Two bananas",
     "Brazil nut"
