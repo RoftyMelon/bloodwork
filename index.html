@@ -1426,17 +1426,27 @@ window.addEventListener('scroll',()=>{
 },{passive:true});
 setNmW();
 window.addEventListener('resize',()=>{setTop();setGut();fitChart();movePtu();},{passive:true});
-// a horizontal pan on the pills band with nothing to scroll drives the TOC below
-// (overscroll containment already stops it from ever reaching the table)
+// a horizontal pan on the pills band with nothing to scroll drives the TOC below.
+// Raw touch events with preventDefault: iOS ignores overscroll-behavior on a
+// no-overflow scroller and cancels pointer events once its pan latches, so the
+// gesture must be claimed BEFORE the native latch (~10px) via an early axis lock.
 {const sw=document.querySelector('.swap'),tc=document.getElementById('toc');
- if(sw&&tc&&sw.addEventListener){let _px=null;
-  sw.addEventListener('pointerdown',e=>{_px=e.clientX},{passive:true});
-  sw.addEventListener('pointermove',e=>{if(_px==null)return;
-    if(sw.scrollWidth<=sw.clientWidth+1)tc.scrollLeft+=_px-e.clientX;
-    _px=e.clientX;},{passive:true});
-  const _end=()=>{_px=null};
-  sw.addEventListener('pointerup',_end,{passive:true});
-  sw.addEventListener('pointercancel',_end,{passive:true});}}
+ if(sw&&tc&&sw.addEventListener){let _tx=null,_ty=null,_axis=null;
+  sw.addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;_ty=e.touches[0].clientY;_axis=null;},{passive:true});
+  sw.addEventListener('touchmove',e=>{
+    if(_tx==null)return;
+    const x=e.touches[0].clientX,y=e.touches[0].clientY;
+    if(_axis==null&&(Math.abs(x-_tx)>4||Math.abs(y-_ty)>4))
+      _axis=Math.abs(x-_tx)>Math.abs(y-_ty)?'x':'y';
+    if(_axis==='x'&&sw.scrollWidth<=sw.clientWidth+1&&e.cancelable){
+      e.preventDefault();
+      tc.scrollLeft+=_tx-x;
+    }
+    _tx=x;_ty=y;
+  },{passive:false});
+  const _end=()=>{_tx=null;_axis=null;};
+  sw.addEventListener('touchend',_end,{passive:true});
+  sw.addEventListener('touchcancel',_end,{passive:true});}}
 TOP.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
 function onQ(v){qRaw=v.trim();q=norm(qRaw);SRCH.classList.toggle('has',!!q);render();}
 function sShut(){SRCH.classList.remove('open','has');QI.value='';QI.blur();if(q)onQ('');}
