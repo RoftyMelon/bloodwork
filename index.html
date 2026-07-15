@@ -408,11 +408,10 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .srow{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:.5px solid var(--line2);flex-wrap:wrap;position:relative}
 .srow.off .sn{color:var(--t3);text-decoration:line-through;text-decoration-color:var(--t4);text-decoration-thickness:1px}
 .sn{font-size:16px;font-weight:560;color:var(--txt);letter-spacing:-.01em}
-.sd{font-size:15px;color:var(--t2);font-variant-numeric:tabular-nums}
+.sd{font-size:15px;color:var(--t2);font-variant-numeric:tabular-nums;text-align:right}
 .sfill{flex:1}
-a.sn{text-decoration:none}
-.sarr{font-size:11px;color:var(--t4);margin-left:3px;vertical-align:1px;font-weight:400}
-a.sn:hover .sarr{color:var(--info)}
+.sbuy{flex:none;width:14px;text-align:center;font-size:11px;color:var(--t4);text-decoration:none;align-self:center}
+a.sbuy:hover{color:var(--info)}
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;position:relative}   /* anchors the full-width boundary lines */
 .pgsub+.rhr{margin-top:18px}   /* the ruler breathes below the header (the old cards carried this gap) */
@@ -488,12 +487,13 @@ a.sn:hover .sarr{color:var(--info)}
   color:var(--t3);font-size:12px;font-style:italic;font-weight:700;cursor:pointer;
   vertical-align:middle;margin-top:-2px;padding:0;font-family:Georgia,serif}
 .infob:hover{background:var(--btn-h)}
-/* stack rows wrap the tip in .tipw so the bubble can anchor to the icon itself:
-   it opens right BESIDE the circled-i, vertically centred on it */
-.srow .tipw{margin-left:-4px;align-self:center;position:relative;display:inline-flex}
+/* stack rows wrap the tip in .tipw — a fixed slot on the right so the tips align
+   into a column; the bubble anchors to the icon and opens to its LEFT on hover */
+.srow .tipw{flex:none;width:18px;justify-content:center;align-self:center;position:relative;display:inline-flex}
 .tipw .infob{margin:0}
-.tipw .exinfo{top:50%;right:auto;left:calc(100% + 8px);transform:translateY(-50%);
+.tipw .exinfo{top:50%;left:auto;right:calc(100% + 8px);transform:translateY(-50%);
   width:max-content;max-width:230px}
+.tipw:hover .exinfo{display:block}
 /* the info bubble is a compact popover TUCKED INTO THE TOP-RIGHT CORNER of its
    anchor (the card for exercises, the row for stack items) — floating over
    whatever sits there rather than spanning or displacing content */
@@ -1277,15 +1277,15 @@ function renderPage(p){
         (c.note?`<div class="cnote">${esc(c.note)}</div>`:'')+
         items.map(s=>{
           const dead=s.status==='stopped'||s.status==='dropped';
-          const nm=s.url
-            ? `<a class="sn lnk" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}<span class="sarr">&#8599;</span></a>`
-            : `<span class="sn">${esc(s.name)}</span>`;
           return `<div class="srow${dead?' off':''}">`+
-            nm+
-            (s.info?`<span class="tipw"><button class="infob" title="${esc(s.info)}" aria-label="Details" onclick="tip(this)">i</button>`+
-                    `<div class="exinfo">${esc(s.info)}</div></span>`:'')+
-            `<span class="sfill"></span>`+   // spacer: the dose flushes right into a shared column
+            `<span class="sn">${esc(s.name)}</span>`+
+            `<span class="sfill"></span>`+   // spacer: the trailing columns flush right
             (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+   // no status badges: the sections carry it
+            (s.info?`<span class="tipw"><button class="infob" aria-label="${esc(s.name)} details">i</button>`+
+                    `<div class="exinfo">${esc(s.info)}</div></span>`
+                   :`<span class="tipw"></span>`)+   // reserved slot: tips align into a column
+            (s.url?`<a class="sbuy" href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="Buy ${esc(s.name)}">&#8599;</a>`
+                  :`<span class="sbuy"></span>`)+   // reserved slot: the ↗ column stays aligned
           `</div>`;}).join('')+`</div>`;
     });
     h+=cardRow(CARE,'wide');   // the dental/face protocol cards close the page
