@@ -159,8 +159,8 @@ window.BLOODWORK =
     "After dinner:\n1% retinol → night cream → petroleum (Vaseline)",
     "Full body hydrating cream after shower"
    ]},
-   {"t": "Weekly", "items": [
-    "Instead of retinol:\nglycolic acid 7%",
+   {"t": "Weekly (Once)", "items": [
+    "Instead of retinol: glycolic acid 7%",
     "Microneedling 1mm, face + scalp\nNo retinols or acids for 48h!"
    ]}
   ]}
