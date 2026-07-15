@@ -24,7 +24,7 @@ window.BLOODWORK =
   "subject": {
    "sex": "male",
    "country": "France",
-   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes; one Brazil nut/day. Huel Black: 90g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
+   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes; one Brazil nut/day. Huel Black: 100g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
    "supervision": "none"
   },
   "stack": "Moved to the STACK block below — structured, with dose, status, category, meal slot and purchase URL. STACK is the single source of truth for supplements; do not re-list them here.",
@@ -243,7 +243,7 @@ window.BLOODWORK =
   "eveningAt": "21:00",
   "meals": [
    {"id": "presnack", "t": "Pre-workout snack", "at": "07:15", "items": [
-    "90g Huel Black",
+    "100g Huel Black",
     "Two bananas",
     "Brazil nut"
    ]},
