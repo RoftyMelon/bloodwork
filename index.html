@@ -423,7 +423,7 @@ html:not([data-page=markers]) .swap{overflow:visible}
    stretches breaks the ruler silently. */
 .rcell{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding:12px 0 0}
 .rhr.multi .rcell{padding-top:6px}   /* 6 + 28 + 1 + 28 = 63: inside one 64px cell */
-.rhr.multi:not(.rprop) .rev+.rev{margin-top:1px}   /* centres the middle moment between its neighbours */
+.rhr.multi:not(.rprop) .rev+.rev{margin-top:-1px}   /* centres the middle moment between its neighbours */
 /* sub-hour rows: events sit at their real minutes; hairlines cut the fractions */
 .rhr.rprop .rcell{position:relative;padding:0}
 .rhr.rprop .rev{position:absolute;left:0;right:0;padding:0}
