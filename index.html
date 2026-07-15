@@ -114,7 +114,7 @@ td.boot span{color:var(--t3);font-size:15px}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 .topline{display:flex;align-items:flex-start;gap:10px}
-.bar{flex:1;min-width:0;display:flex;gap:6px;row-gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:2px}
+.bar{flex:1;min-width:0;display:flex;gap:6px;row-gap:2px;align-items:center;flex-wrap:wrap;margin-bottom:2px}
 .chips{display:contents}
 /* -5px lines the first link's LABEL up with the hamburger glyph above it: the 28px glyph
    sits centered in its 40px box (6px inset from the gutter), the label at -5px + 12px pad ≈ 7px.
@@ -310,7 +310,7 @@ td.pos{padding-right:14px}
 .top:hover{background:var(--frost-h);color:var(--txt)}
 
 /* the categories navigate, they do not filter */
-.nav{font-family:inherit;font-size:15px;font-weight:500;padding:7px 12px;border-radius:99px;cursor:pointer;
+.nav{font-family:inherit;font-size:15px;font-weight:500;padding:5px 12px;border-radius:99px;cursor:pointer;
   background:none;border:.5px solid transparent;color:var(--t3);transition:.14s}
 .nav:hover{background:var(--btn);border-color:var(--btn-b);color:var(--txt);transform:none}
 
@@ -533,7 +533,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
      so changing it here moves both, and they cannot drift apart. */
   :root{--thh:26px}
   .topbar{padding-top:8px}
-  .bar{margin-bottom:2px;row-gap:4px}
+  .bar{margin-bottom:2px;row-gap:0}
   .chip{padding:8px 13px;font-size:15.5px}
   .chip .cn{margin-left:5px;font-size:13px}
   .srch{width:34px;height:34px}
@@ -542,7 +542,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
      16px. 16px exactly is the threshold that leaves the viewport alone. */
   .srch input{font-size:16px}
   button.ic{width:34px;height:34px}
-  .nav{padding:6px 12px;font-size:15px}
+  .nav{padding:5px 12px;font-size:15px}
   /* The toggle leaves the flex row and pins to the top-right, overlaying row 1's slack
      (the .swap wrapper is flex:1, so it owns row 1 and pushes the TOC to its own row;
      row-1 content is width-budgeted at <=430px to clear the toggle). */
