@@ -90,7 +90,7 @@ button.solid{background:var(--sol);color:var(--sol-t);border-color:transparent;f
 button.solid:hover{opacity:.9;background:var(--sol)}
 button.warn{color:var(--out);border-color:var(--out);background:transparent}
 button.warn:hover{background:var(--out);color:#fff}
-button.ic{padding:0;width:46px;height:46px;border-radius:50%;flex:none;
+button.ic{padding:0;width:40px;height:40px;border-radius:50%;flex:none;
   display:flex;align-items:center;justify-content:center;color:var(--t2)}
 button.ic:hover{color:var(--txt)}
 
@@ -103,8 +103,8 @@ button.ic:hover{color:var(--txt)}
 .orbit-disc{position:absolute;inset:0;transform-origin:50% 104%}
 .orbit-layer{position:absolute;inset:0}
 .orbit-layer.sun-side{transform:rotate(180deg);transform-origin:50% 104%}
-.icon-moon{position:absolute;left:calc(50% - 12px);top:calc(50% - 12px)}
-.icon-sun{position:absolute;left:calc(50% - 14px);top:calc(50% - 14px)}
+.icon-moon{position:absolute;left:calc(50% - 10px);top:calc(50% - 10px)}
+.icon-sun{position:absolute;left:calc(50% - 12px);top:calc(50% - 12px)}
 .orbit-disc,.icon-moon,.icon-sun{transition:transform .85s cubic-bezier(.55,.05,.22,1)}
 button:focus-visible{outline:2px solid var(--info);outline-offset:2px}
 
@@ -555,13 +555,13 @@ li.open .exinfo,.srow.open .exinfo{display:block}
   /* iOS Safari auto-zooms the page when focusing an input whose font-size is under
      16px. 16px exactly is the threshold that leaves the viewport alone. */
   .srch input{font-size:16px}
-  button.ic{width:44px;height:44px}
+  button.ic{width:40px;height:40px}
   .nav{padding:5px 12px;font-size:15px}
   /* The toggle leaves the flex row and pins to the top-right, overlaying row 1's slack
      (the .swap wrapper is flex:1, so it owns row 1 and pushes the TOC to its own row;
      row-1 content is width-budgeted at <=430px to clear the toggle). */
   .topline{display:block}
-  button.ic{position:absolute;top:6px;right:var(--gut,10px)}   /* centred on the pills row */
+  button.ic{position:absolute;top:8px;right:var(--gut,10px)}   /* centred on the pills row */
   /* The section bar is PINNED the whole time you're inside a section, so its height is
      permanently spent. Drop the marker count and tighten it: 60px -> 32px. */
   tr.grp .ghd{padding:5px 10px 6px;gap:9px}
@@ -594,7 +594,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
   .pgbtn{width:44px;height:44px}
   .pgnav{width:44px}                          /* the collapse animates from the 38px button */
   .ptabs{margin-right:12px}                   /* tight: all five tabs should FIT, not scroll */
-  .swap{padding-right:52px}                   /* scrolled pills end clear of the toggle too */
+  .swap{padding-right:48px}                   /* scrolled pills end clear of the toggle too */
   .pt{font-size:16px;padding:8px 8px}
   .pgh{font-size:24px}
   .rht{width:56px}
@@ -667,12 +667,12 @@ try{if(matchMedia('(prefers-color-scheme: dark)').matches){
       <span class="orbit">
         <span class="orbit-disc" id="odisc">
           <span class="orbit-layer">
-            <svg class="icon-moon" id="omoon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            <svg class="icon-moon" id="omoon" width="20" height="20" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           </span>
           <span class="orbit-layer sun-side">
-            <svg class="icon-sun" id="osun" width="28" height="28" viewBox="0 0 24 24" fill="none"
+            <svg class="icon-sun" id="osun" width="24" height="24" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="4.6"/>
               <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
