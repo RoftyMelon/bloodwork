@@ -24,7 +24,7 @@ window.BLOODWORK =
   "subject": {
    "sex": "male",
    "country": "France",
-   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes; one Brazil nut/day. Huel Black: 100g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
+   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes. Huel Black: 100g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
    "supervision": "none"
   },
   "stack": "Moved to the STACK block below — structured, with dose, status, category, meal slot and purchase URL. STACK is the single source of truth for supplements; do not re-list them here.",
@@ -109,7 +109,6 @@ window.BLOODWORK =
    {"id": "omega3", "name": "Omega-3", "dose": "3g EPA + 1.5g DHA", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": "Omega-3 (3g EPA, 1.5g DHA)"},
    {"id": "collagenc", "name": "Collagen peptides (low-MW)", "dose": "2g", "info": "~500 Da, ~80% tripeptides — the skin-signalling hydrolysate, with vitamin C. Glycine covers the amino substrate.", "cat": "skin", "status": "planned", "when": null, "url": "https://www.sunday.de/en/collagen-powder-sunglow-luxe-plus-c.html", "dec": "Glycine 12g + taurine + collagen"},
    {"id": "ha", "name": "Hyaluronic acid", "dose": "200mg", "cat": "skin", "status": "planned", "when": null, "url": null, "dec": null},
-   {"id": "brazilnut", "name": "Brazil nut", "dose": "1 per day", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": null},
    {"id": "mglthr", "name": "Magnesium L-threonate", "dose": "2000mg", "info": "150mg elemental", "cat": "essentials", "status": "planned", "when": "evening", "url": null, "dec": "Magnesium L-threonate"},
    {"id": "minoxidil", "name": "Minoxidil (topical)", "dose": "5-10%, 1mL 2x/day", "cat": "hair", "status": "taking", "when": null, "url": null, "dec": null},
    {"id": "finasteride", "name": "Finasteride (topical)", "dose": "0.1%, 1mL 2x/day", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": "Finasteride (topical) 0.1% - 1mL",
@@ -249,8 +248,7 @@ window.BLOODWORK =
      "Minerals": [["Calcium","263 mg","33%"],["Phosphorus","394 mg","56%"],["Potassium","766 mg","38%"],["Chloride","179 mg","22%"],["Magnesium","96 mg","26%"],["Iron","9.8 mg","70%"],["Zinc","5 mg","50%"],["Copper","0.5 mg","50%"],["Manganese","1 mg","50%"],["Selenium","36 mcg","65%"],["Iodine","33 mcg","22%"],["Chromium","13 mcg","33%"],["Molybdenum","41 mcg","82%"]],
      "Other": [["Choline","131 mg"],["Omega-3 (ALA)","4.5 g"],["Omega-6","4.7 g"],["MCT","1.2 g"],["Caffeine","76 mg"],["Green tea","140 mg"],["Lutein","1.8 mg"],["Zeaxanthin","0.1 mg"],["B. coagulans","219 M"]]
     }},
-    {"n": "Two bananas", "info": {"Per 2 (~236 g)":[["Energy","210 kcal","11%"],["Carbs","54 g","21%"],["– sugars","29 g","32%"],["Fibre","6 g"],["Protein","2.6 g","5%"]],"Standouts":[["Potassium","845 mg","42%"],["B6","0.9 mg","64%"],["Vit C","20 mg","25%"],["Magnesium","64 mg","17%"]]}},
-    {"n": "Brazil nut", "info": {"Per nut (~5 g)": [["Energy","33 kcal","2%"],["Fat","3.4 g","5%"],["Protein","0.7 g","1%"],["Carbs","0.6 g"]], "Minerals": [["Selenium","~90 mcg","164%"],["Magnesium","19 mg","5%"],["Phosphorus","36 mg","5%"],["Copper","0.1 mg","10%"]]}}
+    {"n": "Two bananas", "info": {"Per 2 (~236 g)":[["Energy","210 kcal","11%"],["Carbs","54 g","21%"],["– sugars","29 g","32%"],["Fibre","6 g"],["Protein","2.6 g","5%"]],"Standouts":[["Potassium","845 mg","42%"],["B6","0.9 mg","64%"],["Vit C","20 mg","25%"],["Magnesium","64 mg","17%"]]}}
    ]},
    {"id": "brunch", "t": "Brunch", "at": "10:00", "items": [
     {"n": "200g mozzarella di bufala", "info": {"Per 200 g":[["Energy","550 kcal","28%"],["Protein","34 g","68%"],["Fat","44 g","63%"],["– saturates","30 g","150%"],["Salt","1 g","17%"]],"Minerals":[["Calcium","700 mg","88%"],["Phosphorus","700 mg","100%"],["Zinc","4 mg","40%"]]}},
