@@ -1282,9 +1282,10 @@ function renderPage(p){
             : `<span class="sn">${esc(s.name)}</span>`;
           return `<div class="srow${dead?' off':''}">`+
             nm+
-            (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+   // no status badges: the sections carry it
             (s.info?`<span class="tipw"><button class="infob" title="${esc(s.info)}" aria-label="Details" onclick="tip(this)">i</button>`+
                     `<div class="exinfo">${esc(s.info)}</div></span>`:'')+
+            `<span class="sfill"></span>`+   // spacer: the dose flushes right into a shared column
+            (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+   // no status badges: the sections carry it
           `</div>`;}).join('')+`</div>`;
     });
     h+=cardRow(CARE,'wide');   // the dental/face protocol cards close the page
