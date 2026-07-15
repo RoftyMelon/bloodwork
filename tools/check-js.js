@@ -141,8 +141,9 @@ setTimeout(()=>{
   catch(e){ ok('training groups',false,e.message); }
   // every meal card embeds a derived Supps sub-section (the evening card's title IS its list)
   try{ setPage('diet');
-    ok(`diet embeds ${DATA.DIET.meals.length+1} Supplements sub-sections`,
-      count(n.pages.innerHTML,'cgrp')===DATA.DIET.meals.length+1,
+    const timed=DATA.DIET.meals.filter(m=>m.at).length;
+    ok(`diet embeds ${timed+1} Supplements sub-sections`,
+      count(n.pages.innerHTML,'cgrp')===timed+1,
       count(n.pages.innerHTML,'cgrp')+' sections');
     const evn=DATA.STACK.items.filter(x=>x.when==='evening'&&(x.status==='taking'||x.status==='planned')).length;
     const shown=(n.pages.innerHTML.match(/<b>Evening<\/b>/g)||[]).length;

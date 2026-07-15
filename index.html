@@ -1368,11 +1368,11 @@ function renderPage(p){
         ?`<ul>${list.map(x=>`<li>${esc(x.name)}${x.dose?`<span class="cwhen">${esc(x.dose)}</span>`:''}</li>`).join('')}</ul>`
         :`<div class="cempty">&mdash;</div>`;
     };
-    h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
+    h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.filter(m=>m.at).length} meals a day</div>`+
       `<div class="care col">`+DIET.meals.map(m=>
         `<div class="ccard"><b>${esc(m.t)}</b>${m.at?`<span class="cwhen">${esc(m.at)}</span>`:''}`+
         `<ul>${m.items.map(x=>x==='---'?'<li class="crs" aria-hidden="true"></li>':`<li>${esc(x)}</li>`).join('')}</ul>`+
-        `<div class="cgrp">Supplements</div>`+supps(m.id)+`</div>`).join('')+
+        (m.at?`<div class="cgrp">Supplements</div>`+supps(m.id):'')+`</div>`).join('')+
       `<div class="ccard"><b>Evening</b><div class="cgrp">Supplements</div>`+supps('evening')+`</div>`+
       `</div>`;
     if(DIET.notes&&DIET.notes.length)
