@@ -1287,7 +1287,7 @@ function renderPage(p){
             const list=STACK.items.filter(s=>s.status==='taking'&&s.when===r.slot);
             if(list.length)sup=`<div class="rsup">${list.map(s=>`<span class="rs">${esc(s.name)}${s.dose?' · '+esc(s.dose):''}</span>`).join('')}</div>`;
           }
-          const pos=prop?` style="top:calc(var(--hh)*${(spans[i].sm+spans[i].em)/2} - 6px)"`:'';
+          const pos=prop?` style="top:calc(var(--hh)*${(spans[i].sm+spans[i].em)/2} - ${spans[i].sm>0?7:6}px)"`:'';
           return `<div class="rev"${pos}><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div>${sup}</div></div>`;
         }).join('')+`</div></div>`;
       hr++;
