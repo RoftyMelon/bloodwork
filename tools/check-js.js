@@ -53,7 +53,8 @@ setTimeout(()=>{
     if(b){tallN++;_hr=Math.min(parseInt(b.until),_hEnd+1);continue;}
     cardN+=evs.length;_hr++;
   }
-  const want={stack:['srow',DATA.STACK.items.length],
+  const want={prescription:['srow',DATA.PRESCRIPTION.items.length],
+    stack:['srow',DATA.STACK.items.length],
     routine:['rev',R0.length],   // every entry renders one row now — blocks included
     training:['ccard',DATA.TRAINING.cards.length],
     diet:['ccard',DATA.DIET.meals.length+1]};   // meal cards + the standalone Evening supps card

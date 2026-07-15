@@ -643,6 +643,7 @@ try{if(matchMedia('(prefers-color-scheme: dark)').matches){
     <div class="swap" id="swap">
     <nav class="ptabs" id="ptabs" aria-label="Pages">
       <button class="pt on" data-pg="markers" onclick="setPage('markers')">Markers</button>
+      <button class="pt" data-pg="prescription" onclick="setPage('prescription')">Prescription</button>
       <button class="pt" data-pg="stack" onclick="setPage('stack')">Stack</button>
       <button class="pt" data-pg="diet" onclick="setPage('diet')">Diet</button>
       <button class="pt" data-pg="routine" onclick="setPage('routine')">Routine</button>
@@ -705,7 +706,7 @@ document.write('<script src="./bloodwork.js'+(location.search||'')+'"><\/script>
 // ---- DATA LIVES IN bloodwork.json ----
 // One source of truth. The dashboard reads it; so does any AI you hand it to.
 // To add a draw, edit that file. Never edit data in here.
-let MARK=[],DECS=[],CATS=[],DATA={draws:[]},STACK=null,ROUTINE=[],DIET=null,CARE=[],TRAINING=null;
+let MARK=[],DECS=[],CATS=[],DATA={draws:[]},STACK=null,ROUTINE=[],DIET=null,CARE=[],TRAINING=null,PRESCRIPTION=null;
 
 // Accent-folding, so "hemoglobine" finds "Hémoglobine". NFKD splits the accent off the
 // letter; the range then strips it. œ/æ have no decomposition, so they're folded by hand.
@@ -795,6 +796,10 @@ function audit(j){
       if(s.ev!=null&&!['strong','moderate','weak'].includes(s.ev))bad.push(`STACK "${s.name}": ev "${s.ev}" is not strong/moderate/weak`);
     });
   }
+  if(j.PRESCRIPTION){
+    if(!Array.isArray(j.PRESCRIPTION.items))bad.push('PRESCRIPTION.items must be an array (empty is fine)');
+    else j.PRESCRIPTION.items.forEach(x=>{if(typeof x!=='string')bad.push('PRESCRIPTION items are strings');});
+  }
   if(j.ROUTINE){
     let prev='';
     j.ROUTINE.forEach(r=>{
@@ -840,7 +845,7 @@ function boot(j,cache){
     return;                                   // refuse to render rather than render a lie
   }
   MARK=j.MARK; DECS=j.DECS; CATS=j.CATS; DATA=j.DATA;
-  STACK=j.STACK||null; ROUTINE=j.ROUTINE||[]; DIET=j.DIET||null; CARE=j.CARE||[]; TRAINING=j.TRAINING||null;
+  STACK=j.STACK||null; ROUTINE=j.ROUTINE||[]; DIET=j.DIET||null; CARE=j.CARE||[]; TRAINING=j.TRAINING||null; PRESCRIPTION=j.PRESCRIPTION||null;
   S.draws=DATA.draws;
   MARK.forEach(m=>m._h=norm(m.en+' '+m.fr+' '+m.us));   // search index, derived
   // Remember it, so opening from disk on a phone doesn't mean re-picking the file
@@ -1124,7 +1129,7 @@ function goto(cat){
    'markers' is the whole table experience, filters and all. The other three render
    into #pages from the STACK / ROUTINE / DIET blocks, and the table-only controls
    fold away via html[data-page] (see the CSS). Nothing here touches table geometry. */
-const PAGES={markers:'Markers',stack:'Stack',routine:'Routine',diet:'Diet',training:'Training'};
+const PAGES={markers:'Markers',prescription:'Prescription',stack:'Stack',routine:'Routine',diet:'Diet',training:'Training'};
 let page='markers';
 document.documentElement.dataset.page=page;
 const PGEL=document.getElementById('pages'),
@@ -1212,7 +1217,13 @@ function renderPage(p){
     if(e.target.closest&&e.target.closest('.infob,.exinfo'))return;
     document.querySelectorAll('.ccard li.open,.srow.open').forEach(x=>x.classList.remove('open'))});
   let h='';
-  if(p==='stack'&&STACK){
+  if(p==='prescription'&&PRESCRIPTION){
+    const it=PRESCRIPTION.items;
+    h=`<div class="pgh">Prescription</div><div class="pgsub">${it.length} biomarker${it.length===1?'':'s'} to collect</div>`+
+      (it.length
+        ?`<div class="pgsec">`+it.map(x=>`<div class="srow"><span class="sn">${esc(x)}</span></div>`).join('')+`</div>`
+        :`<div class="cempty">&mdash;</div>`);
+  } else if(p==='stack'&&STACK){
     h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed</div>`;
     STACK.cats.forEach(c=>{
       const items=STACK.items.filter(s=>s.cat===c.id);
