@@ -1139,22 +1139,22 @@ const PGEL=document.getElementById('pages'),
 // themselves; a tab at either end reveals plainly. (.ptu after the last tab is
 // not a .pt, so the guard treats the last tab as edge.)
 function revealTab(b){
+  // Every activation aims for the BOTH-ENDS state — a sliver of the first tab AND
+  // of the last tab on screen, so the strip always advertises what's hidden in
+  // either direction — then the ACTIVE tab's own visibility clamps the result.
+  // Works bidirectionally: coming back from Training slides the strip left again.
   const sc=PTABS,peek=28;
   const bl=b.offsetLeft,br=bl+b.offsetWidth;
   const nx=b.nextElementSibling,pv=b.previousElementSibling;
   const nb=nx&&nx.classList&&nx.classList.contains&&nx.classList.contains('pt')?peek:0;
   const pb=pv&&pv.classList&&pv.classList.contains&&pv.classList.contains('pt')?peek:0;
-  let x=sc.scrollLeft;
-  if(br+nb>x+sc.clientWidth)x=br+nb-sc.clientWidth;
-  if(bl-pb<x)x=Math.max(0,bl-pb);
-  // BIAS: keep a sliver of the LAST tab on-screen as a "there's more" hint,
-  // as far as possible without pushing the ACTIVE tab off (it always wins)
   const tabs=sc.querySelectorAll('.pt'),first=tabs[0],last=tabs[tabs.length-1];
-  if(last&&last!==b){
-    const need=last.offsetLeft+peek-sc.clientWidth;
-    const keepFirst=first.offsetLeft+first.offsetWidth-peek;   // Markers keeps a sliver too
-    if(need>x)x=Math.max(x,Math.min(need,bl,keepFirst));
-  }
+  const minX=Math.max(0,br+nb-sc.clientWidth);       // active (+ next peek) fully visible
+  const maxX=Math.max(0,bl-pb);                      // active (+ prev peek) fully visible
+  const need=last.offsetLeft+peek-sc.clientWidth;    // last tab peeks
+  const keepFirst=first.offsetLeft+first.offsetWidth-peek;   // first tab keeps a sliver
+  const t=Math.max(0,Math.min(need,keepFirst));      // the both-ends ideal
+  const x=Math.min(Math.max(t,minX),Math.max(maxX,minX));
   if(x!==sc.scrollLeft&&sc.scrollTo)sc.scrollTo({left:x,behavior:'smooth'});
 }
 function movePtu(){   // slide the shared underline under the active tab
