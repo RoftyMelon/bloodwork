@@ -1159,10 +1159,10 @@ function revealTab(b,instant){
   const tabs=sc.querySelectorAll('.pt'),first=tabs[0],last=tabs[tabs.length-1];
   const minX=Math.max(0,br+nb-sc.clientWidth);       // active (+ next peek) fully visible
   const maxX=Math.max(0,bl-pb);                      // active (+ prev peek) fully visible
-  // the both-ends anchor: park where the FIRST tab keeps exactly a sliver — that
-  // maximises how much of the LAST tab shows, and mid tabs always land here
+  // the both-ends anchor: park ONE PEEK in — the first tab loses just its first
+  // letters and the last tab shows through the glass; mid tabs always land here
   const keepFirst=first.offsetLeft+first.offsetWidth-peek;
-  const t=Math.max(0,keepFirst);
+  const t=Math.max(0,Math.min(peek,keepFirst));
   const x=Math.min(Math.max(t,minX),Math.max(maxX,minX));
   if(x!==sc.scrollLeft){
     // a strip revealed THIS frame drops smooth scrolls (Safari): set it instantly
