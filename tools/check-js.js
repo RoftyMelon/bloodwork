@@ -56,7 +56,7 @@ setTimeout(()=>{
   const want={stack:['srow',DATA.STACK.items.length],
     routine:['rev',R0.length],   // every entry renders one row now — blocks included
     training:['ccard',DATA.TRAINING.cards.length],
-    diet:['meal',DATA.DIET.meals.length]};
+    diet:['ccard',DATA.DIET.meals.length]};   // meals render as cards
   Object.entries(want).forEach(([p,[cls,n2]])=>{
     try{ setPage(p);
       ok(`page "${p}" renders ${n2} ${cls}`, count(n.pages.innerHTML,cls)===n2,

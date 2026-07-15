@@ -512,9 +512,7 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 .ccard li:last-child{border-bottom:none}
 .cempty{font-size:15px;color:var(--t4);padding:8px 0 2px}
 /* diet */
-.meal{margin-top:18px;max-width:380px}   /* rules END at the longest item ("Overnight Bjorg...") */
-.mfoods{margin:8px 0 0;padding:0;list-style:none}
-.mfoods li{font-size:16px;color:var(--t2);padding:7px 0;border-bottom:.5px solid var(--line2);line-height:1.45}
+.cwhen{margin-left:8px;font-size:13px;font-weight:450;color:var(--t4);font-variant-numeric:tabular-nums}
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
 .dnotes b{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--t3)}
 .dnotes ul{margin:6px 0 0;padding:0;list-style:none}
@@ -599,7 +597,11 @@ li.open .exinfo,.srow.open .exinfo{display:block}
 @media(min-width:901px){
   .care{flex-wrap:wrap;max-width:none;
     width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
-  .care.grid2{width:auto;max-width:634px}   /* 2 cards (310px) + gap: the 4 supp cards sit 2x2 */
+}
+/* the 2x2 supp grid holds until its right column would touch the screen edge
+   (634px grid + gutters), NOT until the general desktop breakpoint */
+@media(min-width:675px){
+  .care.grid2{flex-wrap:wrap;overflow-x:visible;width:auto;max-width:634px}
 }
 @media(max-width:430px){
   .chip{padding:8px 10px;font-size:14.5px}
@@ -1301,8 +1303,9 @@ function renderPage(p){
       cardRow(TRAINING.cards);
   } else if(p==='diet'&&DIET){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.length} meals a day</div>`+
-      DIET.meals.map(m=>`<div class="meal"><div class="pgst">${esc(m.t)}<small>${esc(m.at||'')}</small></div>`+
-        `<ul class="mfoods">${m.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('');
+      `<div class="care">`+DIET.meals.map(m=>
+        `<div class="ccard"><b>${esc(m.t)}</b>${m.at?`<span class="cwhen">${esc(m.at)}</span>`:''}`+
+        `<ul>${m.items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')+`</div>`;
     if(DIET.notes&&DIET.notes.length)
       h+=`<div class="dnotes"><b>NOTES</b><ul>${DIET.notes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`;
   }
