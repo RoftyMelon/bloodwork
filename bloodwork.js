@@ -28,7 +28,7 @@ window.BLOODWORK =
    "bodyfat": "~12%",
    "training": "daily resistance",
    "country": "France",
-   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes. Huel Black: 100g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
+   "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes. Huel Black: 90g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
    "supervision": "none"
   },
   "stack": "Moved to the STACK block below — structured, with dose, status, category, meal slot and purchase URL. STACK is the single source of truth for supplements; do not re-list them here.",
@@ -247,11 +247,11 @@ window.BLOODWORK =
   "eveningAt": "21:00",
   "meals": [
    {"id": "presnack", "t": "Pre-workout snack", "at": "07:15", "items": [
-    {"n": "100g Huel Black", "info": {
-     "Per 100g": [["Energy","438 kcal","22%"],["Protein","44 g","88%"],["Fat","18 g","26%"],["– saturates","4.2 g","21%"],["– monounsat.","3.9 g"],["– PUFA","9.5 g"],["Carbs","20 g","8%"],["– sugars","1.8 g","2%"],["Fibre","9.3 g"],["Salt","0.8 g","13%"]],
-     "Vitamins": [["A","197 mcg","25%"],["D","176 IU","88%"],["E","4.4 mg","37%"],["K","43 mcg","57%"],["C","66 mg","83%"],["Thiamin","0.24 mg","22%"],["Riboflavin","0.31 mg","22%"],["Niacin","3.5 mg","22%"],["B6","0.31 mg","22%"],["Pantoth.","1.3 mg","22%"],["Folate","88 mcg","44%"],["B12","0.9 mcg","35%"],["Biotin","13 mcg","26%"]],
-     "Minerals": [["Calcium","263 mg","33%"],["Phosphorus","394 mg","56%"],["Potassium","766 mg","38%"],["Chloride","179 mg","22%"],["Magnesium","96 mg","26%"],["Iron","9.8 mg","70%"],["Zinc","5 mg","50%"],["Copper","0.5 mg","50%"],["Manganese","1 mg","50%"],["Selenium","36 mcg","65%"],["Iodine","33 mcg","22%"],["Chromium","13 mcg","33%"],["Molybdenum","41 mcg","82%"]],
-     "Other": [["Choline","131 mg"],["Omega-3 (ALA)","4.5 g"],["Omega-6","4.7 g"],["MCT","1.2 g"],["Caffeine","76 mg"],["Green tea","140 mg"],["Lutein","1.8 mg"],["Zeaxanthin","0.1 mg"],["B. coagulans","219 M"]]
+    {"n": "90g Huel Black", "info": {
+     "Per 90g": [["Energy","400 kcal","20%"],["Protein","40 g","80%"],["Fat","17 g","24%"],["– saturates","4.0 g","20%"],["– monounsat.","3.8 g"],["– PUFA","9.4 g"],["Carbs","19 g","7%"],["– sugars","1.6 g","2%"],["Fibre","8.4 g"],["Salt","0.8 g","13%"]],
+     "Vitamins": [["A","180 mcg","23%"],["D","160 IU","80%"],["E","4.0 mg","33%"],["K","39 mcg","52%"],["C","60 mg","75%"],["Thiamin","0.22 mg","20%"],["Riboflavin","0.28 mg","20%"],["Niacin","3.2 mg","20%"],["B6","0.28 mg","20%"],["Pantoth.","1.2 mg","20%"],["Folate","80 mcg","40%"],["B12","0.80 mcg","32%"],["Biotin","12 mcg","24%"]],
+     "Minerals": [["Calcium","240 mg","30%"],["Phosphorus","360 mg","51%"],["Potassium","700 mg","35%"],["Chloride","164 mg","21%"],["Magnesium","88 mg","23%"],["Iron","9.0 mg","64%"],["Zinc","4.6 mg","46%"],["Copper","0.50 mg","50%"],["Manganese","0.90 mg","45%"],["Selenium","33 mcg","60%"],["Iodine","30 mcg","20%"],["Chromium","12 mcg","30%"],["Molybdenum","37 mcg","74%"]],
+     "Other": [["Choline","120 mg"],["Omega-3 (ALA)","4.0 g"],["Omega-6","4.2 g"],["MCT","1.1 g"],["Caffeine","68 mg"],["Green tea","130 mg"],["Lutein","1.6 mg"],["Zeaxanthin","0.1 mg"],["B. coagulans","200 M"]]
     }},
     {"n": "Two bananas", "info": {"Per 2 (~236 g)":[["Energy","210 kcal","11%"],["Carbs","54 g","21%"],["– sugars","29 g","32%"],["Fibre","6 g"],["Protein","2.6 g","5%"]],"Standouts":[["Potassium","845 mg","42%"],["B6","0.9 mg","64%"],["Vit C","20 mg","25%"],["Magnesium","64 mg","17%"]]}}
    ]},
