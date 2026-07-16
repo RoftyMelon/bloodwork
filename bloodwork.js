@@ -123,7 +123,7 @@ window.BLOODWORK =
    {"id": "tmg", "name": "TMG", "dose": "1000mg", "cat": "aminos", "status": "planned", "when": null, "url": null, "dec": "TMG 1000mg"},
    {"id": "garlic", "name": "AGE garlic", "dose": "2400mg", "cat": "antiox", "status": "planned", "when": null, "url": null, "dec": "AGE garlic 2400mg"},
    {"id": "curcumin", "name": "Curcumin", "dose": null, "cat": "antiox", "status": "planned", "when": null, "url": null, "dec": "Curcumin"},
-   {"id": "creatine", "name": "Creatine", "dose": "5g daily · up to 20g when sleep is poor", "info": "Base 5g in the Huel; poor-sleep weeks add +5g at brunch and +10g at dinner (20g total). Saturation-based — timing is flexible.", "cat": "sport", "status": "planned", "when": null, "url": null, "dec": "Creatine 5g"},
+   {"id": "creatine", "name": "Creatine", "dose": "5g", "info": "Up to 20g when sleep is poor — base 5g in the Huel, +5g brunch, +10g dinner. Saturation-based, so timing's flexible.", "cat": "sport", "status": "planned", "when": null, "url": null, "dec": "Creatine 5g"},
    {"id": "taurine", "name": "Taurine", "dose": "5g", "cat": "sport", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
    {"id": "boron", "name": "Boron", "dose": "5mg", "cat": "sport", "status": "planned", "when": null, "url": null, "dec": "Boron 5mg"},
    {"id": "tretinoin", "name": "Tretinoin / retinoic acid (topical)", "dose": "0.01%, 1mL", "cat": "hairlater", "status": "candidate", "when": null, "url": null, "dec": null},
