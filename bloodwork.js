@@ -103,7 +103,7 @@ window.BLOODWORK =
    {"id": "sport", "t": "Sport"},
    {"id": "hair", "t": "Hair loss"},
    {"id": "hairlater", "t": null, "note": "Potential additions to increase scalp absorption."},
-   {"id": "maylater", "t": "May add after 2nd blood test", "note": "Not committed — reweighed against the 2nd blood test, a few months after the stack starts. Rationale in each tip."}
+   {"id": "maylater", "t": "May add later", "note": "Not committed — reweighed against the 2nd blood test, a few months after the stack starts. Rationale in each tip."}
   ],
   "items": [
    {"id": "astax", "name": "Astaxanthin", "dose": "12mg 2x/day", "info": "Photoprotection (raises the UV-burn threshold) plus moisture and elasticity. Not colour — that's beta-carotene's job. 24mg/day, 12mg twice with fat. Above the EU cap but safe to 40mg; held pending proof it helps colour.", "cat": "skin", "status": "taking", "when": null, "url": null, "dec": null},
