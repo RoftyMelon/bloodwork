@@ -81,7 +81,7 @@ window.BLOODWORK =
  ],
  "DECS": [
   "AGE garlic 2400mg",
-  "Boron 5mg",
+  "Boron 10mg",
   "Creatine 5g",
   "Curcumin",
   "Finasteride (topical) 0.1% - 1mL",
@@ -89,9 +89,9 @@ window.BLOODWORK =
   "Huel",
   "Iodine 250mcg",
   "Magnesium L-threonate",
-  "NAC 2000mg",
+  "NAC 12g",
   "Omega-3 (800mg EPA, 450mg DHA)",
-  "TMG 1000mg",
+  "TMG 6g",
   "Vitamin D3 5000 IU + K2",
   "Zinc + copper"
  ],
@@ -118,14 +118,14 @@ window.BLOODWORK =
    {"id": "minoxidil", "name": "Minoxidil (topical)", "dose": "5-10%, 1mL 2x/day", "info": "Topical vasodilator for regrowth — barely absorbed (~1.4%), non-hormonal, so no blood marker tracks it. Not yet started.", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": null},
    {"id": "finasteride", "name": "Finasteride (topical)", "dose": "0.1%, 1mL 2x/day", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": "Finasteride (topical) 0.1% - 1mL",
     "info": "Blocks DHT, the driver of hair loss — the core of the protocol. Topical 0.1% keeps systemic exposure low, but it's still finasteride: watch libido, erections and mood (depression included) for the first 6 months."},
-   {"id": "glycine", "name": "Glycine", "dose": "12g", "info": "12g is a metabolic/glutathione dose, not the 3g studies use for sleep — so it implies a GlyNAC or longevity aim. But GlyNAC runs glycine:NAC 1:1 (~2.4-3.6g each), and your NAC is 2g. Pin the goal, then rebalance.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
-   {"id": "nac", "name": "NAC", "dose": "2000mg", "info": "Glutathione/antioxidant precursor; 2g is a standard dose. But it's the wrong ratio for GlyNAC, which is 1:1 (your 12g glycine : 2g NAC is 6:1). Also raises homocysteine — TMG offsets. Parked until the goal and oxidative markers are set.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "NAC 2000mg"},
-   {"id": "tmg", "name": "TMG", "dose": "1000mg", "info": "Methyl donor that lowers homocysteine. 1g is modest — Hcy trials use 3-6g (higher risks a betaine LDL bump), power studies 2.5g. Pending homocysteine, the number that justifies it — note NAC raises Hcy, and B-vitamins do the same job.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "TMG 1000mg"},
+   {"id": "glycine", "name": "Glycine", "dose": "12g", "info": "12g is a glutathione/GlyNAC dose (sleep studies use just 3g). Now paired 1:1 with 12g NAC — near the Sekhar efficacy dose for your weight (~8g glycine). Glycine's very safe and cheap, so the slight overshoot is fine.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
+   {"id": "nac", "name": "NAC", "dose": "12g", "info": "Glutathione/antioxidant precursor. 12g matches your glycine 1:1 — near the Sekhar GlyNAC dose for your weight (~11g NAC). Raises homocysteine, which the TMG offsets. Parked until the goal and oxidative markers are set.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "NAC 12g"},
+   {"id": "tmg", "name": "TMG", "dose": "6g", "info": "Methyl donor that lowers homocysteine — 6g is the effective dose, sized to offset the homocysteine your 12g NAC raises. Catch: betaine above ~4g can nudge LDL up, so watch it. Pending homocysteine, the number that justifies the loop.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "TMG 6g"},
    {"id": "garlic", "name": "AGE garlic", "dose": "2400mg", "info": "Aged garlic extract — modest BP (~5-8 mmHg in hypertensives) and lipid effects, plus slowed coronary plaque. 2400mg is the plaque-trial dose (BP works at 600-1200mg). Parked: the payoff is for elevated BP or CVD risk, not a fit 31-yo — revisit if your lipids or BP give it a job.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "AGE garlic 2400mg"},
    {"id": "curcumin", "name": "Curcumin", "dose": null, "info": "Anti-inflammatory (NF-κB). No dose set on purpose — raw curcumin barely absorbs, so the form (piperine, Meriva, liposomal) matters more than the mg. Parked until an inflammatory marker (hs-CRP) runs high enough to target, then pick a bioavailable form.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Curcumin"},
    {"id": "creatine", "name": "Creatine", "dose": "5g", "info": "Strength, power, likely cognition. 5g/day, up to 20g on poor-sleep weeks. Saturation-based, so timing's flexible.", "cat": "sport", "status": "planned", "when": null, "url": "https://amzn.eu/d/09MG0JOC", "dec": "Creatine 5g"},
    {"id": "taurine", "name": "Taurine", "dose": "5g", "info": "5g is a longevity dose (exercise studies use 1-3g), extrapolated from the 2023 mouse-lifespan paper. Human evidence is observational, not trial — cheap and safe to 10g, but unproven. Parked until human data or a clear reason.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
-   {"id": "boron", "name": "Boron", "dose": "5mg", "info": "Lowers SHBG, so more testosterone stays free (and drops estradiol). But the evidence is at 10mg (free-T +28% over a week) — your 5mg is half that. Modest, and unclear at your age with normal T. Parked until T/SHBG bloods justify it.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Boron 5mg"},
+   {"id": "boron", "name": "Boron", "dose": "10mg", "info": "Lowers SHBG, so more testosterone stays free (and drops estradiol). 10mg is the studied dose (free-T +28% over a week). Modest, and unclear at your age with normal T — parked until T/SHBG bloods justify it.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Boron 10mg"},
    {"id": "tretinoin", "name": "Tretinoin / retinoic acid (topical)", "dose": "0.01%, 1mL", "info": "Boosts minoxidil by increasing follicular absorption. Candidate, not committed.", "cat": "hairlater", "status": "candidate", "when": null, "url": null, "dec": null},
    {"id": "ketoconazole", "name": "Ketoconazole (topical)", "dose": "2%, 1mL 3x/week", "info": "Nizoral shampoo, off-label for hair — lowers scalp DHT and calms inflammation. Modest add-on, not committed.", "cat": "hairlater", "status": "candidate", "when": null, "url": null, "dec": null}
   ]
@@ -291,7 +291,7 @@ window.BLOODWORK =
    "cat": "vitmin",
    "dec": [
     "Vitamin D3 5000 IU + K2",
-    "Boron 5mg",
+    "Boron 10mg",
     "Huel"
    ],
    "en": "Vitamin D (25-OH)",
@@ -488,8 +488,8 @@ window.BLOODWORK =
    "id": "hcy",
    "cat": "vitmin",
    "dec": [
-    "NAC 2000mg",
-    "TMG 1000mg"
+    "NAC 12g",
+    "TMG 6g"
    ],
    "en": "Homocysteine",
    "fr": "Homocystéine",
@@ -678,7 +678,7 @@ window.BLOODWORK =
    "id": "b12",
    "cat": "vitmin",
    "dec": [
-    "TMG 1000mg",
+    "TMG 6g",
     "Huel"
    ],
    "en": "Vitamin B12",
@@ -712,7 +712,7 @@ window.BLOODWORK =
    "id": "fol",
    "cat": "vitmin",
    "dec": [
-    "TMG 1000mg",
+    "TMG 6g",
     "Huel"
    ],
    "en": "Folate",
@@ -1278,7 +1278,7 @@ window.BLOODWORK =
    "cat": "liver",
    "dec": [
     "Curcumin",
-    "NAC 2000mg"
+    "NAC 12g"
    ],
    "en": "ALT",
    "fr": "ALAT (TGP)",
@@ -1308,7 +1308,7 @@ window.BLOODWORK =
    "cat": "liver",
    "dec": [
     "Curcumin",
-    "NAC 2000mg"
+    "NAC 12g"
    ],
    "en": "AST",
    "fr": "ASAT (TGO)",
@@ -1462,7 +1462,7 @@ window.BLOODWORK =
    "id": "tt",
    "cat": "horm",
    "dec": [
-    "Boron 5mg",
+    "Boron 10mg",
     "Finasteride (topical) 0.1% - 1mL",
     "Zinc + copper"
    ],
@@ -1497,7 +1497,7 @@ window.BLOODWORK =
    "id": "ft",
    "cat": "horm",
    "dec": [
-    "Boron 5mg",
+    "Boron 10mg",
     "Finasteride (topical) 0.1% - 1mL"
    ],
    "en": "Free testosterone",
@@ -1531,7 +1531,7 @@ window.BLOODWORK =
    "id": "shbg",
    "cat": "horm",
    "dec": [
-    "Boron 5mg",
+    "Boron 10mg",
     "Finasteride (topical) 0.1% - 1mL"
    ],
    "en": "SHBG",
@@ -1561,7 +1561,7 @@ window.BLOODWORK =
    "id": "e2",
    "cat": "horm",
    "dec": [
-    "Boron 5mg",
+    "Boron 10mg",
     "Finasteride (topical) 0.1% - 1mL"
    ],
    "en": "Estradiol",
