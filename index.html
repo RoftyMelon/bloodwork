@@ -395,7 +395,7 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .pgsp{padding-top:8px}   /* a subtitle sitting under a bordered .pgst needs its own air */
 .pgst.mini{font-size:12.5px}                       /* footnote-grade section */
 .srow.lite{padding:7px 0}
-.srow.lite .sn{font-size:15px;font-weight:450;color:var(--t2)}
+.srow.lite .sn{font-size:15px;font-weight:450;color:var(--t2);flex:1;min-width:0}
 /* THE MEASURE RULE: rules and rows hug their CONTENT, never the 780px container.
    Text-list sections (stack rows, diet meals, section headers) cap at 620px, so
    separators end near the text and right-anchored links stay near the names. */
@@ -535,6 +535,8 @@ a.sbuy:hover{color:var(--info)}
 .ccard ul{margin:4px 0 8px;padding:0;list-style:none}
 .ccard ul:last-child{margin-bottom:0}
 .ccard li{font-size:16px;color:var(--txt);line-height:1.45;padding:2px 0;border-bottom:.5px solid var(--line2)}
+.ccard li.drow{display:flex;align-items:baseline}
+.drow .dfn{flex:1;min-width:0}
 .ccard li:last-child{border-bottom:none}
 .ccard li.crs{padding:0;height:9px;border-bottom:none}   /* a "---" item = course gap */
 .cempty{font-size:15px;color:var(--t4);padding:8px 0 2px}
@@ -1407,7 +1409,7 @@ function renderPage(p){
     h=`<div class="pgh">Diet</div><div class="pgsub">${DIET.meals.filter(m=>m.at).length} meals a day</div>`+
       `<div class="care col">`+DIET.meals.filter(m=>m.at).map(m=>
         `<div class="ccard"><b>${esc(m.t)}</b><span class="cwhen">${esc(m.at)}</span>`+
-        `<ul>${m.items.map(x=>x==='---'?'<li class="crs" aria-hidden="true"></li>':`<li>${esc(typeof x==='object'?x.n:x)}${foodTip(x)}</li>`).join('')}</ul>`+
+        `<ul>${m.items.map(x=>x==='---'?'<li class="crs" aria-hidden="true"></li>':`<li class="drow"><span class="dfn">${esc(typeof x==='object'?x.n:x)}</span>${foodTip(x)}</li>`).join('')}</ul>`+
         `<div class="cgrp">Supplements</div>`+supps(m.id)+`</div>`).join('')+
       `<div class="ccard"><b>Evening</b>${DIET.eveningAt?`<span class="cwhen">${esc(DIET.eveningAt)}</span>`:''}<div class="cgrp">Supplements</div>`+supps('evening')+`</div>`+
       `</div>`+
