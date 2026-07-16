@@ -505,6 +505,7 @@ a.sbuy:hover{color:var(--info)}
   background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 11px 9px;
   font-size:13.5px;color:var(--t2);line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.16)}
 .exn:hover+.exinfo,.infob:hover+.exinfo{display:block}
+.infob.pin+.exinfo{display:block;pointer-events:auto}   /* click-pinned: persists past hover, and is selectable */
 .exinfo.tbl{width:min(94vw,340px);max-width:min(94vw,340px);padding:8px 11px 9px}
 .ntab{columns:2;column-gap:15px;font-size:11px;line-height:1.38}
 .nsecw{break-inside:avoid}
@@ -1062,6 +1063,8 @@ function det(row,id,cols,n,tri){
   requestAnimationFrame(()=>w.classList.add('open'));
 }
 
+function pinTip(btn,e){e.stopPropagation();const on=btn.classList.contains('pin');document.querySelectorAll('.infob.pin').forEach(b=>b.classList.remove('pin'));if(!on)btn.classList.add('pin');}
+document.addEventListener('click',e=>{if(!e.target.closest('.exinfo'))document.querySelectorAll('.infob.pin').forEach(b=>b.classList.remove('pin'));});
 function render(){
   const ds=chron(), n=ds.length;   // oldest -> newest: this row IS the chart's x-axis
   const cur={};MARK.forEach(m=>cur[m.id]=latest(m));
@@ -1261,7 +1264,7 @@ function renderPage(p){
         sets=`<div class="exsets">`+x.sets.map(s=>`<span class="exset"><i>${s[0]==null?'&mdash;':esc(String(s[0]))+'kg'}</i><b>${esc(String(s[1]))}</b></span>`).join('')+`</div>`;
       }
     }
-    const tip=x.info?`<button class="infob" aria-label="${esc(x.n)} details">i</button>`:'';
+    const tip=x.info?`<button class="infob" onclick="pinTip(this,event)" aria-label="${esc(x.n)} details">i</button>`:'';
     const detail=x.info?`<div class="exinfo">${esc(x.info)}</div>`:'';
     return `<li><div class="exn"><span class="exnm">${esc(x.n)}${tip}</span>${kgTag}</div>${detail}${sets}</li>`;};
   const cardRow=(list,cls)=>!list.length?'':`<div class="care${cls?' '+cls:''}">`+list.map(c=>{
@@ -1294,7 +1297,7 @@ function renderPage(p){
             (s.url?`<a class="sbuy" href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="Buy ${esc(s.name)}">&#8599;</a>`:'')+   // ↗ hugs the name
             `<span class="sfill"></span>`+   // spacer: the trailing columns flush right
             (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+   // no status badges: the sections carry it
-            (s.info?`<span class="tipw"><button class="infob" aria-label="${esc(s.name)} details">i</button>`+
+            (s.info?`<span class="tipw"><button class="infob" onclick="pinTip(this,event)" aria-label="${esc(s.name)} details">i</button>`+
                     `<div class="exinfo">${esc(s.info)}</div></span>`
                    :`<span class="tipw"></span>`)+   // reserved slot: tips align into a column
           `</div>`;}).join('')+`</div>`;
@@ -1410,7 +1413,7 @@ function renderPage(p){
       if(typeof x!=='object'||!x.info)return '';
       const info=x.info, body=typeof info==='string'?esc(info)
         :`<div class="ntab">`+Object.entries(info).map(([sec,rows])=>`<div class="nsecw"><div class="nsec">${esc(sec)}</div>`+rows.map(r=>`<div class="nrow"><span class="nlab">${esc(r[0])}</span><span class="nval">${esc(r[1])}${r[2]?` <span class="npct">${esc(r[2])}</span>`:''}</span></div>`).join('')+`</div>`).join('')+`</div>`;
-      return `<button class="infob" aria-label="${esc(x.n)} details">i</button><div class="exinfo${typeof info==='string'?'':' tbl'}">${body}</div>`;
+      return `<button class="infob" onclick="pinTip(this,event)" aria-label="${esc(x.n)} details">i</button><div class="exinfo${typeof info==='string'?'':' tbl'}">${body}</div>`;
     };
     const kcalTag=m=>{                                   // approximate meal total, summed live from each food's Energy row
       let t=0;
