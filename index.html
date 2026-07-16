@@ -1075,7 +1075,7 @@ function det(row,id,cols,n,tri){
 
 function pinTip(btn,e){e.stopPropagation();const on=btn.classList.contains('pin');document.querySelectorAll('.infob.pin').forEach(b=>b.classList.remove('pin'));if(!on)btn.classList.add('pin');}
 document.addEventListener('click',e=>{if(!e.target.closest('.exinfo'))document.querySelectorAll('.infob.pin').forEach(b=>b.classList.remove('pin'));});
-function copyFr(btn){const t=(NEXTDRAW.items||[]).map(x=>x.fr).join('\n');navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copié ✓';setTimeout(()=>{btn.textContent='Copier la liste';},1500);}).catch(()=>{btn.textContent='—';});}
+function copyNd(btn){const t=(NEXTDRAW.items||[]).map(x=>x.en+' — '+x.fr).join('\n');navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copié ✓';setTimeout(()=>{btn.textContent='Copier (EN + FR)';},1500);}).catch(()=>{btn.textContent='—';});}
 function render(){
   const ds=chron(), n=ds.length;   // oldest -> newest: this row IS the chart's x-axis
   const cur={};MARK.forEach(m=>cur[m.id]=latest(m));
@@ -1290,8 +1290,8 @@ function renderPage(p){
     const it=NEXTDRAW.items;
     h=`<div class="pgh">Next draw</div><div class="pgsub">${it.length} biomarker${it.length===1?'':'s'} to collect</div>`+
       (it.length
-        ?`<div class="pgsec ndlist"><div class="ndhead"><span class="sn">Marqueur</span><span class="frn">Pour le labo (FR)</span></div>`+it.map(x=>`<div class="srow"><span class="sn">${esc(x.en)}</span><span class="frn">${esc(x.fr)}</span></div>`).join('')+`</div>`
-         +`<button class="frcopy" onclick="copyFr(this)">Copier la liste FR</button>`
+        ?`<div class="pgsec ndlist"><div class="ndhead"><span class="sn">Marker</span><span class="frn">Pour le labo (FR)</span></div>`+it.map(x=>`<div class="srow"><span class="sn">${esc(x.en)}</span><span class="frn">${esc(x.fr)}</span></div>`).join('')+`</div>`
+         +`<button class="frcopy" onclick="copyNd(this)">Copier (EN + FR)</button>`
         :`<div class="cempty">&mdash;</div>`);
   } else if(p==='stack'&&STACK){
     h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed · Daily doses</div>`;
