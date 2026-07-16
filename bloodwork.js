@@ -23,6 +23,10 @@ window.BLOODWORK =
   ],
   "subject": {
    "sex": "male",
+   "height": "187 cm",
+   "weight": "80 kg",
+   "bodyfat": "~12%",
+   "training": "daily resistance",
    "country": "France",
    "diet": "See the DIET tab. Rarely fish; lots of olive oil; high mozzarella, eggs (6-10/day) and potatoes. Huel Black: 100g/day as the pre-workout snack. Its fortification: iodine, vitamin D, zinc, selenium, B12, folate, magnesium, calcium, iron.",
    "supervision": "none"
@@ -266,7 +270,7 @@ window.BLOODWORK =
     {"n": "200g mozzarella di bufala", "info": {"Per 200 g":[["Energy","550 kcal","28%"],["Protein","34 g","68%"],["Fat","44 g","63%"],["– saturates","30 g","150%"],["Salt","1 g","17%"]],"Minerals":[["Calcium","700 mg","88%"],["Phosphorus","700 mg","100%"],["Zinc","4 mg","40%"]]}},
     {"n": "150g cherry tomatoes", "info": {"Per 150 g": [["Energy","27 kcal","1%"],["Carbs","6 g","2%"],["– sugars","4 g","4%"],["Fibre","1.8 g"],["Protein","1.4 g","3%"]], "Standouts": [["Vit C","21 mg","26%"],["Potassium","355 mg","18%"],["Lycopene","~4 mg"],["Vit K","12 mcg","16%"],["Vit A","63 mcg","8%"]]}},
     "---",
-    {"n": "Rice or pasta + olive oil", "info": {"Per ~180 g + oil":[["Energy","360 kcal","18%"],["Carbs","50 g","19%"],["Protein","5 g","10%"],["Fat","15 g","21%"],["Vit E","2 mg","17%"]]}},
+    {"n": "Rice or pasta + olive oil", "info": {"Per ~180 g + generous oil":[["Energy","500 kcal","25%"],["Carbs","50 g","19%"],["Protein","5 g","10%"],["Fat","30 g","43%"],["– monounsat.","22 g"],["Vit E","4 mg","33%"]]}},
     {"n": "Ground beef or chicken (frozen, reheated)", "info": {"Ground beef (~200 g)":[["Energy","500 kcal","25%"],["Protein","40 g","80%"],["Fat","35 g","50%"],["– saturates","14 g","70%"]],"Minerals":[["Iron","5 mg","36%"],["Zinc","10 mg","100%"],["B12","5 mcg","200%"],["Selenium","30 mcg","55%"]]}},
     {"n": "Frozen reheated vegetables", "info": {"Per ~200 g":[["Energy","70 kcal","4%"],["Carbs","12 g","5%"],["Fibre","6 g"],["Protein","4 g","8%"]],"Vitamins":[["K","50 mcg","67%"],["Folate","80 mcg","40%"],["C","30 mg","38%"],["A","300 mcg","38%"]]}},
     "---",
