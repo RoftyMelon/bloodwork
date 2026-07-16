@@ -403,7 +403,11 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .pgsec.dfoods{max-width:none;padding:0 14px}   /* untimed Diet foods: full-width like the (stretched) meal cards + their 14px side padding, so the tips share the cards' (i) column */
 .pgsec.stk{max-width:none}   /* stack sections: full width, edge to edge (dose flushes to the far right) */
 .pgsec.stk .pgst{max-width:135px;white-space:nowrap}   /* underline caps at the longest title ("MAY ADD LATER" ~130px), not full width */
-.frlist{white-space:pre-wrap;font-family:inherit;font-size:14px;line-height:1.65;color:var(--t2);user-select:all;background:color-mix(in srgb,var(--txt) 4%,transparent);border:.5px solid var(--line2);border-radius:9px;padding:11px 14px;margin:6px 0 0;max-width:520px}
+.ndlist .srow{align-items:flex-start}
+.ndlist .sn{flex:0 0 43%;min-width:0}
+.ndlist .frn{flex:1;min-width:0;color:var(--t3);font-size:14px;line-height:1.45;user-select:text}
+.ndhead{display:flex;gap:10px;padding:0 0 7px;border-bottom:.5px solid var(--line)}
+.ndhead .sn,.ndhead .frn{font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--t4)}
 .frcopy{margin-top:8px;font-size:13px;padding:5px 13px;border-radius:7px;border:.5px solid var(--line);background:transparent;color:var(--t2);cursor:pointer}
 .frcopy:hover{background:var(--btn-h);color:var(--txt)}
 .pgsec.nohead{margin-top:0}   /* a headerless section CONTINUES the one above it */
@@ -1286,8 +1290,8 @@ function renderPage(p){
     const it=NEXTDRAW.items;
     h=`<div class="pgh">Next draw</div><div class="pgsub">${it.length} biomarker${it.length===1?'':'s'} to collect</div>`+
       (it.length
-        ?`<div class="pgsec">`+it.map(x=>`<div class="srow"><span class="sn">${esc(x.en)}</span></div>`).join('')+`</div>`
-         +`<div class="pgsec"><div class="pgst">Pour le labo (FR)</div><pre class="frlist">${it.map(x=>esc(x.fr)).join('\n')}</pre><button class="frcopy" onclick="copyFr(this)">Copier la liste</button></div>`
+        ?`<div class="pgsec ndlist"><div class="ndhead"><span class="sn">Marqueur</span><span class="frn">Pour le labo (FR)</span></div>`+it.map(x=>`<div class="srow"><span class="sn">${esc(x.en)}</span><span class="frn">${esc(x.fr)}</span></div>`).join('')+`</div>`
+         +`<button class="frcopy" onclick="copyFr(this)">Copier la liste FR</button>`
         :`<div class="cempty">&mdash;</div>`);
   } else if(p==='stack'&&STACK){
     h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed · Daily doses</div>`;
