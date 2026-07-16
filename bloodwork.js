@@ -96,21 +96,20 @@ window.BLOODWORK =
   "Zinc + copper"
  ],
  "STACK": {
+  "intro": "The plan: start this stack after the 1st blood test, then reassess the parked list after the 2nd — a few months on, one change at a time.",
   "cats": [
    {"id": "essentials", "t": "Essentials"},
    {"id": "skin", "t": "Skin"},
-   {"id": "antiox", "t": "Antioxidants"},
-   {"id": "aminos", "t": "Aminos & longevity"},
    {"id": "sport", "t": "Sport"},
    {"id": "hair", "t": "Hair loss"},
    {"id": "hairlater", "t": null, "note": "Potential additions to increase scalp absorption."},
-   {"id": "maylater", "t": "May add later", "note": "Considered, not committed. Rationale in each item's tip."}
+   {"id": "maylater", "t": "May add · after 2nd blood test", "note": "Not committed — reweighed against the 2nd blood test, a few months after the stack starts. Rationale in each tip."}
   ],
   "items": [
    {"id": "astax", "name": "Astaxanthin", "dose": "12mg 2x/day", "info": "Xanthophyll carotenoid, potent lipid-phase antioxidant. Its proven skin effect is photoprotection (raises the UV-burn threshold) plus moisture and elasticity — not skin color, which the coloration data pins on beta-carotene and lycopene. Held at 24mg/day (12mg 2x, fatty meals) pending direct evidence; above the EFSA ADI (16mg at 80kg) but safe — studied to 40mg.", "cat": "skin", "status": "planned", "when": null, "url": null, "dec": null},
    {"id": "lyco", "name": "Lycopene", "dose": "15mg 2x/day", "info": "Red tomato carotenoid — a genuine skin-coloration carotenoid (warm tone) plus photoprotection (raises the UV-burn threshold at 10-16mg). Plasma saturates by ~30-40mg, so 50mg was mostly excreted; 30mg (15mg 2x, fatty meals) captures it, within the EFSA ADI (40mg at 80kg). Tomato-derived (LycoBeads) beats synthetic; cooked tomato + olive oil beats raw.", "cat": "skin", "status": "planned", "when": null, "url": "https://www.sunday.de/en/lycopene-capsules.html", "dec": null},
    {"id": "vitd3k2", "name": "Vitamin D3 + K2", "dose": "5000 IU", "cat": "essentials", "status": "planned", "when": null, "url": "https://www.sunday.de/en/vitamin-d-tablets-5000-iu-plus-k2-mk7-100mcg-xl.html", "dec": "Vitamin D3 5000 IU + K2"},
-   {"id": "iodine", "name": "Iodine", "dose": "300mcg", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": "Iodine 300mcg"},
+   {"id": "iodine", "name": "Iodine", "dose": "300mcg", "info": "Pending a thyroid panel (TSH, anti-TPO) + dietary iodine — supplement only if low; excess can trigger thyroid dysfunction.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Iodine 300mcg"},
    {"id": "omega3", "name": "Omega-3", "dose": "800mg EPA + 450mg DHA", "info": "Algae oil (Schizochytrium), natural triglyceride form — cleaner than fish oil (no heavy metals, iodine-free, low TOTOX) and better absorbed. EPA-dominant 16:9, 400mg EPA + 225mg DHA per softgel. Trimmed from 4.5g (triglyceride-tier) to the ~1-2g general-health range: 2/day = 800+450mg. Titrate to omega-3 index (8-12%), up to 3 if low.", "cat": "essentials", "status": "planned", "when": null, "url": "https://www.sunday.de/en/omega-3-epa-dha-capsules.html", "dec": "Omega-3 (800mg EPA, 450mg DHA)"},
    {"id": "collagenc", "name": "Collagen peptides (low-MW)", "dose": "2g", "info": "~500 Da, ~80% tripeptides — the skin-signalling hydrolysate, with vitamin C. Glycine covers the amino substrate.", "cat": "skin", "status": "planned", "when": null, "url": "https://www.sunday.de/en/collagen-powder-sunglow-luxe-plus-c.html", "dec": "Glycine 12g + taurine + collagen"},
    {"id": "ha", "name": "Hyaluronic acid", "dose": "250mg", "info": "Not deposited intact — ~0.2% bioavailable; gut bacteria fragment it to oligosaccharides that signal the skin's own HA synthesis. 2025 meta-analysis (7 RCTs): modest hydration, elasticity and wrinkle gains. 250mg of medium-MW (0.8-1.3 MDa) HA — the band the positive skin trials used. Cosmetic, microbiome-dependent.", "cat": "skin", "status": "planned", "when": null, "url": "https://www.sunday.de/en/hyaluronic-acid-250mg-high-dose-vegan-from-fermentation.html", "dec": null},
@@ -119,14 +118,14 @@ window.BLOODWORK =
    {"id": "minoxidil", "name": "Minoxidil (topical)", "dose": "5-10%, 1mL 2x/day", "cat": "hair", "status": "taking", "when": null, "url": null, "dec": null},
    {"id": "finasteride", "name": "Finasteride (topical)", "dose": "0.1%, 1mL 2x/day", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": "Finasteride (topical) 0.1% - 1mL",
     "info": "Topical application as a serum = fewer side effects. Finasteride 0.1% is a low dose, but stay aware of potential effects on libido, erectile function and mood (including depression) during the first 6 months."},
-   {"id": "glycine", "name": "Glycine", "dose": "12g", "cat": "aminos", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
-   {"id": "nac", "name": "NAC", "dose": "2000mg", "cat": "aminos", "status": "planned", "when": null, "url": null, "dec": "NAC 2000mg"},
-   {"id": "tmg", "name": "TMG", "dose": "1000mg", "cat": "aminos", "status": "planned", "when": null, "url": null, "dec": "TMG 1000mg"},
-   {"id": "garlic", "name": "AGE garlic", "dose": "2400mg", "cat": "antiox", "status": "planned", "when": null, "url": null, "dec": "AGE garlic 2400mg"},
-   {"id": "curcumin", "name": "Curcumin", "dose": null, "cat": "antiox", "status": "planned", "when": null, "url": null, "dec": "Curcumin"},
+   {"id": "glycine", "name": "Glycine", "dose": "12g", "info": "High dose, rationale to pin down (sleep? GlyNAC? collagen substrate?) — decide alongside NAC and a glutathione goal.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
+   {"id": "nac", "name": "NAC", "dose": "2000mg", "info": "Goal-dependent, and unbalanced vs glycine for GlyNAC — revisit with oxidative/glutathione markers.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "NAC 2000mg"},
+   {"id": "tmg", "name": "TMG", "dose": "1000mg", "info": "Pending homocysteine — the number that justifies it; also depends on B-vitamin status.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "TMG 1000mg"},
+   {"id": "garlic", "name": "AGE garlic", "dose": "2400mg", "info": "Cardiovascular play (BP, lipids) — revisit if your lipid panel or blood pressure gives it a job.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "AGE garlic 2400mg"},
+   {"id": "curcumin", "name": "Curcumin", "dose": null, "info": "No dose set, and poorly absorbed without piperine — revisit if hs-CRP or another inflammatory marker runs high.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Curcumin"},
    {"id": "creatine", "name": "Creatine", "dose": "5g", "info": "Up to 20g when sleep is poor — base 5g in the Huel, +5g brunch, +10g dinner. Saturation-based, so timing's flexible.", "cat": "sport", "status": "planned", "when": null, "url": "https://amzn.eu/d/09MG0JOC", "dec": "Creatine 5g"},
-   {"id": "taurine", "name": "Taurine", "dose": "5g", "cat": "sport", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
-   {"id": "boron", "name": "Boron", "dose": "5mg", "cat": "sport", "status": "planned", "when": null, "url": null, "dec": "Boron 5mg"},
+   {"id": "taurine", "name": "Taurine", "dose": "5g", "info": "Longevity evidence is mouse/observational — low-regret but unproven; park until human data or a clear reason.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
+   {"id": "boron", "name": "Boron", "dose": "5mg", "info": "Modest free-testosterone evidence — revisit if T / SHBG bloods suggest a reason.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Boron 5mg"},
    {"id": "tretinoin", "name": "Tretinoin / retinoic acid (topical)", "dose": "0.01%, 1mL", "cat": "hairlater", "status": "candidate", "when": null, "url": null, "dec": null},
    {"id": "ketoconazole", "name": "Ketoconazole (topical)", "dose": "2%, 1mL 3x/week", "cat": "hairlater", "status": "candidate", "when": null, "url": null, "dec": null}
   ]

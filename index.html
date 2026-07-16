@@ -1278,6 +1278,7 @@ function renderPage(p){
         :`<div class="cempty">&mdash;</div>`);
   } else if(p==='stack'&&STACK){
     h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed · Daily doses</div>`;
+    if(STACK.intro)h+=`<div class="cnote lead">${esc(STACK.intro)}</div>`;
     const renderCat=c=>{
       const items=STACK.items.filter(s=>s.cat===c.id);
       if(!items.length)return '';
