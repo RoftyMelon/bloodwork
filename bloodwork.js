@@ -274,7 +274,6 @@ window.BLOODWORK =
    ]},
    {"id": "other", "t": "Other foods", "items": [
     {"n": "Dark chocolate", "info": {"Per ~30 g":[["Energy","170 kcal","9%"],["Fat","13 g","19%"],["– saturates","8 g","40%"],["Carbs","10 g","4%"],["Fibre","3 g"]],"Minerals":[["Magnesium","70 mg","19%"],["Iron","3.4 mg","24%"],["Copper","0.5 mg","50%"],["Manganese","0.6 mg","30%"]]}},
-    {"n": "Coffee", "info": {"Per cup (~240 ml)":[["Energy","2 kcal"],["Caffeine","~95 mg"],["Potassium","116 mg","6%"],["Chlorogenic acids","~200 mg"]]}},
     {"n": "Nuts (Walnuts, Almonds, Pistachios)", "info": {"Per ~30 g":[["Energy","180 kcal","9%"],["Fat","16 g","23%"],["Protein","5 g","10%"],["Fibre","2.5 g"]],"Standouts":[["Magnesium","50 mg","13%"],["Vit E","4 mg","33%"],["Omega-3 (ALA)","1.5 g"]]}}
    ]}
   ]
