@@ -108,7 +108,7 @@ window.BLOODWORK =
   ],
   "items": [
    {"id": "astax", "name": "Astaxanthin", "dose": "12mg 2x/day", "info": "Xanthophyll carotenoid, potent lipid-phase antioxidant. Its proven skin effect is photoprotection (raises the UV-burn threshold) plus moisture and elasticity — not skin color, which the coloration data pins on beta-carotene and lycopene. Held at 24mg/day (12mg 2x, fatty meals) pending direct evidence; above the EFSA ADI (16mg at 80kg) but safe — studied to 40mg.", "cat": "antiox", "status": "planned", "when": null, "url": null, "dec": null},
-   {"id": "lyco", "name": "Lycopene", "dose": "50mg", "cat": "antiox", "status": "planned", "when": null, "url": null, "dec": null},
+   {"id": "lyco", "name": "Lycopene", "dose": "15mg 2x/day", "info": "Red tomato carotenoid — a genuine skin-coloration carotenoid (warm tone) plus photoprotection (raises the UV-burn threshold at 10-16mg). Plasma saturates by ~30-40mg, so 50mg was mostly excreted; 30mg (15mg 2x, fatty meals) captures it, within the EFSA ADI (40mg at 80kg). Tomato-derived (LycoBeads) beats synthetic; cooked tomato + olive oil beats raw.", "cat": "antiox", "status": "planned", "when": null, "url": "https://www.sunday.de/en/lycopene-capsules.html", "dec": null},
    {"id": "vitd3k2", "name": "Vitamin D3 + K2", "dose": "5000 IU", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": "Vitamin D3 5000 IU + K2"},
    {"id": "iodine", "name": "Iodine", "dose": "300mcg", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": "Iodine 300mcg"},
    {"id": "omega3", "name": "Omega-3", "dose": "3g EPA + 1.5g DHA", "cat": "essentials", "status": "planned", "when": null, "url": null, "dec": "Omega-3 (3g EPA, 1.5g DHA)"},
