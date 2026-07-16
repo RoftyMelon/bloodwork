@@ -1279,13 +1279,13 @@ function renderPage(p){
         ?`<div class="pgsec">`+it.map(x=>`<div class="srow"><span class="sn">${esc(x)}</span></div>`).join('')+`</div>`
         :`<div class="cempty">&mdash;</div>`);
   } else if(p==='stack'&&STACK){
-    h=`<div class="pgh">Supplement stack</div><div class="pgsub">Daily doses</div>`;
+    h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed · Daily doses</div>`;
     if(STACK.intro)h+=`<div class="cnote lead">${esc(STACK.intro)}</div>`;
     const renderCat=c=>{
       const items=STACK.items.filter(s=>s.cat===c.id);
       if(!items.length)return '';
       return `<div class="pgsec stk${c.t?'':' nohead'}">`+
-        (c.t?`<div class="pgst">${esc(c.t)}<small>${items.length} item${items.length>1?'s':''}</small></div>`:'')+
+        (c.t?`<div class="pgst">${esc(c.t)}</div>`:'')+
         (c.note?`<div class="cnote">${esc(c.note)}</div>`:'')+
         items.map(s=>{
           const dead=s.status==='stopped'||s.status==='dropped';
