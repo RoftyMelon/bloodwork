@@ -241,7 +241,35 @@ window.BLOODWORK =
   ]
  },
  "NEXTDRAW": {
-  "items": []
+  "items": [
+   "Cystatin C",
+   "Creatinine + eGFR",
+   "ApoB",
+   "Lp(a)",
+   "Lipid panel (total, LDL, HDL, triglycerides)",
+   "hs-CRP",
+   "Homocysteine",
+   "TSH",
+   "Free T4",
+   "Anti-TPO antibodies",
+   "Testosterone (total + free)",
+   "SHBG",
+   "Estradiol",
+   "25-OH vitamin D",
+   "Omega-3 index",
+   "Ferritin",
+   "Vitamin B12",
+   "Folate",
+   "Selenium",
+   "Zinc",
+   "Copper",
+   "Magnesium (RBC)",
+   "Fasting glucose",
+   "HbA1c",
+   "Fasting insulin",
+   "CBC",
+   "Liver panel (ALT, AST, GGT)"
+  ]
  },
  "DIET": {
   "eveningAt": "21:00",
