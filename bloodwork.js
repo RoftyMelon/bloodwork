@@ -252,6 +252,7 @@ window.BLOODWORK =
    ]},
    {"id": "brunch", "t": "Brunch", "at": "10:00", "items": [
     {"n": "200g mozzarella di bufala", "info": {"Per 200 g":[["Energy","550 kcal","28%"],["Protein","34 g","68%"],["Fat","44 g","63%"],["– saturates","30 g","150%"],["Salt","1 g","17%"]],"Minerals":[["Calcium","700 mg","88%"],["Phosphorus","700 mg","100%"],["Zinc","4 mg","40%"]]}},
+    {"n": "150g cherry tomatoes", "info": {"Per 150 g": [["Energy","27 kcal","1%"],["Carbs","6 g","2%"],["– sugars","4 g","4%"],["Fibre","1.8 g"],["Protein","1.4 g","3%"]], "Standouts": [["Vit C","21 mg","26%"],["Potassium","355 mg","18%"],["Lycopene","~4 mg"],["Vit K","12 mcg","16%"],["Vit A","63 mcg","8%"]]}},
     "---",
     {"n": "6-10 eggs", "info": {"Per ~8 (~400 g)":[["Energy","620 kcal","31%"],["Protein","50 g","100%"],["Fat","44 g","63%"],["– saturates","13 g","65%"]],"Micronutrients":[["Choline","1180 mg"],["Selenium","120 mcg","218%"],["Vit D","320 IU","160%"],["B12","4 mcg","160%"],["Vit A","640 mcg","80%"],["Riboflavin","1.6 mg","114%"],["Folate","190 mcg","95%"]]}},
     {"n": "Air-fried potatoes in duck grease (or other grease)", "info": {"Per ~300 g + grease":[["Energy","395 kcal","20%"],["Carbs","58 g","22%"],["Fibre","5 g"],["Fat","15 g","21%"],["– saturates","5 g","25%"]],"Standouts":[["Potassium","1200 mg","60%"],["Vit C","30 mg","38%"],["B6","0.9 mg","64%"]]}},
@@ -261,6 +262,7 @@ window.BLOODWORK =
    ]},
    {"id": "dinner", "t": "Dinner", "at": "16:30", "items": [
     {"n": "200g mozzarella di bufala", "info": {"Per 200 g":[["Energy","550 kcal","28%"],["Protein","34 g","68%"],["Fat","44 g","63%"],["– saturates","30 g","150%"],["Salt","1 g","17%"]],"Minerals":[["Calcium","700 mg","88%"],["Phosphorus","700 mg","100%"],["Zinc","4 mg","40%"]]}},
+    {"n": "150g cherry tomatoes", "info": {"Per 150 g": [["Energy","27 kcal","1%"],["Carbs","6 g","2%"],["– sugars","4 g","4%"],["Fibre","1.8 g"],["Protein","1.4 g","3%"]], "Standouts": [["Vit C","21 mg","26%"],["Potassium","355 mg","18%"],["Lycopene","~4 mg"],["Vit K","12 mcg","16%"],["Vit A","63 mcg","8%"]]}},
     "---",
     {"n": "Rice or pasta + olive oil", "info": {"Per ~180 g + oil":[["Energy","360 kcal","18%"],["Carbs","50 g","19%"],["Protein","5 g","10%"],["Fat","15 g","21%"],["Vit E","2 mg","17%"]]}},
     {"n": "Ground beef or chicken (frozen, reheated)", "info": {"Ground beef (~200 g)":[["Energy","500 kcal","25%"],["Protein","40 g","80%"],["Fat","35 g","50%"],["– saturates","14 g","70%"]],"Minerals":[["Iron","5 mg","36%"],["Zinc","10 mg","100%"],["B12","5 mcg","200%"],["Selenium","30 mcg","55%"]]}},
