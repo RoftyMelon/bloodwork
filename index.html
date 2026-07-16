@@ -497,7 +497,7 @@ a.sbuy:hover{color:var(--info)}
 /* base bubble: a compact popover tucked into the TOP-RIGHT CORNER of its anchor —
    used by the exercise/care cards (.ccard is position:relative). Stack tips
    override this via .tipw .exinfo to open leftward beside their icon. */
-.exinfo{display:none;position:absolute;z-index:6;top:6px;right:6px;
+.exinfo{display:none;pointer-events:none;position:absolute;z-index:6;top:6px;right:6px;
   width:max-content;max-width:min(66%,200px);
   background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:8px 11px 9px;
   font-size:13.5px;color:var(--t2);line-height:1.45;box-shadow:0 8px 24px rgba(0,0,0,.16)}
