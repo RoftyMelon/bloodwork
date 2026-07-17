@@ -80,10 +80,8 @@ window.BLOODWORK =
   }
  ],
  "DECS": [
-  "AGE garlic 2400mg",
   "Boron 10mg",
   "Creatine 5g",
-  "Curcumin",
   "Finasteride (topical) 0.1% - 1mL",
   "Glycine 12g + taurine + collagen",
   "Huel",
@@ -119,8 +117,6 @@ window.BLOODWORK =
    {"id": "glycine", "name": "Glycine", "judge": "sleep (solo); or the GlyNAC markers, if paired with NAC", "dose": "12g", "info": "12g is a glutathione/GlyNAC dose (sleep studies use just 3g). Now paired 1:1 with 12g NAC — near the Sekhar efficacy dose for your weight (~8g glycine). Glycine's very safe and cheap, so the slight overshoot is fine.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
    {"id": "nac", "name": "NAC", "judge": "hs-CRP, HOMA-IR, homocysteine and GGT, before vs after 3 months", "dose": "12g", "info": "Glutathione/antioxidant precursor. 12g matches your glycine 1:1 — near the Sekhar GlyNAC dose for your weight (~11g NAC). Raises homocysteine, which the TMG offsets. Parked until the goal and oxidative markers are set.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "NAC 12g"},
    {"id": "tmg", "name": "TMG", "judge": "homocysteine — it exists only to offset NAC's rise", "dose": "6g", "info": "Methyl donor that lowers homocysteine — 6g is the effective dose, sized to offset the homocysteine your 12g NAC raises. Catch: betaine above ~4g can nudge LDL up, so watch it. Pending homocysteine, the number that justifies the loop.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "TMG 6g"},
-   {"id": "garlic", "name": "AGE garlic", "judge": "blood pressure and LDL / ApoB", "dose": "2400mg", "info": "Aged garlic extract — modest BP (~5-8 mmHg in hypertensives) and lipid effects, plus slowed coronary plaque. 2400mg is the plaque-trial dose (BP works at 600-1200mg). Parked: the payoff is for elevated BP or CVD risk, not a fit 31-yo — revisit if your lipids or BP give it a job.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "AGE garlic 2400mg"},
-   {"id": "curcumin", "name": "Curcumin", "judge": "hs-CRP", "dose": null, "info": "Anti-inflammatory (NF-κB). No dose set on purpose — raw curcumin barely absorbs, so the form (piperine, Meriva, liposomal) matters more than the mg. Parked until an inflammatory marker (hs-CRP) runs high enough to target, then pick a bioavailable form.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Curcumin"},
    {"id": "creatine", "name": "Creatine", "dose": "5g", "info": "Strength, power, likely cognition. 5g/day, up to 20g on poor-sleep weeks. Saturation-based, so timing's flexible.", "cat": "sport", "status": "planned", "when": [{"at": "presnack", "dose": "5g"}], "url": "https://amzn.eu/d/09MG0JOC", "dec": "Creatine 5g"},
    {"id": "taurine", "name": "Taurine", "judge": "nothing measurable at your age — a theory bet, not a testable one", "dose": "5g", "info": "5g is a longevity dose (exercise studies use 1-3g), extrapolated from the 2023 mouse-lifespan paper. Human evidence is observational, not trial — cheap and safe to 10g, but unproven. Parked until human data or a clear reason.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
    {"id": "boron", "name": "Boron", "judge": "free testosterone and SHBG", "dose": "10mg", "info": "Lowers SHBG, so more testosterone stays free (and drops estradiol). 10mg is the studied dose (free-T +28% over a week). Modest, and unclear at your age with normal T — parked until T/SHBG bloods justify it.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Boron 10mg"},
@@ -599,7 +595,6 @@ window.BLOODWORK =
    "id": "ferr",
    "cat": "iron",
    "dec": [
-    "Curcumin",
     "Huel"
    ],
    "en": "Ferritin",
@@ -989,9 +984,6 @@ window.BLOODWORK =
   {
    "id": "nonhdl",
    "cat": "lipid",
-   "dec": [
-    "AGE garlic 2400mg"
-   ],
    "en": "Non-HDL cholesterol",
    "fr": "NON-HDL Cholestérol",
    "us": "mg/dL",
@@ -1027,8 +1019,7 @@ window.BLOODWORK =
    "id": "hscrp",
    "cat": "lipid",
    "dec": [
-    "Omega-3 (2000mg EPA, 1125mg DHA)",
-    "Curcumin"
+    "Omega-3 (2000mg EPA, 1125mg DHA)"
    ],
    "en": "hs-CRP",
    "fr": "CRP ultrasensible",
@@ -1057,8 +1048,7 @@ window.BLOODWORK =
    "id": "ldl",
    "cat": "lipid",
    "dec": [
-    "Omega-3 (2000mg EPA, 1125mg DHA)",
-    "AGE garlic 2400mg"
+    "Omega-3 (2000mg EPA, 1125mg DHA)"
    ],
    "en": "LDL cholesterol",
    "fr": "LDL-Cholestérol",
@@ -1095,8 +1085,7 @@ window.BLOODWORK =
    "id": "hdl",
    "cat": "lipid",
    "dec": [
-    "Omega-3 (2000mg EPA, 1125mg DHA)",
-    "AGE garlic 2400mg"
+    "Omega-3 (2000mg EPA, 1125mg DHA)"
    ],
    "en": "HDL cholesterol",
    "fr": "HDL-Cholestérol",
@@ -1132,9 +1121,6 @@ window.BLOODWORK =
   {
    "id": "chol",
    "cat": "lipid",
-   "dec": [
-    "AGE garlic 2400mg"
-   ],
    "en": "Total cholesterol",
    "fr": "Cholestérol total",
    "us": "mg/dL",
@@ -1295,7 +1281,6 @@ window.BLOODWORK =
    "id": "alt",
    "cat": "liver",
    "dec": [
-    "Curcumin",
     "NAC 12g"
    ],
    "en": "ALT",
@@ -1325,7 +1310,6 @@ window.BLOODWORK =
    "id": "ast",
    "cat": "liver",
    "dec": [
-    "Curcumin",
     "NAC 12g"
    ],
    "en": "AST",
@@ -1354,9 +1338,6 @@ window.BLOODWORK =
   {
    "id": "ggt",
    "cat": "liver",
-   "dec": [
-    "Curcumin"
-   ],
    "en": "GGT",
    "fr": "Gamma-GT",
    "us": "U/L",
@@ -1413,9 +1394,6 @@ window.BLOODWORK =
   {
    "id": "bili",
    "cat": "liver",
-   "dec": [
-    "Curcumin"
-   ],
    "en": "Total bilirubin",
    "fr": "Bilirubine totale",
    "us": "mg/dL",
@@ -1765,9 +1743,7 @@ window.BLOODWORK =
    "id": "plt",
    "cat": "cbc",
    "dec": [
-    "Omega-3 (2000mg EPA, 1125mg DHA)",
-    "Curcumin",
-    "AGE garlic 2400mg"
+    "Omega-3 (2000mg EPA, 1125mg DHA)"
    ],
    "en": "Platelets",
    "fr": "Plaquettes",
