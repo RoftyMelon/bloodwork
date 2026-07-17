@@ -308,12 +308,13 @@ td.pos{padding-right:14px}
   background:var(--bg);z-index:7;pointer-events:none}
 .top{position:fixed;right:26px;bottom:calc(26px + env(safe-area-inset-bottom));z-index:40;width:44px;height:44px;padding:0;
   display:flex;align-items:center;justify-content:center;border-radius:50%;cursor:pointer;
-  background:var(--frost);border:.5px solid var(--frost-b);color:var(--t2);
-  backdrop-filter:blur(9px) saturate(150%);-webkit-backdrop-filter:blur(9px) saturate(150%);
+  background:var(--glass);border:.5px solid var(--glass-b);color:var(--t2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 6px rgba(0,0,0,.08);
+  -webkit-backdrop-filter:blur(2.5px) saturate(1.4);backdrop-filter:blur(2.5px) saturate(1.4);
   opacity:0;pointer-events:none;transform:translateY(8px);
   transition:opacity .22s ease,transform .22s cubic-bezier(.2,.9,.25,1),color .14s,background .14s}
 .top.on{opacity:1;pointer-events:auto;transform:none}
-.top:hover{background:var(--frost-h);color:var(--txt)}
+.top:hover{color:var(--txt)}
 
 /* the categories navigate, they do not filter */
 .nav{font-family:inherit;font-size:15px;font-weight:500;padding:5px 12px;border-radius:99px;cursor:pointer;
@@ -1073,7 +1074,7 @@ function det(row,id,cols,n,tri){
 
 function pinTip(btn,e){e.stopPropagation();const on=btn.classList.contains('pin');document.querySelectorAll('.infob.pin').forEach(b=>b.classList.remove('pin'));if(!on)btn.classList.add('pin');}
 document.addEventListener('click',e=>{if(!e.target.closest('.exinfo'))document.querySelectorAll('.infob.pin').forEach(b=>b.classList.remove('pin'));});
-function copyNd(btn){const t=(NEXTDRAW.items||[]).map(x=>x.en+' — '+x.fr).join('\n');navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copié ✓';setTimeout(()=>{btn.textContent='Copier (EN + FR)';},1500);}).catch(()=>{btn.textContent='—';});}
+function copyNd(btn){const t=(NEXTDRAW.items||[]).map(x=>x.en+' — '+x.fr).join('\n');navigator.clipboard.writeText(t).then(()=>{btn.textContent='Copied ✓';setTimeout(()=>{btn.textContent='Copy (EN + FR)';},1500);}).catch(()=>{btn.textContent='—';});}
 function render(){
   const ds=chron(), n=ds.length;   // oldest -> newest: this row IS the chart's x-axis
   const cur={};MARK.forEach(m=>cur[m.id]=latest(m));
@@ -1289,7 +1290,7 @@ function renderPage(p){
     h=`<div class="pgh">Next draw</div><div class="pgsub">${it.length} biomarker${it.length===1?'':'s'} to collect</div>`+
       (it.length
         ?`<div class="pgsec ndlist"><div class="ndhead"><span class="sn">Marker</span><span class="frn">Pour le labo (FR)</span></div>`+it.map(x=>`<div class="srow"><span class="sn">${esc(x.en)}</span><span class="frn">${esc(x.fr)}</span></div>`).join('')+`</div>`
-         +`<button class="frcopy" onclick="copyNd(this)">Copier (EN + FR)</button>`
+         +`<button class="frcopy" onclick="copyNd(this)">Copy (EN + FR)</button>`
         :`<div class="cempty">&mdash;</div>`);
   } else if(p==='stack'&&STACK){
     h=`<div class="pgh">Supplement stack</div><div class="pgsub">${STACK.items.length} listed · Daily doses</div>`;
