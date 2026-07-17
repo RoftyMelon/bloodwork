@@ -16,7 +16,7 @@ window.BLOODWORK =
   "units": "Each marker has a units[] array of {l, m} or {l, a, b} entries. Convert to the US unit with the entry whose l matches v.u: value = (a !== undefined) ? a*raw + b : raw*m. The first entry is not special; v.u names the unit by its LABEL, never by position.",
   "optimal_ranges": "opt[] and oc are INFERENCES, not lab data. oc is the evidence behind the target: strong = outcome data (RCTs, dose-response vs hard endpoints); moderate = association studies or physiology; weak = convention or industry framing, no outcome data. 9 strong, 28 moderate, 29 weak. A value outside a WEAK band is an opinion, not a finding.",
   "clin_ranges": "clin[] IS lab data, off the report.",
-  "dec": "Which supplements a marker bears on. Many-to-many. Membership does NOT mean the supplement moves it: cystatin C is under Creatine precisely because creatine CANNOT distort it, albumin is under Vitamin D because calcium cannot be corrected without it, selenium is iodine's cofactor, B12/folate are TMG's pathway.",
+  "dec": "Which supplements a marker bears on. Many-to-many. Membership does NOT mean the supplement moves it: cystatin C is under Creatine precisely because creatine CANNOT distort it, albumin is under Vitamin D because calcium cannot be corrected without it, selenium is iodine's cofactor, B12/folate are TMG's pathway. The DECS order is deliberate — grouped by primary biomarker domain (hormones/thyroid → lipids/cardio → liver/methylation → kidney/muscle → bone/minerals → aminos → foundational), NOT alphabetical; do not re-sort.",
   "confounds": [
    "Creatine was active at the March 2026 draw. It raises serum creatinine as substrate, not by damaging kidneys, and eGFR is CALCULATED from creatinine so it inherits the error. The eGFR of 61 is not readable as kidney disease. Cystatin C is immune and has never been drawn.",
    "Topical minoxidil appears in no supplement group. That is the finding, not an omission: it is a potassium-channel opener with ~1.4% systemic absorption and no hormonal mechanism. Astaxanthin, lycopene, hyaluronic acid and collagen are absent for the same reason. No blood marker can falsify them."
@@ -80,19 +80,19 @@ window.BLOODWORK =
   }
  ],
  "DECS": [
-  "AGE garlic 2400mg",
-  "Ashwagandha 600mg",
-  "Boron 10mg",
-  "Creatine 5g",
-  "Curcumin",
   "Finasteride (topical) 0.1% - 1mL",
-  "Glycine 12g + taurine + collagen",
-  "Huel",
-  "Magnesium L-threonate",
-  "NAC 12g",
+  "Boron 10mg",
+  "Ashwagandha 600mg",
   "Omega-3 (2000mg EPA, 1125mg DHA)",
+  "AGE garlic 2400mg",
+  "NAC 12g",
   "TMG 6g",
-  "Vitamin D3 5000 IU + K2"
+  "Curcumin",
+  "Creatine 5g",
+  "Vitamin D3 5000 IU + K2",
+  "Magnesium L-threonate",
+  "Glycine 12g + taurine + collagen",
+  "Huel"
  ],
  "STACK": {
   "intro": "Green dot = currently taking (+ Huel, in the Diet). The rest start after the 1st blood test; the parked list waits for the 2nd.",
