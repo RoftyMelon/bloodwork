@@ -423,6 +423,7 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .sfill{flex:1}
 .sbuy{flex:none;width:14px;text-align:center;font-size:11px;color:var(--t4);text-decoration:none;align-self:center}
 a.sbuy:hover{color:var(--info)}
+.sfr{flex:none;font-size:12px;line-height:1;align-self:center;cursor:default}   /* ❄️ keep-cold marker */
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;position:relative}   /* anchors the full-width boundary lines */
 .pgsub+.rhr{margin-top:18px}   /* the ruler breathes below the header (the old cards carried this gap) */
@@ -1301,6 +1302,7 @@ function renderPage(p){
           const dead=s.status==='stopped'||s.status==='dropped';
           return `<div class="srow${dead?' off':''}${s.status==='taking'?' on':''}">`+
             `<span class="sn">${esc(s.name)}</span>`+
+            (s.fridge?`<span class="sfr" title="Keep refrigerated">&#10052;&#65039;</span>`:'')+   // ❄️ cold-storage marker
             (s.url?`<a class="sbuy" href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="Buy ${esc(s.name)}">&#8599;</a>`:'')+   // ↗ hugs the name
             `<span class="sfill"></span>`+   // spacer: the trailing columns flush right
             (s.dose?`<span class="sd">${esc(s.dose)}</span>`:'')+   // no status badges: the sections carry it
