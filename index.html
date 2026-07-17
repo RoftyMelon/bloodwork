@@ -468,9 +468,6 @@ a.sbuy:hover{color:var(--info)}
 .rev{display:flex;gap:12px;align-items:baseline;padding:2px 0}
 .rbody{min-width:0}
 .rdo{font-size:16px;color:var(--t2);line-height:1.5}
-.rsup{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-.rsup .rs{font-size:13.5px;color:var(--t2);background:var(--btn);border:.5px solid var(--btn-b);
-  border-radius:99px;padding:3px 9px;font-variant-numeric:tabular-nums}
 /* a category's own caveat, straight from the data */
 .cnote{font-size:15px;color:var(--t4);font-style:italic;line-height:1.55;padding:8px 2px 2px}
 /* lead: an intro note under a page's section header is CONTENT, not a footnote —
@@ -849,8 +846,6 @@ function audit(j){
       else{if(r.t<=prev)bad.push(`ROUTINE "${r.t} ${r.do}": times must be ascending`);prev=r.t;}
       if(r.until!=null&&(!/^\d{2}:\d{2}$/.test(r.until)||r.until<=r.t))
         bad.push(`ROUTINE "${r.do}": until "${r.until}" must be HH:MM and later than ${r.t}`);
-      if(r.slot!=null&&!['presnack','brunch','dinner'].includes(r.slot))
-        bad.push(`ROUTINE "${r.do}": slot "${r.slot}" is not presnack/brunch/dinner`);
     });
   }
   if(j.DIET)(j.DIET.meals||[]).forEach(m=>{
@@ -1391,13 +1386,8 @@ function renderPage(p){
         cuts.map(f=>`<i class="rln" style="top:calc(var(--hh)*${f} + 7px)"></i>`).join('')+
         `<div class="rcell">`+
         rowEvs.map((r,i)=>{
-          let sup='';
-          if(r.slot&&STACK){
-            const list=STACK.items.filter(s=>s.status==='taking'&&Array.isArray(s.when)&&s.when.some(w=>w.at===r.slot));
-            if(list.length)sup=`<div class="rsup">${list.map(s=>{const w=s.when.find(w=>w.at===r.slot);return `<span class="rs">${esc(s.name)}${w.dose?' · '+esc(w.dose):''}</span>`;}).join('')}</div>`;
-          }
           const pos=prop?` style="top:calc(var(--hh)*${(spans[i].sm+spans[i].em)/2} - ${spans[i].sm>0?7:6}px)"`:'';
-          return `<div class="rev"${pos}><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div>${sup}</div></div>`;
+          return `<div class="rev"${pos}><div class="rbody"><div class="rdo">${esc(r.do).replace(/\n/g,'<br>')}</div></div></div>`;
         }).join('')+`</div></div>`;
       if(carried){
         const labels=Array.from({length:carriedEnd-(hr+1)},(_,i)=>mark(hr+1+i)).join('');
