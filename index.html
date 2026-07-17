@@ -423,6 +423,8 @@ html:not([data-page=markers]) .swap{overflow:visible}
 .sfill{flex:1}
 .sbuy{flex:none;width:14px;text-align:center;font-size:11px;color:var(--t4);text-decoration:none;align-self:center}
 a.sbuy:hover{color:var(--info)}
+.sjudge{flex-basis:100%;margin-top:2px;font-size:12.5px;line-height:1.5;color:var(--t3)}   /* per-item readout: how you'll judge a trial */
+.sjudge .sjl{color:var(--t2);font-weight:600}
 /* routine: an hour ruler — empty hours stay visible so the day reads as TIME */
 .rhr{display:flex;gap:14px;position:relative}   /* anchors the full-width boundary lines */
 .pgsub+.rhr{margin-top:18px}   /* the ruler breathes below the header (the old cards carried this gap) */
@@ -833,6 +835,7 @@ function audit(j){
       if(s.dec!=null&&!j.DECS.includes(s.dec))bad.push(`STACK "${s.name}": dec "${s.dec}" is not a DECS label`);
       if(s.url!=null&&!/^https:\/\//.test(s.url))bad.push(`STACK "${s.name}": url must start with https://`);
       if(s.ev!=null&&!['strong','moderate','weak'].includes(s.ev))bad.push(`STACK "${s.name}": ev "${s.ev}" is not strong/moderate/weak`);
+      if(s.judge!=null&&typeof s.judge!=='string')bad.push(`STACK "${s.name}": judge must be a string`);
     });
   }
   if(j.NEXTDRAW){
@@ -1307,6 +1310,7 @@ function renderPage(p){
             (s.info?`<span class="tipw"><button class="infob" onclick="pinTip(this,event)" aria-label="${esc(s.name)} details">i</button>`+
                     `<div class="exinfo">${esc(s.info)}</div></span>`
                    :`<span class="tipw"></span>`)+   // reserved slot: tips align into a column
+            (s.judge?`<div class="sjudge"><span class="sjl">Judge by:</span> ${esc(s.judge)}</div>`:'')+   // the readout — 'how I'll know it worked', always visible
           `</div>`;}).join('')+`</div>`;
     };
     STACK.cats.forEach(c=>{if(c.id!=='maylater')h+=renderCat(c);});   // 'maylater' renders AFTER the cards
