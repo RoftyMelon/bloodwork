@@ -161,7 +161,7 @@ td.boot span{color:var(--t3);font-size:15px}
 /* table */
 
 table{border-collapse:separate;border-spacing:0;table-layout:fixed;width:100%;min-width:1130px}
-thead th{position:sticky;top:var(--stick,70px);z-index:8;background:var(--head);
+thead th{position:sticky;top:var(--hvis,70px);z-index:8;background:var(--head);
   font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t3);
   height:var(--thh);padding:0 10px;vertical-align:middle;
   text-align:right;white-space:nowrap;border-bottom:.5px solid var(--line)}
@@ -180,7 +180,7 @@ th.pos,td.pos{width:170px}
 th.tr,td.tr{min-width:104px}   /* no width: absorbs the leftover */
 thead th.nm,thead th.now,thead th.uc{background:var(--head);z-index:9}
 thead th.now{color:var(--txt)}
-tr.grp td{position:sticky;top:calc(var(--stick,70px) + var(--thh) - 3px);z-index:6;padding:0;
+tr.grp td{position:sticky;top:calc(var(--hvis,70px) + var(--thh) - 3px);z-index:6;padding:0;
   background:var(--grp);
   border-top:.5px solid var(--line);border-bottom:.5px solid var(--line)}
 tr.grp .ghd{position:sticky;left:var(--gut,20px);width:fit-content;text-align:left;
@@ -327,8 +327,9 @@ td.pos{padding-right:14px}
    the table; tabs NAVIGATE pages. On scroll DOWN the tab row collapses to nothing
    (html.tabhid); a scroll UP brings it straight back. The pills + category rows stay
    pinned. --toph (measured) holds the FULL header height so the content spacer never
-   jumps; --stick tracks the CURRENTLY visible header bottom — what the frozen thead
-   sticks under — so it follows the collapse. setStick()/pumpStick() drive it. */
+   jumps; --hvis tracks the CURRENTLY visible header bottom — what the frozen thead
+   sticks under — so it follows the collapse. setStick()/pumpStick() drive it.
+   (--hvis, NOT --stick: --stick is the frozen-column background COLOUR — separate token.) */
 .tabrow{display:flex;align-items:center;gap:10px;overflow:hidden;
   max-height:64px;margin-bottom:3px;   /* content ~46px (generous, nothing clips); the margin is
      the breathing room before the filter pills — it rides the SAME easing as max-height so it
@@ -638,10 +639,10 @@ try{if(matchMedia('(prefers-color-scheme: dark)').matches){
       <button class="pt on" data-pg="markers" onclick="setPage('markers')">Markers</button>
       <button class="pt" data-pg="nextdraw" onclick="setPage('nextdraw')">Next Draw</button>
       <button class="pt" data-pg="stack" onclick="setPage('stack')">Stack</button>
+      <button class="pt" data-pg="grooming" onclick="setPage('grooming')">Grooming</button>
       <button class="pt" data-pg="diet" onclick="setPage('diet')">Diet</button>
       <button class="pt" data-pg="routine" onclick="setPage('routine')">Routine</button>
       <button class="pt" data-pg="training" onclick="setPage('training')">Training</button>
-      <button class="pt" data-pg="grooming" onclick="setPage('grooming')">Grooming</button>
       <i class="ptu" id="ptu"></i>
     </nav>
     <button class="ic" id="tbtn" onclick="flip()" aria-label="Switch theme">
@@ -1408,19 +1409,21 @@ const setGut=()=>{                                   // left margin of the conte
   R0.setProperty('--gut',(WRAP.offsetLeft+pl)+'px');
 };
 const DE=document.documentElement;
-// --stick = the CURRENTLY visible header bottom — what the frozen thead sticks under, so it
-// follows the tab row collapsing/expanding. Updated on EVERY measure.
-const setStick=()=>{ R0.setProperty('--stick',TB.getBoundingClientRect().height+'px'); };
+// --hvis = the CURRENTLY visible header bottom — what the frozen thead sticks under, so it
+// follows the tab row collapsing/expanding. Updated on EVERY measure. NOT --stick — that is
+// the frozen-COLUMN background COLOUR token; reusing its name blanked the columns (invalid
+// `background: <px>`), so this height var has its own name.
+const setStick=()=>{ R0.setProperty('--hvis',TB.getBoundingClientRect().height+'px'); };
 // --toph = the FULL header height; drives the content spacer so it never jumps. Captured ONLY
 // when the tab row is SHOWN and settled (never mid-collapse) — else the spacer shrinks and
 // yanks the page. --thh is NOT measured (thead is sized FROM it; measuring back is circular
 // and any drift opens a gap the frozen cells shine through).
 const setTop=()=>{
   const h=TB.getBoundingClientRect().height;                            // sub-pixel, not offsetHeight
-  R0.setProperty('--stick',h+'px');
+  R0.setProperty('--hvis',h+'px');
   if(!_pumping && !(DE.classList.contains&&DE.classList.contains('tabhid'))) R0.setProperty('--toph',h+'px');
 };
-// While the tab row animates open/closed, pump --stick every frame so the frozen header rides
+// While the tab row animates open/closed, pump --hvis every frame so the frozen header rides
 // the moving bar with no seam. (ResizeObserver would too, but it dies silently in the Preview
 // pane / on iOS — so re-measure explicitly at the mutation site.)
 let _pumping=false,_pumpEnd=0;
