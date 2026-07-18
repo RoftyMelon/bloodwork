@@ -528,12 +528,35 @@ a.sbuy:hover{color:var(--info)}
 .ckcal{margin-left:8px;font-size:12.5px;font-weight:450;color:var(--t3);font-variant-numeric:tabular-nums}
 .care.col{flex-direction:column;overflow:visible;width:auto;max-width:none}
 .care.wide{margin-top:34px}   /* air between the last supplement section and the cards */
-.care.wide .ccard{flex-basis:clamp(250px,82vw,344px)}   /* dental/face run a bit wider */
+.care.wide .ccard{flex-basis:clamp(250px,82vw,344px)}   /* the dental card runs a bit wider */
 .care.col .ccard{flex:none;width:min(430px,100%)}   /* wide enough that no item wraps */
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
 .dnotes b{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--t3)}
 .dnotes ul{margin:6px 0 0;padding:0;list-style:none}
 .dnotes li{font-size:15px;color:var(--t2);line-height:1.7}
+/* face schedule — a CARE .schedule renders as a day-indexed weekly dot-matrix, not a card.
+   solid dot = applied, faint = skipped, accent = the procedure. All colours are theme tokens. */
+.cgrid{background:var(--grp);border-radius:12px;padding:12px 15px 13px;max-width:600px;margin-top:22px}
+.cgrid>b{font-size:14px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
+.cgwrap{overflow-x:auto;margin-top:11px}
+.cggrid{--cgn:7;display:grid;grid-template-columns:minmax(168px,1.4fr) repeat(var(--cgn,7),minmax(22px,1fr));
+  align-items:center;row-gap:3px;font-size:12.5px}   /* --cgn (day count) is overridden inline per render */
+.cgcell{display:flex;justify-content:center;align-items:center}
+.cgrn{color:var(--txt);white-space:nowrap;line-height:1.3}   /* a row name — and the header's empty corner */
+.cgd{color:var(--t2);font-size:12px}
+.cgtag{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15;
+  background:var(--bg);border:.5px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--t2);font-size:12px}
+.cgtag em{font-style:normal;font-size:9.5px;color:var(--t3)}
+.cgtag.hi{background:var(--hov);border-color:transparent;color:var(--sel)}   /* the needle day */
+.cgtag.hi em{color:var(--sel)}
+.cgsec{grid-column:1/-1;font-size:10.5px;color:var(--t3);letter-spacing:.03em;
+  padding:12px 0 7px;border-top:.5px solid var(--line);margin-top:7px}
+.cgsec.first{border-top:none;margin-top:0;padding-top:3px}   /* first section sits under the day row, no divider */
+.cgdot{width:9px;height:9px;border-radius:50%;background:var(--txt)}
+.cgdot.off{width:2.5px;height:2.5px;background:var(--t4)}   /* skipped: a faint whisper, not blank */
+.cgdot.hi{width:11px;height:11px;background:var(--sel)}   /* the microneedle, the week's one procedure */
+.cgnote{font-size:11.5px;color:var(--t3);line-height:1.55;margin-top:13px;border-top:.5px solid var(--line);padding-top:10px}
+.cgnote~.cgnote{border-top:none;margin-top:3px;padding-top:0}   /* stacked notes: only the first carries the divider */
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
   .orbit-disc,.icon-moon,.icon-sun{transition:none!important}
@@ -811,7 +834,20 @@ function audit(j){
     else m.items.forEach(it=>{if(typeof it!=='string'&&!(it&&typeof it.n==='string'))bad.push(`DIET "${m.t}": item must be a string or {n, info}`);});
   });
   if(j.CARE)j.CARE.forEach(c=>{
-    if(c.groups)c.groups.forEach(g=>{
+    if(c.schedule){   // a day-indexed weekly grid instead of cadence groups
+      const sc=c.schedule, days=(Array.isArray(sc.days)?sc.days:[]).map(d=>d&&d.d);
+      if(!days.length)bad.push(`CARE "${c.t}": schedule needs a days array`);
+      if(!Array.isArray(sc.sections)||!sc.sections.length)bad.push(`CARE "${c.t}": schedule needs sections`);
+      else sc.sections.forEach(s=>{
+        if(!Array.isArray(s.rows)||!s.rows.length){bad.push(`CARE "${c.t}" / "${s.t}": section needs rows`);return;}
+        s.rows.forEach(r=>{
+          if(!r||!r.n){bad.push(`CARE "${c.t}": a schedule row needs a name`);return;}
+          if(!Array.isArray(r.on))bad.push(`CARE "${c.t}" / "${r.n}": on must be an array of day names`);
+          else r.on.forEach(d=>{if(!days.includes(d))bad.push(`CARE "${c.t}" / "${r.n}": on-day "${d}" is not in schedule.days`);});
+        });
+      });
+    }
+    else if(c.groups)c.groups.forEach(g=>{
       if(!Array.isArray(g.items)||!g.items.length)bad.push(`CARE "${c.t}" / "${g.t}": group needs items`);});
     else if(!Array.isArray(c.items))bad.push(`CARE "${c.t}": items must be an array (empty is fine)`);
   });
@@ -1208,6 +1244,22 @@ function renderPage(p){
       ?c.groups.map(g=>`<div class="cgrp">${esc(g.t)}</div><ul>${g.items.map(exRow).join('')}</ul>`).join('')
       :(c.items.length?`<ul>${c.items.map(exRow).join('')}</ul>`:`<div class="cempty">&mdash;</div>`);
     return `<div class="ccard"><b>${esc(c.t)}</b>${inner}</div>`;}).join('')+`</div>`;
+  // a CARE card carrying a .schedule renders as a day-indexed dot-matrix instead of a card
+  const careGrid=c=>{
+    const sc=c.schedule, days=sc.days;
+    const head=`<div class="cgrn"></div>`+days.map(d=>
+      `<div class="cgcell">`+(d.tag
+        ?`<span class="cgtag${d.hi?' hi':''}">${esc(d.d)}<em>${esc(d.tag)}</em></span>`
+        :`<span class="cgd">${esc(d.d)}</span>`)+`</div>`).join('');
+    const body=sc.sections.map((s,i)=>
+      `<div class="cgsec${i?'':' first'}">${esc(s.t)}</div>`+
+      s.rows.map(r=>{const on=new Set(r.on);
+        return `<div class="cgrn">${esc(r.n)}</div>`+days.map(d=>
+          `<div class="cgcell"><span class="cgdot${on.has(d.d)?(r.hi?' hi':''):' off'}"></span></div>`).join('');
+      }).join('')).join('');
+    const notes=(sc.notes||(sc.note?[sc.note]:[])).map(n=>`<div class="cgnote">${esc(n)}</div>`).join('');
+    return `<div class="cgrid"><b>${esc(c.t)}</b><div class="cgwrap"><div class="cggrid" style="--cgn:${days.length}">${head}${body}</div></div>${notes}</div>`;
+  };
   // stack + card tips both reveal on hover now (.tipw:hover / .exn:hover) — no JS,
   // no outside-click handler, no '.open' toggling to leak or clash with search.
   let h='';
@@ -1243,9 +1295,10 @@ function renderPage(p){
     STACK.cats.forEach(c=>{if(c.id!=='maylater')h+=renderCat(c);});   // 'maylater' renders last
     const ml=STACK.cats.find(c=>c.id==='maylater'); if(ml)h+=renderCat(ml);   // parking lot, at the very foot
   } else if(p==='grooming'&&CARE.length){
-    // the dental / face protocol cards, on their own page (they used to close the Stack)
+    // the face schedule renders as a day-indexed grid; the dental protocol stays a cadence card
     h=`<div class="pgh">Grooming</div><div class="pgsub">${CARE.map(c=>esc(c.t)).join(' &middot; ')}</div>`+
-      cardRow(CARE,'wide');
+      CARE.filter(c=>c.schedule).map(careGrid).join('')+
+      cardRow(CARE.filter(c=>!c.schedule),'wide');
   } else if(p==='routine'&&ROUTINE.length){
     // an hour RULER, not a list: every hour from wake to lights-out gets a mark, so empty
     // hours take up (a little) space and the day reads as time, not as glued-together events

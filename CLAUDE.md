@@ -77,7 +77,9 @@ CSS fails **silently**. There is no error. The page just quietly does the wrong 
 - `audit()` in `index.html` validates the data on load and **refuses to render** rather than
   show a wrong number. Keep it that way.
 - `STACK`, `ROUTINE`, `DIET`, `TRAINING`, `NEXTDRAW`, `CARE` feed the tab pages (Stack /
-  Routine / Diet / Training / Next Draw / Grooming); `CARE` is the Grooming tab's cards.
+  Routine / Diet / Training / Next Draw / Grooming); `CARE` is the Grooming tab — Dental as a
+  cadence card, Face as a day-indexed weekly grid (`.schedule`: days[]/sections[]/rows{n,on[]},
+  a dot-matrix; every `on` day name must exist in `days[]` or `audit()` refuses to render).
   Statuses are a closed enum (taking / candidate / stopped / dropped / planned); `when` is the
   meal a supplement rides with — **null means not yet assigned, never guess it**. The Diet
   page derives its supplement lists from `STACK.when` at render time: timing is written in ONE

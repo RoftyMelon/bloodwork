@@ -68,7 +68,7 @@ setTimeout(()=>{
     stack:['srow',DATA.STACK.items.length],
     routine:['rev',R0.length],   // every entry renders one row now — blocks included
     training:['ccard',DATA.TRAINING.cards.length],
-    grooming:['ccard',DATA.CARE.length],   // the dental/face protocol cards, on their own tab
+    grooming:['ccard',DATA.CARE.filter(c=>!c.schedule).length],   // scheduled cards (face) render as grids, not ccards
     diet:['ccard',DATA.DIET.meals.filter(m=>m.at).length+1]};   // timed meal cards + Evening; untimed sections are plain rows
   Object.entries(want).forEach(([p,[cls,n2]])=>{
     try{ setPage(p);
@@ -138,11 +138,19 @@ setTimeout(()=>{
     ok('stack keeps no care cards', count(n.pages.innerHTML,'ccard')===0,
       count(n.pages.innerHTML,'ccard')+' on stack');
     setPage('grooming');
-    ok(`grooming shows ${DATA.CARE.length} care cards`, count(n.pages.innerHTML,'ccard')===DATA.CARE.length,
+    const cards=DATA.CARE.filter(c=>!c.schedule).length, grids=DATA.CARE.filter(c=>c.schedule).length;
+    ok(`grooming shows ${cards} care card${cards===1?'':'s'}`, count(n.pages.innerHTML,'ccard')===cards,
       count(n.pages.innerHTML,'ccard')+' cards');
+    ok(`grooming shows ${grids} schedule grid${grids===1?'':'s'}`, count(n.pages.innerHTML,'cgrid')===grids,
+      count(n.pages.innerHTML,'cgrid')+' grids');
     const cg=DATA.CARE.reduce((a,c)=>a+(c.groups?c.groups.length:0),0);
     ok(`care cards show ${cg} cadence groups`, count(n.pages.innerHTML,'cgrp')===cg,
-      count(n.pages.innerHTML,'cgrp')+' groups'); }
+      count(n.pages.innerHTML,'cgrp')+' groups');
+    // the grid must draw exactly one dot per row per day — no silently dropped or doubled cells
+    const gd=DATA.CARE.filter(c=>c.schedule).reduce((a,c)=>{const days=c.schedule.days.length;
+      return a+c.schedule.sections.reduce((b,s)=>b+s.rows.length*days,0);},0);
+    ok(`grid draws ${gd} day cells`, count(n.pages.innerHTML,'cgdot')===gd,
+      count(n.pages.innerHTML,'cgdot')+' dots'); }
   catch(e){ ok('grooming care cards',false,e.message); }
   // training cards are organised in muscle-group sub-sections; every set renders a column
   try{ setPage('training');
