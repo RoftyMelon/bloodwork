@@ -125,7 +125,7 @@ td.boot span{color:var(--t3);font-size:15px}
    squeeze it inline and wrap the pills instead. */
 .swap,.ptabs,.toc{touch-action:pan-x pan-y;overscroll-behavior-x:contain}
 .toc{display:flex;gap:2px;min-width:0;flex-basis:100%;   /* pill BOXES align to the gutter */
-  padding-top:10px;margin-top:-10px;   /* the scroll surface covers the seam above:
+  padding-top:10px;margin-top:-12px;   /* the scroll surface covers the seam above:
      a horizontal pan between the rows must grab a SCROLLER, never the table */
   flex-wrap:nowrap;overflow-x:auto;                 /* never wrap: scroll instead */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
@@ -330,7 +330,7 @@ td.pos{padding-right:14px}
    jumps; --stick tracks the CURRENTLY visible header bottom — what the frozen thead
    sticks under — so it follows the collapse. setStick()/pumpStick() drive it. */
 .tabrow{display:flex;align-items:center;gap:10px;overflow:hidden;
-  max-height:64px;margin-bottom:8px;   /* content ~46px (generous, nothing clips); the margin is
+  max-height:64px;margin-bottom:3px;   /* content ~46px (generous, nothing clips); the margin is
      the breathing room before the filter pills — it rides the SAME easing as max-height so it
      collapses WITH the row on scroll, leaving no phantom gap when the tabs hide */
   transition:max-height .16s cubic-bezier(.3,.7,.2,1),margin-bottom .16s cubic-bezier(.3,.7,.2,1),opacity .12s ease}
