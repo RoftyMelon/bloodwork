@@ -143,16 +143,6 @@ window.BLOODWORK =
   {"t": "22:00", "do": "Lights out"}
  ],
  "CARE": [
-  {"id": "dental", "t": "Dental", "groups": [
-   {"t": "Daily", "items": [
-    "Water jet + toothbrush 2-3x/day",
-    "Alternate thread floss & interdental brushes"
-   ]},
-   {"t": "Yearly", "items": [
-    "Dental scaling 2-3x/year",
-    "Carbamide peroxide 10-15% - 2x/year, applied with custom dental tray"
-   ]}
-  ]},
   {"id": "face", "t": "Face", "groups": [
    {"t": "Daily", "items": [
     "Morning: serum → moisturizer → SPF 50\nTue/Thu/Sat: vitamin C (homemade LAA)",
@@ -166,6 +156,16 @@ window.BLOODWORK =
    ]},
    {"t": "Sunday", "items": [
     "Microneedling 1mm (up to 2mm once per month), face; 0.75mm scalp.\nNo retinols or acids for 48h!"
+   ]}
+  ]},
+  {"id": "dental", "t": "Dental", "groups": [
+   {"t": "Daily", "items": [
+    "Water jet + toothbrush 2-3x/day",
+    "Alternate thread floss & interdental brushes"
+   ]},
+   {"t": "Yearly", "items": [
+    "Dental scaling 2-3x/year",
+    "Carbamide peroxide 10-15% - 2x/year, applied with custom dental tray"
    ]}
   ]}
  ],
