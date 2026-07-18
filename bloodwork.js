@@ -158,11 +158,11 @@ window.BLOODWORK =
     "Morning: serum → moisturizer → SPF 50\nTue/Thu/Sat: vitamin C (homemade LAA)",
     "After dinner: 1% retinol → moisturizer",
     "Before sleep: Matrixyl + HA → petroleum",
+    "Body: 12% glycolic lotion on damp skin — build to daily",
     "Full body hydrating cream after shower"
    ]},
    {"t": "Wednesday", "items": [
-    "Instead of retinol: glycolic acid 7%",
-    "Body lotion 12% glycolic acid"
+    "Instead of retinol: glycolic acid 7%"
    ]},
    {"t": "Sunday", "items": [
     "Microneedling 1mm (up to 2mm once per month), face; 0.75mm scalp.\nNo retinols or acids for 48h!"
