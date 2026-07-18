@@ -125,9 +125,8 @@ td.boot span{color:var(--t3);font-size:15px}
    squeeze it inline and wrap the pills instead. */
 .swap,.ptabs,.toc{touch-action:pan-x pan-y;overscroll-behavior-x:contain}
 .toc{display:flex;gap:2px;min-width:0;flex-basis:100%;   /* pill BOXES align to the gutter */
-  padding-top:10px;margin-top:-15px;   /* the scroll surface covers the seam above (padding-top
-     is the grab zone); a horizontal pan between the rows must grab a SCROLLER, never the table.
-     margin-top runs 5px past the padding to pull the category row up under the filter pills */
+  padding-top:10px;margin-top:-10px;   /* the scroll surface covers the seam above:
+     a horizontal pan between the rows must grab a SCROLLER, never the table */
   flex-wrap:nowrap;overflow-x:auto;                 /* never wrap: scroll instead */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .toc::-webkit-scrollbar{display:none}
@@ -331,7 +330,7 @@ td.pos{padding-right:14px}
    jumps; --stick tracks the CURRENTLY visible header bottom — what the frozen thead
    sticks under — so it follows the collapse. setStick()/pumpStick() drive it. */
 .tabrow{display:flex;align-items:center;gap:10px;overflow:hidden;
-  max-height:64px;margin-bottom:2px;   /* content ~46px (generous, nothing clips); the margin is
+  max-height:64px;margin-bottom:8px;   /* content ~46px (generous, nothing clips); the margin is
      the breathing room before the filter pills — it rides the SAME easing as max-height so it
      collapses WITH the row on scroll, leaving no phantom gap when the tabs hide */
   transition:max-height .24s cubic-bezier(.3,.7,.2,1),margin-bottom .24s cubic-bezier(.3,.7,.2,1),opacity .18s ease}
@@ -345,7 +344,7 @@ html.tabhid .tabrow{max-height:0;opacity:0;margin-bottom:0;pointer-events:none}
   flex-wrap:nowrap;overflow-x:auto;                /* search opens -> pills scroll, never wrap */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .swap::-webkit-scrollbar{display:none}
-.pt{font-family:inherit;font-size:18px;font-weight:550;padding:9px 14px;white-space:nowrap;
+.pt{font-family:inherit;font-size:17px;font-weight:550;padding:9px 13px;white-space:nowrap;
   background:none;border:none;border-radius:9px;color:var(--t3);cursor:pointer;position:relative;
   letter-spacing:-.005em;transition:color .14s}
 .pt:hover{color:var(--txt)}
@@ -600,7 +599,7 @@ a.sbuy:hover{color:var(--info)}
     padding-left:10px;padding-right:6px}
 }
 @media(max-width:900px),(max-height:560px){
-  .pt{font-size:18px;padding:8px 9px}
+  .pt{font-size:17px;padding:8px 9px}
   .pgh{font-size:24px}
   .rht{width:56px}
 }
