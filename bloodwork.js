@@ -321,7 +321,7 @@ window.BLOODWORK =
     {"n": "Olive oil", "amt": "10 mL", "info": {"Per 10 mL":[["Energy","80 kcal","4%"],["Fat","9 g","13%"],["– monounsat.","7 g"],["Vit E","1 mg","10%"]]}},
     "---",
     {"n": "Fruit (apple, pear, peach…)", "amt": "~150 g", "info": {"Per piece (~150 g)":[["Energy","80 kcal","4%"],["Carbs","20 g","8%"],["– sugars","15 g","17%"],["Fibre","3 g"],["Vit C","7 mg","9%"],["Potassium","180 mg","9%"]]}},
-    {"n": "Nuts (walnut 6g, almond 5g, pistachio 4g)", "amt": "~15 g", "info": {"Per ~15 g":[["Energy","90 kcal","5%"],["Protein","3 g","6%"],["Fat","8 g","11%"],["Fibre","1.5 g"]],"Standouts":[["Omega-3 (ALA)","0.6 g"],["Vitamin E","1.3 mg","11%"],["Magnesium","28 mg","7%"]]}},
+    {"n": "Nuts", "amt": "~15 g", "info": {"Mix":[["Walnut","6g"],["Almond","5g"],["Pistachio","4g"]],"Per ~15 g":[["Energy","90 kcal","5%"],["Protein","3 g","6%"],["Fat","8 g","11%"],["Fibre","1.5 g"]],"Standouts":[["Omega-3 (ALA)","0.6 g"],["Vitamin E","1.3 mg","11%"],["Magnesium","28 mg","7%"]]}},
     {"n": "Dark chocolate (85% Madagascar)", "amt": "~10 g", "info": {"Per ~10 g":[["Energy","60 kcal","3%"],["Fat","5 g","7%"],["– saturates","3 g","14%"],["Carbs","2 g","1%"],["Fibre","1 g"]],"Minerals":[["Magnesium","23 mg","6%"],["Iron","1.1 mg","8%"],["Copper","0.2 mg","18%"],["Manganese","0.2 mg","10%"]]}}
    ]},
    {"id": "dinner", "t": "Dinner", "at": "16:30", "items": [
@@ -335,7 +335,7 @@ window.BLOODWORK =
     {"n": "Frozen vegetables", "amt": "~100 g", "info": {"Per ~100 g":[["Energy","35 kcal","2%"],["Carbs","6 g","2%"],["Fibre","3 g"],["Protein","2 g","4%"]],"Vitamins":[["K","25 mcg","33%"],["Folate","40 mcg","20%"],["C","15 mg","19%"],["A","150 mcg","19%"]]}},
     "---",
     {"n": "Kiwis", "amt": "2", "info": {"Per 2 (~140 g)":[["Energy","85 kcal","4%"],["Carbs","20 g","8%"],["– sugars","13 g","14%"],["Fibre","4 g"]],"Standouts":[["Vit C","130 mg","163%"],["Vit K","55 mcg","73%"],["Potassium","430 mg","22%"],["Vit E","2 mg","17%"]]}},
-    {"n": "Nuts (walnut 6g, almond 5g, pistachio 4g)", "amt": "~15 g", "info": {"Per ~15 g":[["Energy","90 kcal","5%"],["Protein","3 g","6%"],["Fat","8 g","11%"],["Fibre","1.5 g"]],"Standouts":[["Omega-3 (ALA)","0.6 g"],["Vitamin E","1.3 mg","11%"],["Magnesium","28 mg","7%"]]}},
+    {"n": "Nuts", "amt": "~15 g", "info": {"Mix":[["Walnut","6g"],["Almond","5g"],["Pistachio","4g"]],"Per ~15 g":[["Energy","90 kcal","5%"],["Protein","3 g","6%"],["Fat","8 g","11%"],["Fibre","1.5 g"]],"Standouts":[["Omega-3 (ALA)","0.6 g"],["Vitamin E","1.3 mg","11%"],["Magnesium","28 mg","7%"]]}},
     {"n": "Dark chocolate (85% Madagascar)", "amt": "~10 g", "info": {"Per ~10 g":[["Energy","60 kcal","3%"],["Fat","5 g","7%"],["– saturates","3 g","14%"],["Carbs","2 g","1%"],["Fibre","1 g"]],"Minerals":[["Magnesium","23 mg","6%"],["Iron","1.1 mg","8%"],["Copper","0.2 mg","18%"],["Manganese","0.2 mg","10%"]]}}
    ]}
   ]
