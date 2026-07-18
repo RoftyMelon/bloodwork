@@ -330,9 +330,11 @@ td.pos{padding-right:14px}
    jumps; --stick tracks the CURRENTLY visible header bottom — what the frozen thead
    sticks under — so it follows the collapse. setStick()/pumpStick() drive it. */
 .tabrow{display:flex;align-items:center;gap:10px;overflow:hidden;
-  max-height:60px;   /* content is ~44px; generous so nothing clips. collapses to 0 on scroll */
-  transition:max-height .24s cubic-bezier(.3,.7,.2,1),opacity .18s ease}
-html.tabhid .tabrow{max-height:0;opacity:0;pointer-events:none}
+  max-height:60px;margin-bottom:12px;   /* content ~44px (generous, nothing clips); the margin is
+     the breathing room before the filter pills — it rides the SAME easing as max-height so it
+     collapses WITH the row on scroll, leaving no phantom gap when the tabs hide */
+  transition:max-height .24s cubic-bezier(.3,.7,.2,1),margin-bottom .24s cubic-bezier(.3,.7,.2,1),opacity .18s ease}
+html.tabhid .tabrow{max-height:0;opacity:0;margin-bottom:0;pointer-events:none}
 .ptabs{flex:1;min-width:0;display:flex;align-items:center;gap:2px;position:relative;
   flex-wrap:nowrap;overflow-x:auto;                /* never wrap: scroll, like the toc */
   scrollbar-width:none;-webkit-overflow-scrolling:touch}
