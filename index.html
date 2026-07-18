@@ -331,7 +331,7 @@ td.pos{padding-right:14px}
    sticks under — so it follows the collapse. setStick()/pumpStick() drive it.
    (--hvis, NOT --stick: --stick is the frozen-column background COLOUR — separate token.) */
 .tabrow{display:flex;align-items:center;gap:10px;overflow:hidden;
-  max-height:64px;margin-bottom:3px;   /* content ~46px (generous, nothing clips); the margin is
+  max-height:64px;margin-bottom:-1px;   /* content ~46px (generous, nothing clips); the margin is
      the breathing room before the filter pills — it rides the SAME easing as max-height so it
      collapses WITH the row on scroll, leaving no phantom gap when the tabs hide */
   transition:max-height .16s cubic-bezier(.3,.7,.2,1),margin-bottom .16s cubic-bezier(.3,.7,.2,1),opacity .12s ease}
