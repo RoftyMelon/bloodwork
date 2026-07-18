@@ -1144,33 +1144,6 @@ let page='markers';
 document.documentElement.dataset.page=page;
 const PGEL=document.getElementById('pages'),
       PTABS=document.getElementById('ptabs');
-// reveal a clipped tab WITH a sliver of its neighbour, so hidden tabs announce
-// themselves; a tab at either end reveals plainly. (.ptu after the last tab is
-// not a .pt, so the guard treats the last tab as edge.)
-function revealTab(b,instant){
-  // Every activation aims for the BOTH-ENDS state — a sliver of the first tab AND
-  // of the last tab on screen, so the strip always advertises what's hidden in
-  // either direction — then the ACTIVE tab's own visibility clamps the result.
-  // Works bidirectionally: coming back from Training slides the strip left again.
-  const sc=PTABS,peek=28;
-  const bl=b.offsetLeft,br=bl+b.offsetWidth;
-  const nx=b.nextElementSibling,pv=b.previousElementSibling;
-  const nb=nx&&nx.classList&&nx.classList.contains&&nx.classList.contains('pt')?peek:0;
-  const pb=pv&&pv.classList&&pv.classList.contains&&pv.classList.contains('pt')?peek:0;
-  const tabs=sc.querySelectorAll('.pt'),first=tabs[0],last=tabs[tabs.length-1];
-  const minX=Math.max(0,br+nb-sc.clientWidth);       // active (+ next peek) fully visible
-  const maxX=Math.max(0,bl-pb);                      // active (+ prev peek) fully visible
-  // the both-ends anchor: park ONE PEEK in — the first tab loses just its first
-  // letters and the last tab shows through the glass; mid tabs always land here
-  const keepFirst=first.offsetLeft+first.offsetWidth-peek;
-  const t=Math.max(0,Math.min(peek,keepFirst));
-  const x=Math.min(Math.max(t,minX),Math.max(maxX,minX));
-  if(x!==sc.scrollLeft){
-    // a strip revealed THIS frame drops smooth scrolls (Safari): set it instantly
-    if(instant)sc.scrollLeft=x;
-    else if(sc.scrollTo)sc.scrollTo({left:x,behavior:'smooth'});
-  }
-}
 function movePtu(){   // slide the shared underline under the active tab
   const on=PTABS.querySelector('.pt.on'),u=document.getElementById('ptu');
   if(!on||!u||!on.offsetWidth)return;   // hidden strip: keep the last position
@@ -1185,8 +1158,7 @@ function setPage(p){
   page=p;
   document.documentElement.dataset.page=p;
   PGEL.hidden=p==='markers';
-  document.querySelectorAll('#ptabs .pt').forEach(b=>{const on=b.dataset.pg===p;b.classList.toggle('on',on);
-    if(on)revealTab(b);});   // a clipped tab slides fully into view, peeking its neighbour
+  document.querySelectorAll('#ptabs .pt').forEach(b=>b.classList.toggle('on',b.dataset.pg===p));   // no scroll-on-tap: the strip stays exactly where you left it
   if(p!=='markers')renderPage(p);
   // The topbar changes composition here (pills + category appear only on Markers), so --toph
   // must be re-measured HERE. The ResizeObserver alone proved unreliable (unreferenced
