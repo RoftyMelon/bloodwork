@@ -155,7 +155,7 @@ window.BLOODWORK =
   ]},
   {"id": "face", "t": "Face", "groups": [
    {"t": "Daily", "items": [
-    "Morning: serum → day cream",
+    "Morning: serum → day cream → SPF 50",
     "After dinner:\n1% retinol → night cream → petroleum (Vaseline)",
     "Full body hydrating cream after shower"
    ]},
