@@ -90,7 +90,9 @@ button{font-family:inherit;font-size:15px;font-weight:550;letter-spacing:-.005em
   padding:9px 15px;border-radius:11px;cursor:pointer;transition:.18s cubic-bezier(.3,.9,.3,1);
   background:var(--btn);border:.5px solid var(--btn-b);color:var(--txt)}
 button:hover{background:var(--btn-h)}
-button.ic{padding:0;width:40px;height:40px;border-radius:50%;flex:none;
+button.ic{padding:0;width:40px;height:40px;border-radius:50%;flex:none;position:relative;top:-4px;
+  /* top:-4 lifts the circle level with the tab TEXT — the active-tab underline drags the row's
+     geometric centre down, so plain vertical-centre reads ~4px low. relative (not transform) keeps the glass. */
   display:flex;align-items:center;justify-content:center;color:var(--t2);
   background:var(--glass);border:.5px solid var(--glass-b);z-index:1;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 1px 6px rgba(0,0,0,.08);
@@ -595,8 +597,8 @@ a.sbuy:hover{color:var(--info)}
      TAB row's right end; the tab strip runs behind it (glass) and .ptabs gets trailing padding
      so the last tab still scrolls fully clear. .topline goes block so pills + TOC stack. */
   .topline{display:block}
-  button.ic{position:absolute;top:6px;right:var(--gut,10px)}   /* over the tab row's right end; top:6 not 8 —
-     the 40px circle is taller than the 36px tab row, so 6px centres it instead of hanging 4px low */
+  button.ic{position:absolute;top:2px;right:var(--gut,10px)}   /* over the tab row's right end; top:2 lifts it
+     level with the tab TEXT (the active-tab underline drags the row's geometric centre down) */
   .ptabs{padding-right:44px}   /* trailing room: the LAST tab (Training) scrolls just clear of the toggle */
   .tabrow{margin-bottom:2px}   /* filter pills sit 3px lower on phones (base margin is -1px) */
   /* The section bar is PINNED the whole time you're inside a section, so its height is
