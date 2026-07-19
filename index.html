@@ -538,21 +538,21 @@ a.sbuy:hover{color:var(--info)}
 .dnotes li{font-size:15px;color:var(--t2);line-height:1.7}
 /* face schedule — a CARE .schedule renders as a day-indexed weekly dot-matrix, not a card.
    solid dot = applied, faint = skipped, accent = the procedure. All colours are theme tokens. */
-.cgrid{background:var(--grp);border-radius:12px;padding:12px 15px 13px;width:max-content;max-width:600px;margin-top:22px}
+.cgrid{background:var(--grp);border-radius:12px;padding:12px 15px 13px;width:max-content;max-width:640px;margin-top:22px}
 .cgrid>b{font-size:14px;font-weight:750;letter-spacing:.06em;color:var(--info);text-transform:uppercase}   /* SKINCARE title in accent blue */
 .care.wide .ccard>b{color:var(--info)}   /* DENTAL title blue too — scoped to grooming, leaves Training/Diet card titles alone */
 .care.wide .cgrp{color:var(--t3)}   /* grooming DAILY/YEARLY muted grey to match the skincare section labels (Morning/etc.) */
 .cgscroll{overflow-x:auto;scrollbar-width:none}   /* the whole face card pans as one unit on phones */
 .cgscroll::-webkit-scrollbar{display:none}   /* swipe-driven, no bar (cf .care) */
-.cggrid{--cgn:7;display:grid;grid-template-columns:max-content repeat(var(--cgn,7),42px);
+.cggrid{--cgn:7;display:grid;grid-template-columns:max-content repeat(var(--cgn,7),50px);
   align-items:center;row-gap:3px;font-size:12.5px;margin-top:11px}   /* label auto-fits any font size; fixed 42px days.
   Same at every width — the card sizes to this and pans in .cgscroll only when it can't fit. --cgn overridden inline */
 .cgcell{display:flex;justify-content:center;align-items:center}
 .cgrn{color:var(--txt);white-space:nowrap;line-height:1.3;font-size:16px;padding-right:13px}   /* a row name — and the header's empty corner */
-.cgd{color:var(--t2);font-size:12px}
+.cgd{color:var(--t2);font-size:13px}
 .cgtag{display:inline-flex;flex-direction:column;align-items:center;line-height:1.15;
-  background:var(--bg);border:.5px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--t2);font-size:12px}
-.cgtag em{font-style:normal;font-size:9.5px;color:var(--t3)}
+  background:var(--bg);border:.5px solid var(--line);border-radius:6px;padding:3px 6px;color:var(--t2);font-size:13px}
+.cgtag em{font-style:normal;font-size:11px;color:var(--t3)}
 .cgtag.hi{background:var(--hov);border-color:transparent;color:var(--sel)}   /* the needle day */
 .cgtag.hi em{color:var(--sel)}
 .cgsec{grid-column:1/-1;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--t3);letter-spacing:.03em;
@@ -652,7 +652,7 @@ a.sbuy:hover{color:var(--info)}
 @media(max-width:580px){   /* the grid layout is now identical at every width (a content-width card that
   pans in .cgscroll when it can't fit), so the only phone-specific tweak left is the footnotes, which
   read too large on a small screen. */
-  .cgnote{font-size:9px}
+  .cgnote{font-size:8px}
 }
 </style>
 <script>
