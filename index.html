@@ -530,7 +530,11 @@ a.sbuy:hover{color:var(--info)}
 .ckcal{margin-left:8px;font-size:12.5px;font-weight:450;color:var(--t3);font-variant-numeric:tabular-nums}
 .care.col{flex-direction:column;overflow:visible;width:auto;max-width:none}
 .care.wide{margin-top:34px;width:auto;max-width:none}   /* air above; fill the width (mobile) instead of hugging one 344px card */
-.care.wide .ccard{flex:1 1 auto}   /* dental card fills the row edge-to-edge (mobile); on desktop it's a grid item and this is ignored */
+/* The dental card is sized to ITS OWN content, never padded out to match the day-grid
+   beside it. 370px = the 337px of "Alternate thread floss & interdental brushes" (the
+   longest line that should sit on one line) + the card's 2x14px padding. The carbamide
+   line is 537px, so it wraps to two — which is the intent, not an accident. */
+.care.wide .ccard{flex:0 1 auto;width:min(370px,100%)}
 .care.col .ccard{flex:none;width:min(430px,100%)}   /* wide enough that no item wraps */
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
 .dnotes b{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--t3)}
@@ -632,8 +636,14 @@ a.sbuy:hover{color:var(--info)}
      pans — and every pixel of gutter is a pixel of grid you can't see. The dental card gets
      the same treatment so the two still line up. Negative gutter margins, NOT width:100vw:
      100vw counts the scrollbar and would re-open the horizontal overflow we just closed. */
-  .gwrap>.cgscroll,.gwrap>.care.wide{
-    margin-left:calc(-1 * var(--gut,10px));margin-right:calc(-1 * var(--gut,10px))}
+  /* The day-grid pans like every other card row: viewport pulled out to the screen edges,
+     gutter put back as padding, so the card RESTS at the gutter and only travels to the
+     glass when you pan. (It used to be flush-left full-bleed, which read as a different
+     component to the rest.) The dental card is not a scroller, so it just sits at the
+     gutter with everything else. */
+  .gwrap>.cgscroll{
+    margin-left:calc(-1 * var(--gut,10px));margin-right:calc(-1 * var(--gut,10px));
+    padding-left:var(--gut,10px);padding-right:var(--gut,10px)}
   /* Card rows scroll EDGE TO EDGE. The scroll VIEWPORT is pulled out to the screen edges
      (negative gutter margins) and the gutter is put back as PADDING, so the first and last
      card still line up with the page at rest but the cards travel all the way to the glass
@@ -673,16 +683,16 @@ a.sbuy:hover{color:var(--info)}
      name/amount/kcal row across 1240px and open a canyon in the middle of every line. */
   .care.col{display:block;width:min(var(--cardw,660px),100%)}
   .care.col>.ccard{width:auto;margin:0 0 14px}
-  /* Grooming cards stack at the same constant width. */
+  /* Grooming cards stack, each at its OWN natural width — the grid card as wide as its 7
+     day columns, the dental card as wide as its longest line. Neither is padded out to
+     match the other, and neither tracks the window: the day columns are a fixed 50px, so
+     the card is the same size on a 1000px laptop as on a 1500px one. */
   .gwrap{display:block;width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
   .gwrap>.cgscroll{margin-top:22px}
   /* .cgscroll already carries the 22px; the card's own top margin would stack on top of it
      (overflow:auto blocks the collapse) and double the gap. */
-  .gwrap>.cgscroll>.cgrid{margin-top:0;width:min(var(--cardw,660px),100%);max-width:none}
-  /* days share whatever the fixed card width leaves over, so the grid fills its card
-     exactly — no compact grid marooned in a wider grey box */
-  .gwrap .cggrid{grid-template-columns:max-content repeat(var(--cgn,7),minmax(50px,1fr))}
-  .gwrap>.care.wide{width:min(var(--cardw,660px),100%);margin-top:14px;margin-bottom:0}
+  .gwrap>.cgscroll>.cgrid{margin-top:0}
+  .gwrap>.care.wide{width:auto;margin-top:14px;margin-bottom:0}
 }
 @media(max-width:430px){
   .chip{padding:7px 9px;font-size:13.5px}
