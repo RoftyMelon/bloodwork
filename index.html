@@ -538,7 +538,8 @@ a.sbuy:hover{color:var(--info)}
    solid dot = applied, faint = skipped, accent = the procedure. All colours are theme tokens. */
 .cgrid{background:var(--grp);border-radius:12px;padding:12px 15px 13px;max-width:600px;margin-top:22px}
 .cgrid>b{font-size:14px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
-.cgwrap{overflow-x:auto;margin-top:11px}
+.cgwrap{overflow-x:auto;margin-top:11px;scrollbar-width:none}
+.cgwrap::-webkit-scrollbar{display:none}   /* horizontal scroll on phones is swipe-driven, no bar (cf .care) */
 .cggrid{--cgn:7;display:grid;grid-template-columns:minmax(168px,1.4fr) repeat(var(--cgn,7),minmax(22px,1fr));
   align-items:center;row-gap:3px;font-size:12.5px}   /* --cgn (day count) is overridden inline per render */
 .cgcell{display:flex;justify-content:center;align-items:center}
@@ -641,17 +642,13 @@ a.sbuy:hover{color:var(--info)}
   .bar{gap:4px}
   #chips .chip:nth-child(1) .cn,#chips .chip:nth-child(3) .cn{display:none}
 }
-@media(max-width:580px){   /* the 8-col face grid gets cramped on a phone: below ~560px the label
-  track can't reach the width the longest name needs, so it overflowed into the Monday dot.
-  Wrap the names, shrink chips/dots — keeps the whole week visible with no collision. */
-  .cgwrap{overflow-x:hidden}   /* wrapping makes it fit; suppress the sub-pixel-overflow scrollbar */
-  .cggrid{grid-template-columns:minmax(88px,1fr) repeat(var(--cgn,7),minmax(0,1fr));font-size:11.5px}
-  .cgrn{white-space:normal;line-height:1.2;padding-right:6px}
-  .cgd{font-size:10.5px}
-  .cgtag{font-size:10.5px;padding:3px 4px}
-  .cgtag em{font-size:8.5px}
-  .cgdot{width:8px;height:8px}
-  .cgdot.hi{width:10px;height:10px}
+@media(max-width:580px){   /* on a phone the 8-col grid can't fit. Keep every row on ONE line and scroll
+  horizontally, with the row-name column FROZEN (sticky-left) so a dot is never orphaned from its
+  name. Fixed 42px day columns (not fr) force the grid to its full width so it actually scrolls
+  instead of compressing; width:max-content pins that. The card-coloured box-shadow softly hides
+  dots half-scrolled under the frozen column. Desktop keeps the flexible single-line layout. */
+  .cggrid{grid-template-columns:max-content repeat(var(--cgn,7),42px);width:max-content}
+  .cgrn{position:sticky;left:0;z-index:2;background:var(--grp);padding-right:13px;box-shadow:8px 0 6px -3px var(--grp)}
 }
 </style>
 <script>
