@@ -170,7 +170,7 @@ window.BLOODWORK =
     ]}
    ],
    "notes": [
-    "Microneedle: 1mm face, up to 2mm monthly; 0.75mm scalp.",
+    "Microneedle: face 1mm weekly, up to 2mm monthly; scalp 0.75mm weekly.",
     "Retinol paused 48h before needling, and resumes 48h after."
    ]
   }},
