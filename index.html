@@ -648,7 +648,8 @@ a.sbuy:hover{color:var(--info)}
   Desktop keeps the flexible single-line layout that fits without scrolling. */
   .cgrid{width:max-content}
   .cggrid{grid-template-columns:max-content repeat(var(--cgn,7),42px)}
-  .cgrn{padding-right:13px}   /* a gap between the row name and its first dot */
+  .cgrn{padding-right:13px;font-size:14px}   /* gap before first dot; larger row names on a phone */
+  .cgsec{font-size:12px}   /* larger section labels to match */
   .cgnote{font-size:10px}   /* the footnotes read too large on a phone */
 }
 </style>
