@@ -359,7 +359,7 @@ html:not([data-page=markers]) .srch,html:not([data-page=markers]) .chips,
 html:not([data-page=markers]) .toc,
 html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{display:none}
 
-.pgs{max-width:790px;padding:0 0 40px 10px}   /* 10px left inset: the content (pgh + cards/text) starts a touch right of the tab bar */
+.pgs{max-width:790px;padding:0 0 40px}   /* no left inset: it made content 10px right of centre AND, since cards size off 100vw, tipped them into horizontal overflow — content sits symmetric in the wrap gutter instead */
 .pgh{font-size:26px;font-weight:700;letter-spacing:-.02em;margin:2px 0 3px}
 .pgsub{font-size:16px;color:var(--t3)}
 .pgsp{padding-top:8px}   /* a subtitle sitting under a bordered .pgst needs its own air */
