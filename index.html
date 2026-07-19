@@ -595,7 +595,8 @@ a.sbuy:hover{color:var(--info)}
      TAB row's right end; the tab strip runs behind it (glass) and .ptabs gets trailing padding
      so the last tab still scrolls fully clear. .topline goes block so pills + TOC stack. */
   .topline{display:block}
-  button.ic{position:absolute;top:8px;right:var(--gut,10px)}   /* over the tab row's right end */
+  button.ic{position:absolute;top:6px;right:var(--gut,10px)}   /* over the tab row's right end; top:6 not 8 —
+     the 40px circle is taller than the 36px tab row, so 6px centres it instead of hanging 4px low */
   .ptabs{padding-right:44px}   /* trailing room: the LAST tab (Training) scrolls just clear of the toggle */
   .tabrow{margin-bottom:2px}   /* filter pills sit 3px lower on phones (base margin is -1px) */
   /* The section bar is PINNED the whole time you're inside a section, so its height is
