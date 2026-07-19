@@ -159,7 +159,7 @@ window.BLOODWORK =
      {"n": "Serum → Moisturizer → SPF 50", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
     ]},
     {"t": "After dinner", "rows": [
-     {"n": "Retinol", "on": ["Tue", "Thu", "Fri"]},
+     {"n": "Retinol 1%", "on": ["Tue", "Thu", "Fri"]},
      {"n": "Glycolic 7%", "on": ["Wed"]},
      {"n": "Moisturizer", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Body lotion 12% AHA", "on": ["Tue", "Thu", "Sat"]},
