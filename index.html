@@ -656,25 +656,24 @@ a.sbuy:hover{color:var(--info)}
     grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
     width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
   .care>.ccard{flex:none;width:auto;min-width:0}
-  /* Diet meals are wildly ragged (a 550px BRUNCH beside a 90px EVENING). A GRID aligns
-     ROWS, so DINNER could not start until BRUNCH's row closed — leaving ~660px of dead
-     space under the short PRE-WORKOUT card. Multi-column drops each card straight under
-     the previous one in its own column: no row barrier, so no hole. */
-  .care.col{display:block;columns:2;column-gap:14px;
-    width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
-  .care.col>.ccard{width:auto;break-inside:avoid;margin:0 0 14px}
-  /* Grooming cards STACK, each spanning the full content width. Side-by-side squeezed the
-     day-grid into its natural 619px and handed the right half to the dental card, so
-     neither card could be full width. Stacked, the grid's day columns share the leftover
-     width (minmax(50px,1fr)) so the card fills edge to edge instead of leaving a compact
-     grid marooned in a wide grey box. */
+  /* Stacked cards hold a CONSTANT width instead of tracking the window. 660px clears the
+     day-grid's natural 619px plus the card's 30px padding, so every day column stays at
+     or above its 50px minimum and the grid never has to pan on a laptop. */
+  .pgs{--cardw:660px}
+  /* Diet meals stack in one column at that width. Full width would stretch a
+     name/amount/kcal row across 1240px and open a canyon in the middle of every line. */
+  .care.col{display:block;width:min(var(--cardw,660px),100%)}
+  .care.col>.ccard{width:auto;margin:0 0 14px}
+  /* Grooming cards stack at the same constant width. */
   .gwrap{display:block;width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
   .gwrap>.cgscroll{margin-top:22px}
   /* .cgscroll already carries the 22px; the card's own top margin would stack on top of it
      (overflow:auto blocks the collapse) and double the gap. */
-  .gwrap>.cgscroll>.cgrid{margin-top:0;width:100%;max-width:none}
+  .gwrap>.cgscroll>.cgrid{margin-top:0;width:min(var(--cardw,660px),100%);max-width:none}
+  /* days share whatever the fixed card width leaves over, so the grid fills its card
+     exactly — no compact grid marooned in a wider grey box */
   .gwrap .cggrid{grid-template-columns:max-content repeat(var(--cgn,7),minmax(50px,1fr))}
-  .gwrap>.care.wide{width:auto;margin-top:14px;margin-bottom:0}
+  .gwrap>.care.wide{width:min(var(--cardw,660px),100%);margin-top:14px;margin-bottom:0}
 }
 @media(max-width:430px){
   .chip{padding:7px 9px;font-size:13.5px}
