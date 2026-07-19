@@ -529,8 +529,8 @@ a.sbuy:hover{color:var(--info)}
 .cwhen{margin-left:8px;font-size:13px;font-weight:450;color:var(--t4);font-variant-numeric:tabular-nums}
 .ckcal{margin-left:8px;font-size:12.5px;font-weight:450;color:var(--t3);font-variant-numeric:tabular-nums}
 .care.col{flex-direction:column;overflow:visible;width:auto;max-width:none}
-.care.wide{margin-top:34px}   /* air between the last supplement section and the cards */
-.care.wide .ccard{flex-basis:clamp(250px,82vw,344px)}   /* the dental card runs a bit wider */
+.care.wide{margin-top:34px;width:auto;max-width:none}   /* air above; fill the width (mobile) instead of hugging one 344px card */
+.care.wide .ccard{flex:1 1 auto}   /* dental card fills the row edge-to-edge (mobile); on desktop it's a grid item and this is ignored */
 .care.col .ccard{flex:none;width:min(430px,100%)}   /* wide enough that no item wraps */
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
 .dnotes b{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--t3)}
@@ -656,7 +656,7 @@ a.sbuy:hover{color:var(--info)}
   .care.col>.ccard{width:auto}
   /* Grooming: the compact day-grid keeps its natural width and the dental card grows to
      fill the space beside it, so the row reaches the right edge with no dead band. */
-  .gwrap{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-start;
+  .gwrap{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch;
     width:min(calc(100vw - var(--gut,20px) - 20px),1400px)}
   .gwrap>.cgscroll{flex:0 1 auto;margin-top:22px}
   .gwrap>.care.wide{flex:1 1 320px;width:auto;margin-top:22px}
