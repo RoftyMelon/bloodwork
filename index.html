@@ -538,10 +538,10 @@ a.sbuy:hover{color:var(--info)}
    solid dot = applied, faint = skipped, accent = the procedure. All colours are theme tokens. */
 .cgrid{background:var(--grp);border-radius:12px;padding:12px 15px 13px;max-width:600px;margin-top:22px}
 .cgrid>b{font-size:14px;font-weight:750;letter-spacing:.06em;color:var(--txt);text-transform:uppercase}
-.cgwrap{overflow-x:auto;margin-top:11px;scrollbar-width:none}
-.cgwrap::-webkit-scrollbar{display:none}   /* horizontal scroll on phones is swipe-driven, no bar (cf .care) */
+.cgscroll{overflow-x:auto;scrollbar-width:none}   /* the whole face card pans as one unit on phones */
+.cgscroll::-webkit-scrollbar{display:none}   /* swipe-driven, no bar (cf .care) */
 .cggrid{--cgn:7;display:grid;grid-template-columns:minmax(168px,1.4fr) repeat(var(--cgn,7),minmax(22px,1fr));
-  align-items:center;row-gap:3px;font-size:12.5px}   /* --cgn (day count) is overridden inline per render */
+  align-items:center;row-gap:3px;font-size:12.5px;margin-top:11px}   /* --cgn (day count) overridden inline per render */
 .cgcell{display:flex;justify-content:center;align-items:center}
 .cgrn{color:var(--txt);white-space:nowrap;line-height:1.3}   /* a row name — and the header's empty corner */
 .cgd{color:var(--t2);font-size:12px}
@@ -642,13 +642,13 @@ a.sbuy:hover{color:var(--info)}
   .bar{gap:4px}
   #chips .chip:nth-child(1) .cn,#chips .chip:nth-child(3) .cn{display:none}
 }
-@media(max-width:580px){   /* on a phone the 8-col grid can't fit. Keep every row on ONE line and scroll
-  horizontally, with the row-name column FROZEN (sticky-left) so a dot is never orphaned from its
-  name. Fixed 42px day columns (not fr) force the grid to its full width so it actually scrolls
-  instead of compressing; width:max-content pins that. The card-coloured box-shadow softly hides
-  dots half-scrolled under the frozen column. Desktop keeps the flexible single-line layout. */
-  .cggrid{grid-template-columns:max-content repeat(var(--cgn,7),42px);width:max-content}
-  .cgrn{position:sticky;left:0;z-index:2;background:var(--grp);padding-right:13px;box-shadow:8px 0 6px -3px var(--grp)}
+@media(max-width:580px){   /* on a phone the 8-col grid can't fit, so the WHOLE card becomes as wide as
+  its grid and pans horizontally inside .cgscroll — title, grid and notes move together, no scroll
+  region trapped inside a fixed frame. Rows stay on one line; fixed 42px day columns hold the width.
+  Desktop keeps the flexible single-line layout that fits without scrolling. */
+  .cgrid{width:max-content}
+  .cggrid{grid-template-columns:max-content repeat(var(--cgn,7),42px)}
+  .cgrn{padding-right:13px}   /* a gap between the row name and its first dot */
 }
 </style>
 <script>
@@ -1267,7 +1267,7 @@ function renderPage(p){
           `<div class="cgcell"><span class="cgdot${on.has(d.d)?(r.hi?' hi':''):' off'}"></span></div>`).join('');
       }).join('')).join('');
     const notes=(sc.notes||(sc.note?[sc.note]:[])).map(n=>`<div class="cgnote">${esc(n)}</div>`).join('');
-    return `<div class="cgrid"><b>${esc(c.t)}</b><div class="cgwrap"><div class="cggrid" style="--cgn:${days.length}">${head}${body}</div></div>${notes}</div>`;
+    return `<div class="cgrid"><b>${esc(c.t)}</b><div class="cggrid" style="--cgn:${days.length}">${head}${body}</div>${notes}</div>`;
   };
   // stack + card tips both reveal on hover now (.tipw:hover / .exn:hover) — no JS,
   // no outside-click handler, no '.open' toggling to leak or clash with search.
@@ -1306,7 +1306,7 @@ function renderPage(p){
   } else if(p==='grooming'&&CARE.length){
     // the face schedule renders as a day-indexed grid; the dental protocol stays a cadence card
     h=`<div class="pgh">Grooming</div><div class="pgsub">${CARE.map(c=>esc(c.t)).join(' &middot; ')}</div>`+
-      CARE.filter(c=>c.schedule).map(careGrid).join('')+
+      `<div class="cgscroll">`+CARE.filter(c=>c.schedule).map(careGrid).join('')+`</div>`+
       cardRow(CARE.filter(c=>!c.schedule),'wide');
   } else if(p==='routine'&&ROUTINE.length){
     // an hour RULER, not a list: every hour from wake to lights-out gets a mark, so empty
