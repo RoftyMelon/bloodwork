@@ -265,6 +265,16 @@ td.nm .fr{font-size:12.5px;font-weight:400;color:var(--t4);display:block;margin-
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:0}
 td.uc{text-align:left;padding-left:7px;font-size:14px;color:var(--t3);
   white-space:nowrap;font-variant-numeric:tabular-nums}
+/* SI/US switch, parked in the Unit column's own header — the units it governs sit
+   directly beneath it, so the control explains itself without extra chrome. */
+/* padding grows the TAP TARGET (31x15 was well under the ~44px touch minimum) while the
+   negative margin cancels it again, so the header cell's layout is untouched. */
+.ubt{appearance:none;background:none;border:0;cursor:pointer;
+  padding:10px 8px;margin:-10px -8px;
+  display:inline-flex;align-items:center;gap:3px;
+  font:inherit;font-size:11.5px;letter-spacing:.06em;color:var(--t3)}
+.ubt:hover{color:var(--sel)}
+.ubt i{font-style:normal;font-size:10.5px;opacity:.65}
 td.lc{text-align:left;padding-left:10px;white-space:nowrap}
 .lm{font-size:14px;font-weight:500;color:var(--t2);font-variant-numeric:tabular-nums}
 .lm.old{color:var(--info);font-weight:650}
@@ -804,15 +814,34 @@ let MARK=[],DECS=[],CATS=[],DATA={draws:[]},STACK=null,ROUTINE=[],DIET=null,CARE
 const norm=s=>s.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'')
   .replace(/œ/g,'oe').replace(/æ/g,'ae');
 
-const TKEY='bloodpanel.theme';
+const TKEY='bloodpanel.theme',UKEY='bloodpanel.units';
 // S.draws is filled AFTER the fetch — it can't reference DATA at declaration time any more.
-let S={draws:[],theme:'light'},filter='all',q='',qRaw='',openRow=null;
+// S.units: 'us' (canonical) | 'si' — which unit system the TABLE READS in. Default 'us'
+// because that is what every marker's canonical unit and reference ranges are expressed in.
+let S={draws:[],theme:'light',units:'us'},filter='all',q='',qRaw='',openRow=null;
 
 // u is a unit LABEL ("mg/L"), not an index — an AI can't silently fat-finger a string the
 // way it can an integer. Numbers still work, for anything written the old way.
 const unitOf=(m,u)=>(typeof u==='number'?m.units[u]:m.units.find(x=>x.l===u))||m.units[0];
 const toUS=(m,r,u)=>{const x=unitOf(m,u);
   return x.a!==undefined?x.a*r+x.b:r*x.m;};
+
+/* READING UNIT — display only, never comparison.
+   Values are stored as the lab PRINTED them ({r,u}); toUS() normalises each to the
+   marker's CANONICAL unit (its units[] entry with m:1). Everything that COMPARES —
+   status(), sev(), the gauge bands, the chart's geometry — keeps working in canonical
+   units. The toggle converts at the point of FORMATTING only, so a converted number is
+   never measured against an unconverted range. Convert one and you must convert them
+   all: a cell in mmol/L beside a range in mg/dL reads as a false out-of-range. */
+const SIU=/mol\//;                                 // mmol/L µmol/L nmol/L pmol/L mmol/mol
+const siOf=m=>(m.units||[]).find(u=>SIU.test(u.l))||null;
+const rdU=m=>S.units==='si'?siOf(m):null;          // null => canonical (US)
+const invU=(u,v)=>u.a!==undefined?(v-u.b)/u.a:v/u.m;   // inverse of toUS, one unit
+const uLab=m=>{const u=rdU(m);return u?u.l:m.us;};
+const dV=(m,v)=>{const u=rdU(m);                   // a VALUE: full inverse
+  return u&&v!=null&&!isNaN(v)?invU(u,v):v;};
+const dD=(m,d)=>{const u=rdU(m);                   // a DIFFERENCE: slope only, no offset
+  return u?(u.a!==undefined?d/u.a:d/u.m):d;};      // (matters for a1c's affine IFCC unit)
 const fmt=n=>{const a=Math.abs(n);const d=a>=100?0:a>=10?1:a>=1?2:3;return parseFloat(n.toFixed(d)).toString();};
 const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function status(m,v){if(v==null||isNaN(v))return'none';
@@ -843,6 +872,14 @@ function paint(){
   if(tc)tc.setAttribute('content',getComputedStyle(H).getPropertyValue('--chrome').trim()||'#FFFFFF');
   const lbl=S.theme==='dark'?'Switch to light mode':'Switch to dark mode';
   const b=document.getElementById('tbtn'); b.setAttribute('aria-label',lbl); b.title=lbl;
+}
+/* Unit-system flip. This is a TABLE-only concern, so the control lives in the table's own
+   Unit header rather than the global chrome. render() rebuilds every cell, gauge, chart and
+   delta from the same S.units, so the grid can never end up half-converted. */
+async function flipU(){
+  S.units=S.units==='si'?'us':'si';
+  try{if(window.storage)await window.storage.set(UKEY,S.units);}catch(e){}
+  render();
 }
 let themeChosen=false;   // a manual flip beats the OS preference, and is persisted
 async function flip(){
@@ -989,6 +1026,9 @@ async function load(){
   let saved=null;
   try{if(window.storage){const r=await window.storage.get(TKEY);
     if(r&&(r.value==='dark'||r.value==='light'))saved=r.value;}}catch(e){}
+  // reading unit is a deliberate choice, so it only ever comes from storage — no OS analogue
+  try{if(window.storage){const r=await window.storage.get(UKEY);
+    if(r&&(r.value==='si'||r.value==='us'))S.units=r.value;}}catch(e){}
   const sys=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)');
   themeChosen=!!saved;
   S.theme=saved||(sys&&sys.matches?'dark':'light');
@@ -1015,13 +1055,13 @@ function mini(m){
   const tick=L?`<div class="mgt ${status(m,L.v)}" style="left:${P(L.v)}%"></div>`:'';
   const lab=(x,v)=>{const p=P(x);const tf=p<9?'none':p>91?'translateX(-100%)':'translateX(-50%)';
     return `<span style="left:${p}%;transform:${tf}">${fmt(v)}</span>`;};
-  const tip=`Clinical ${fmt(m.clin[0])}–${fmt(m.clin[1])} ${m.us}`+
-    (m.opt?` · Optimal ${fmt(m.opt[0])}–${fmt(m.opt[1])} (${m.oc})`:'')+
-    (L?` · You: ${fmt(L.v)}`:' · not measured');
+  const tip=`Clinical ${fmt(dV(m,m.clin[0]))}–${fmt(dV(m,m.clin[1]))} ${uLab(m)}`+
+    (m.opt?` · Optimal ${fmt(dV(m,m.opt[0]))}–${fmt(dV(m,m.opt[1]))} (${m.oc})`:'')+
+    (L?` · You: ${fmt(dV(m,L.v))}`:' · not measured');
   return `<div title="${tip}">
     <div class="mg"><div class="mgc" style="left:${cl}%;width:${cw}%"></div>
       ${m.opt?`<div class="mgo" style="left:${ol}%;width:${ow}%"></div>`:''}${tick}</div>
-    <div class="mgx">${lab(m.clin[0],m.clin[0])}${lab(m.clin[1],m.clin[1])}</div></div>`;
+    <div class="mgx">${lab(m.clin[0],dV(m,m.clin[0]))}${lab(m.clin[1],dV(m,m.clin[1]))}</div></div>`;
 }
 function sev(m,v){
   const w=(m.clin[1]-m.clin[0])||1;                       // normalise by the marker's own range width
@@ -1030,11 +1070,12 @@ function sev(m,v){
   if(m.opt){ if(v<m.opt[0])return (m.opt[0]-v)/w; if(v>m.opt[1])return (v-m.opt[1])/w; }
   return 0;
 }
-function excursion(m,v){                                   // how far past the edge, in the marker's own units
-  if(v<m.clin[0])return `${fmt(m.clin[0]-v)} under`;
-  if(v>m.clin[1])return `${fmt(v-m.clin[1])} over`;
-  if(m.opt){ if(v<m.opt[0])return `${fmt(m.opt[0]-v)} below target`;
-             if(v>m.opt[1])return `${fmt(v-m.opt[1])} above target`; }
+function excursion(m,v){                    // how far past the edge, in the CURRENT reading unit
+  // dD not dV: these are gaps, and a gap carries no zero-offset.
+  if(v<m.clin[0])return `${fmt(dD(m,m.clin[0]-v))} under`;
+  if(v>m.clin[1])return `${fmt(dD(m,v-m.clin[1]))} over`;
+  if(m.opt){ if(v<m.opt[0])return `${fmt(dD(m,m.opt[0]-v))} below target`;
+             if(v>m.opt[1])return `${fmt(dD(m,v-m.opt[1]))} above target`; }
   return '';
 }
 function trend(m){
@@ -1044,8 +1085,8 @@ function trend(m){
   const V=d=>toUS(m,d.v[m.id].r,d.v[m.id].u);
   const A=pts[pts.length-2],B=pts[pts.length-1],diff=V(B)-V(A);
   const yrs=(new Date(B.date+'T00:00:00')-new Date(A.date+'T00:00:00'))/31557600000;
-  const lbl=Math.abs(diff)<1e-9?'no change':(diff>0?'↑':'↓')+' '+fmt(Math.abs(diff));
-  const tip=`${fmt(V(A))} (${A.date}) → ${fmt(V(B))} (${B.date}) ${m.us}`;
+  const lbl=Math.abs(diff)<1e-9?'no change':(diff>0?'↑':'↓')+' '+fmt(dD(m,Math.abs(diff)));
+  const tip=`${fmt(dV(m,V(A)))} (${A.date}) → ${fmt(dV(m,V(B)))} (${B.date}) ${uLab(m)}`;
   return `<div class="trw" title="${tip}"><span class="dlt">${lbl}</span>`+
     `<span class="tsp">${yrs>=1?fmt(yrs)+'y':Math.round(yrs*12)+'mo'}</span></div>`;
 }
@@ -1090,11 +1131,11 @@ function det(row,id,cols,n,tri){
   let L=[[m.clin[1],''],[m.clin[0],'']];
   if(m.opt)[m.opt[1],m.opt[0]].forEach(v=>{
     if(L.every(([w])=>Math.abs(P(v)-P(w))>7))L.push([v,'o']);});
-  const ylab=L.map(([v,c])=>`<div class="cyl ${c}" style="bottom:${P(v).toFixed(2)}%"><span>${fmt(v)}</span></div>`).join('');
+  const ylab=L.map(([v,c])=>`<div class="cyl ${c}" style="bottom:${P(v).toFixed(2)}%"><span>${fmt(dV(m,v))}</span></div>`).join('');
   const grid=L.map(([v,c])=>`<div class="cgl ${c}" style="bottom:${P(v).toFixed(2)}%"></div>`).join('');
   const path=pts.map((o,k)=>`${k?'L':'M'}${X(o.i).toFixed(2)},${(100-P(V(o.d))).toFixed(2)}`).join(' ');
   const dots=pts.map(o=>`<div class="cd ${status(m,V(o.d))}" style="left:${X(o.i).toFixed(2)}%;bottom:${P(V(o.d)).toFixed(2)}%"`+
-    ` title="${o.d.date} · ${fmt(V(o.d))} ${m.us}"></div>`).join('');
+    ` title="${o.d.date} · ${fmt(dV(m,V(o.d)))} ${uLab(m)}"></div>`).join('');
   // measure, don't assume: column widths change with the viewport, so the panes must follow
   const _t=document.getElementById('tbl'),_h=_t.tHead?[..._t.tHead.rows[0].cells]:[];
   const _first=5+(tri?1:0), _last=_first+n-1;       // first and last draw column
@@ -1115,7 +1156,7 @@ function det(row,id,cols,n,tri){
               <span class="ckl">Optimal target<em class="${m.oc}">${m.oc}</em></span><span class="ckbr opt"></span></div>
           </div>`:''}
         </div>
-        <div class="cyu">${m.us}</div>${ylab}</div>
+        <div class="cyu">${uLab(m)}</div>${ylab}</div>
       <div class="cplot">
         <div class="cb clin" style="bottom:${P(m.clin[0]).toFixed(2)}%;height:${(P(m.clin[1])-P(m.clin[0])).toFixed(2)}%"></div>
         ${m.opt?`<div class="cb opt" style="bottom:${P(m.opt[0]).toFixed(2)}%;height:${(P(m.opt[1])-P(m.opt[0])).toFixed(2)}%"></div>`:''}
@@ -1174,7 +1215,7 @@ function render(){
     return `<th class="dcol ${i===n-1?'dnow':''}" title="${d.date}">${dt.toLocaleString('en',{month:'short'})} '${d.date.slice(2,4)}</th>`;}).join('');
   let h=`<thead><tr><th class="nm lft">Marker</th>`+
     `<th class="now" title="Most recent value for this marker, whichever draw it came from">Latest</th>`+
-    `<th class="uc lft" title="Governs every value in this row: Latest, all six draws, the gauge and the delta"></th>`+
+    `<th class="uc lft"><button class="ubt" onclick="flipU()" title="Unit system for the whole table — Latest, every draw, the gauge, the chart and the delta. Click to switch to ${S.units==='si'?'US':'SI'}.">${S.units==='si'?'SI':'US'}<i>⇄</i></button></th>`+
     `<th class="lc lft" title="How long ago the latest reading was taken">Age</th>`+
     (tri?`<th class="off lft" title="How far outside its range or target the latest value sits">Off by</th>`:'')+
     `<th class="pos lft">Range &amp; position</th>${hd}`+
@@ -1184,17 +1225,19 @@ function render(){
     const L=cur[m.id];
     let pill='<span class="nilx">—</span>',off='',lm='<span class="nilx">—</span>';
     if(L){const st=status(m,L.v),mo=months(L.d.date),old=mo>STALE,ex=excursion(m,L.v);
-      pill=`<span class="pill ${st}" title="${fmt(L.v)} ${m.us} · measured ${L.d.date}">${fmt(L.v)}</span>`;
+      pill=`<span class="pill ${st}" title="${fmt(dV(m,L.v))} ${uLab(m)} · measured ${L.d.date}">${fmt(dV(m,L.v))}</span>`;
       lm=`<span class="lm${old?' old':''}" title="Measured ${L.d.date}${old?' · over 18 months old':''}">${ago(mo)}</span>`;
-      if(ex)off=`<span class="exc ${st}">${ex} <em>${m.us}</em></span>`;}
+      if(ex)off=`<span class="exc ${st}">${ex} <em>${uLab(m)}</em></span>`;}
     const cells=ds.map((d,i)=>{const e=d.v[m.id];
       if(!e)return `<td class="c nil ${i===n-1?'dnow':''}">·</td>`;
-      const v=toUS(m,e.r,e.u);
-      return `<td class="c has ${status(m,v)} ${i===n-1?'dnow':''}" title="${fmt(e.r)} ${unitOf(m,e.u).l}">${fmt(v)}</td>`;}).join('');
+      const v=toUS(m,e.r,e.u);      // canonical: status() must judge in canonical
+      // the tooltip keeps the value AS THE LAB PRINTED IT — provenance, never converted
+      return `<td class="c has ${status(m,v)} ${i===n-1?'dnow':''}" title="${fmt(e.r)} ${unitOf(m,e.u).l}">${fmt(dV(m,v))}</td>`;}).join('');
     return `<tr class="m" data-id="${m.id}" onclick="det(this,'${m.id}',${cols},${n},${tri})">
       <td class="nm"><div class="n1">${m.en}</div><span class="fr">${m.fr}</span></td>
       <td class="now">${pill}</td>
-      <td class="uc" title="Reported in: ${m.units.map(u=>u.l).join(' / ')}">${m.us}</td>
+      <td class="uc" title="Reported in: ${m.units.map(u=>u.l).join(' / ')}${
+        S.units==='si'&&!siOf(m)?' · no SI equivalent — shown unconverted':''}">${uLab(m)}</td>
       <td class="lc">${lm}</td>
       ${tri?`<td class="off">${off}</td>`:''}
       <td class="pos">${mini(m)}</td>
