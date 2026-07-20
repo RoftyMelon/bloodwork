@@ -38,7 +38,12 @@
   --frost:rgba(48,48,46,.72); --frost-b:rgba(245,244,239,.14); --frost-h:rgba(59,59,55,.9);
   --glass:rgba(48,48,46,.08); --glass-b:rgba(245,244,239,.14);
 }
-:root{--thh:30px; --nm:180px; --hh:64px}   /* sizing: theme-independent, must not sit in a theme block */
+:root{--thh:30px; --nm:180px; --hh:64px; --noww:84px}   /* sizing: theme-independent, must not sit in a theme block */
+/* --noww is the LATEST column's width, and it is declared once because it is used TWICE:
+   as that column's own width AND inside the Unit column's sticky left offset. It was two
+   hardcoded 68px, so widening one silently overlapped the frozen columns on horizontal
+   scroll. 84px because the widest pill measures 66.2px ("0.783") and the cell spends 14px
+   on padding — at 68px, 10 markers clipped in US and 20 in SI, which carries more decimals. */
 /* TYPE SCALE — one rationale across every tab:
    26 page title (.pgh — caps card titles gain ~40% optical size, so the title
    needs real distance to LOOK biggest) · 14 card/session title (.ccard>b), 12.5 .cgrp ·
@@ -172,9 +177,9 @@ thead th.lft{text-align:left}
    With table-layout:fixed these widths are REAL, so the sticky offsets can trust them. */
 th.nm,td.nm,th.now,td.now,th.uc,td.uc{position:sticky;z-index:2;background:var(--stick)}
 th.nm,td.nm{left:var(--gut,20px);text-align:left;width:var(--nm)}
-th.now,td.now{left:calc(var(--gut,20px) + var(--nm));width:68px}
+th.now,td.now{left:calc(var(--gut,20px) + var(--nm));width:var(--noww)}
 thead th.now{padding:0 5px}   /* 'LATEST' is the only thing keeping this column wide */
-th.uc,td.uc{left:calc(var(--gut,20px) + var(--nm) + 68px);width:62px;
+th.uc,td.uc{left:calc(var(--gut,20px) + var(--nm) + var(--noww));width:62px;
   border-right:1.5px solid var(--line)}
 th.lc,td.lc{width:52px}
 th.off,td.off{width:150px}
