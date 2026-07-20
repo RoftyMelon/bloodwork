@@ -265,16 +265,11 @@ td.nm .fr{font-size:12.5px;font-weight:400;color:var(--t4);display:block;margin-
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:0}
 td.uc{text-align:left;padding-left:7px;font-size:14px;color:var(--t3);
   white-space:nowrap;font-variant-numeric:tabular-nums}
-/* SI/US switch, parked in the Unit column's own header — the units it governs sit
-   directly beneath it, so the control explains itself without extra chrome. */
-/* padding grows the TAP TARGET (31x15 was well under the ~44px touch minimum) while the
-   negative margin cancels it again, so the header cell's layout is untouched. */
-.ubt{appearance:none;background:none;border:0;cursor:pointer;
-  padding:10px 8px;margin:-10px -8px;
-  display:inline-flex;align-items:center;gap:3px;
-  font:inherit;font-size:11.5px;letter-spacing:.06em;color:var(--t3)}
-.ubt:hover{color:var(--sel)}
-.ubt i{font-style:normal;font-size:10.5px;opacity:.65}
+/* SI/US switch. It is a MODE, not a filter, so it borrows the chip's shape (the row's
+   established "this is a button" cue) but never the solid pressed state the filters use —
+   otherwise it reads as a fourth filter that is always on. */
+.uch{margin-left:6px;display:inline-flex;align-items:center;gap:5px}
+.uch i{font-style:normal;font-size:12px;opacity:.7}
 td.lc{text-align:left;padding-left:10px;white-space:nowrap}
 .lm{font-size:14px;font-weight:500;color:var(--t2);font-variant-numeric:tabular-nums}
 .lm.old{color:var(--info);font-weight:650}
@@ -1206,7 +1201,13 @@ function render(){
       .map(c=>`<button class="chip" aria-pressed="${filter===c.id&&!q}" onclick="setF('${c.id}')"`+
         (c.id==='flag'?` title="Outside the lab reference range, or outside the optimal target"`
          :c.id==='crit'?` title="${DECS.length} supplements, ${MARK.filter(m=>m.dec).length} markers between them"`:'')+
-        `>${c.t}<span class="cn${c.id==='flag'&&out.length?' hot':''}">${N[c.id]}</span></button>`).join('');
+        `>${c.t}<span class="cn${c.id==='flag'&&out.length?' hot':''}">${N[c.id]}</span></button>`).join('')
+    // Unit switch rides with the chips because that row is where this page keeps its
+    // CONTROLS. It first sat in the Unit column header, styled like the other <th>s —
+    // which made it invisible: it read as a column label, not a button.
+    +`<button class="chip uch" onclick="flipU()" title="Unit system for the whole table `
+    +`— Latest, every draw, the gauge, the chart and the delta. Showing ${S.units==='si'?'SI':'US'}`
+    +`; click for ${S.units==='si'?'US':'SI'}.">${S.units==='si'?'SI':'US'}<i>⇄</i></button>`;
   document.getElementById('toc').innerHTML=
     CATS.map(c=>`<button class="nav" onclick="goto('${c.id}')">${c.t}</button>`).join('');
   const tri=filter==='flag',sup=filter==='crit';                 // triage view earns an extra column
@@ -1215,7 +1216,7 @@ function render(){
     return `<th class="dcol ${i===n-1?'dnow':''}" title="${d.date}">${dt.toLocaleString('en',{month:'short'})} '${d.date.slice(2,4)}</th>`;}).join('');
   let h=`<thead><tr><th class="nm lft">Marker</th>`+
     `<th class="now" title="Most recent value for this marker, whichever draw it came from">Latest</th>`+
-    `<th class="uc lft"><button class="ubt" onclick="flipU()" title="Unit system for the whole table — Latest, every draw, the gauge, the chart and the delta. Click to switch to ${S.units==='si'?'US':'SI'}.">${S.units==='si'?'SI':'US'}<i>⇄</i></button></th>`+
+    `<th class="uc lft" title="Governs every value in this row: Latest, all six draws, the gauge and the delta"></th>`+
     `<th class="lc lft" title="How long ago the latest reading was taken">Age</th>`+
     (tri?`<th class="off lft" title="How far outside its range or target the latest value sits">Off by</th>`:'')+
     `<th class="pos lft">Range &amp; position</th>${hd}`+
