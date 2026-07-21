@@ -113,9 +113,8 @@ window.BLOODWORK =
    {"id": "ha", "name": "Hyaluronic acid", "dose": "250mg", "info": "Not absorbed intact (~0.2%) — gut bacteria fragment it into signals for the skin's own HA. 2025 review (7 trials): modest hydration, elasticity and wrinkle gains. 250mg, the trial dose. Cosmetic, gut-flora-dependent.", "cat": "skin", "status": "planned", "when": [{"at": "brunch", "dose": "250mg"}], "url": "https://www.sunday.de/en/hyaluronic-acid-250mg-high-dose-vegan-from-fermentation.html", "dec": null},
    {"id": "mglthr", "name": "Magnesium L-threonate", "judge": "sleep quality — an on-vs-off test by feel or your sleep tracker", "dose": "2040mg", "info": "Brain-penetrant magnesium (147mg elemental), sold for sleep. But the sleep case is thin — you're young and replete (~2× RDA), and its only trials are cognition in older adults. Parked pending your own on/off sleep test.", "cat": "maylater", "status": "planned", "when": [{"at": "evening", "dose": "2040mg"}], "url": "https://www.sunday.fr/magnesium-l-threonate-gelules.html", "dec": "Magnesium L-threonate"},
    {"id": "betacar", "name": "Beta-carotene", "judge": "skin tone — photos in consistent light over a few weeks", "dose": "15mg", "info": "The carotenoid that actually drives golden tone — astaxanthin can't. Parked so you judge astaxanthin + lycopene alone first, then add if the tint's still missing. Algae source (Dunaliella), safer than synthetic (which raised cancer risk only in smokers). 15mg with fat; more for deeper colour, but watch for orange palms.", "cat": "maylater", "status": "planned", "when": null, "url": "https://www.sunday.de/en/beta-carotene-algae-extract-capsules.html", "dec": null},
-   {"id": "minoxidil", "name": "Minoxidil (topical)", "dose": "5-10%, 1mL 2x/day", "info": "Topical vasodilator for regrowth — barely absorbed (~1.4%), non-hormonal, so no blood marker tracks it. Not yet started.", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": null},
-   {"id": "finasteride", "name": "Finasteride (topical)", "dose": "0.1%, 1mL 2x/day", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": "Finasteride (topical) 0.1% - 1mL",
-    "info": "Blocks DHT, the driver of hair loss — the core of the protocol. Topical 0.1% keeps systemic exposure low, but it's still finasteride: watch libido, erections and mood (depression included) for the first 6 months."},
+   {"id": "finasteride", "name": "Finasteride 0.1% + Minoxidil 5%", "dose": "1mL 2x/day", "cat": "hair", "status": "planned", "when": null, "url": null, "dec": "Finasteride (topical) 0.1% - 1mL",
+    "info": "One serum, both actives. Finasteride 0.1% blocks DHT, the driver of hair loss and the core of the protocol — topical keeps systemic exposure low, but it is still finasteride: watch libido, erections and mood (depression included) over the first 6 months. Minoxidil 5% is the vasodilator half, barely absorbed (~1.4%) and non-hormonal, so no blood marker tracks it. 1mL twice a day; skip the evening dose on needling day, when open channels spike absorption. Not yet started."},
    {"id": "glycine", "name": "Glycine", "judge": "sleep (solo); or the GlyNAC markers, if paired with NAC", "dose": "12g", "info": "12g is a glutathione/GlyNAC dose (sleep studies use just 3g). Now paired 1:1 with 12g NAC — near the Sekhar efficacy dose for your weight (~8g glycine). Glycine's very safe and cheap, so the slight overshoot is fine.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "Glycine 12g + taurine + collagen"},
    {"id": "nac", "name": "NAC", "judge": "hs-CRP, HOMA-IR, homocysteine and GGT, before vs after 3 months", "dose": "12g", "info": "Glutathione/antioxidant precursor. 12g matches your glycine 1:1 — near the Sekhar GlyNAC dose for your weight (~11g NAC). Raises homocysteine, which the TMG offsets. Parked until the goal and oxidative markers are set.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "NAC 12g"},
    {"id": "tmg", "name": "TMG", "judge": "homocysteine — it exists only to offset NAC's rise", "dose": "6g", "info": "Methyl donor that lowers homocysteine — 6g is the effective dose, sized to offset the homocysteine your 12g NAC raises. Catch: betaine above ~4g can nudge LDL up, so watch it. Pending homocysteine, the number that justifies the loop.", "cat": "maylater", "status": "planned", "when": null, "url": null, "dec": "TMG 6g"},
@@ -157,14 +156,14 @@ window.BLOODWORK =
     {"t": "Morning", "icon": "sun", "rows": [
      {"n": "Vitamin C 10% solution", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]},
      {"n": "Serum → Moisturizer → SPF 50", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]},
-     {"n": "Minoxidil + Finasteride (scalp)", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
+     {"n": "Finasteride 0.1% + Minoxidil 5%", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
     ]},
     {"t": "After dinner", "icon": "sunset", "rows": [
      {"n": "Retinal 0.2%", "on": ["Mon", "Tue", "Thu", "Fri", "Sat"]},
      {"n": "Glycolic 7%", "on": ["Wed"]},
      {"n": "Moisturizer", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Body lotion 12% AHA", "on": ["Tue", "Thu", "Sat"]},
-     {"n": "Minoxidil + Finasteride (scalp)", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+     {"n": "Finasteride 0.1% + Minoxidil 5%", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Microneedle → Infadolan", "on": ["Sun"], "hi": true}
     ]},
     {"t": "Before sleep", "icon": "moon", "rows": [
@@ -173,7 +172,7 @@ window.BLOODWORK =
    ],
    "notes": [
     "Microneedle: face 1mm weekly, up to 2mm monthly; scalp 0.75mm weekly.",
-    "Minoxidil + finasteride skip the needling evening — fresh channels spike absorption."
+    "Finasteride + minoxidil skip the needling evening — fresh channels spike absorption."
    ]
   }},
   {"id": "dental", "t": "Dental", "groups": [
