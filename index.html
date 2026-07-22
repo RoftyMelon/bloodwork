@@ -989,7 +989,29 @@ function audit(j){
   return bad;
 }
 
+/* DERIVED markers — computed here at load, NEVER stored in bloodwork.js.
+   The data file keeps one truth per fact (calcium and albumin), and anything reconstructible
+   from them is rebuilt on every load, so it cannot drift the way a stored copy would. Same
+   rule as the Diet page deriving supplement timing from STACK.when.
+   Runs BEFORE audit() so a derived value is validated exactly like a transcribed one. */
+function derive(j){
+  const M=id=>j.MARK.find(m=>m.id===id);
+  const CA=M('ca'),AL=M('alb'),CC=M('cacorr');
+  if(!CA||!AL||!CC)return;                       // marker removed? derive nothing, never guess
+  const canon=(m,e)=>{const x=m.units.find(z=>z.l===e.u)||m.units[0];
+    return x.a!==undefined?x.a*e.r+x.b:e.r*x.m;};
+  j.DATA.draws.forEach(d=>{
+    const ca=d.v.ca,al=d.v.alb;
+    if(!ca||!al){delete d.v.cacorr;return;}      // needs BOTH; a stale one must not survive
+    // the SOURCE LAB'S coefficient (1.0 mg/L per g/L albumin), not Payne's 0.02 mmol/L —
+    // so the number reproduces the printed report instead of quietly disagreeing with it.
+    const v=canon(CA,ca)-(canon(AL,al)-4);
+    d.v.cacorr={r:Math.round(v*100)/100,u:'mg/dL'};
+  });
+}
+
 function boot(j,cache){
+  derive(j);
   const bad=audit(j);
   if(bad.length){
     document.getElementById('tbl').innerHTML=

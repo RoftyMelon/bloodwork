@@ -31,7 +31,7 @@ setTimeout(()=>{
   const cols=h=>{const th=(h.match(/<th /g)||[]).length;
     const f=h.slice(h.indexOf('<tr class="m"'),h.indexOf('</tr>',h.indexOf('<tr class="m"')));
     return [th,(f.match(/<td /g)||[]).length];};
-  ok('renders 74 rows', rows(n.tbl.innerHTML)===74, rows(n.tbl.innerHTML)+' rows');
+  ok('renders 75 rows', rows(n.tbl.innerHTML)===75, rows(n.tbl.innerHTML)+' rows');
   ok('boot placeholder replaced', !n.tbl.innerHTML.includes('Loading…'));
   ['all','flag','crit'].forEach(f=>{ setF(f);
     const [th,td]=cols(n.tbl.innerHTML);

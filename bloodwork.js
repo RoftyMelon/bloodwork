@@ -394,6 +394,36 @@ window.BLOODWORK =
    ]
   },
   {
+   "id": "cacorr",
+   "cat": "vitmin",
+   "calc": "DERIVED, never stored: ca − (alb in g/dL − 4.0). Computed at load from the same draw's calcium and albumin — see derive() in index.html. The coefficient is the SOURCE LAB'S (1.0 mg/L per g/L of albumin), not Payne's 0.02 mmol/L, so the figure reproduces what the lab printed rather than disagreeing with the report a clinician is holding.",
+   "en": "Corrected calcium",
+   "fr": "Calcium corrigé",
+   "us": "mg/dL",
+   "units": [
+    {
+     "l": "mmol/L",
+     "m": 4.008
+    },
+    {
+     "l": "mg/L",
+     "m": 0.1
+    },
+    {
+     "l": "mg/dL",
+     "m": 1
+    }
+   ],
+   "clin": [
+    8.6,
+    10.2
+   ],
+   "axis": [
+    8,
+    11
+   ]
+  },
+  {
    "id": "ca",
    "cat": "vitmin",
    "dec": [
@@ -407,6 +437,10 @@ window.BLOODWORK =
     {
      "l": "mmol/L",
      "m": 4.008
+    },
+    {
+     "l": "mg/L",
+     "m": 0.1
     },
     {
      "l": "mg/dL",
@@ -3237,8 +3271,8 @@ window.BLOODWORK =
       "u": "mmol/L"
      },
      "ca": {
-      "r": 2.4,
-      "u": "mmol/L"
+      "r": 94,
+      "u": "mg/L"
      },
      "mg": {
       "r": 0.86,
