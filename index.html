@@ -1140,11 +1140,19 @@ function mini(m){
       ${m.opt?`<div class="mgo" style="left:${ol}%;width:${ow}%"></div>`:''}${tick}</div>
     <div class="mgx">${lab(m.clin[0],dV(m,m.clin[0]))}${lab(m.clin[1],dV(m,m.clin[1]))}</div></div>`;
 }
+/* How confident we are in an OPTIMAL band, used to rank the triage list. It weights
+   ONLY the opt-based branch below — never the clinical one. clin[] is lab data; opt[] is
+   an inference carrying an evidence tag, so a marker sitting outside a weak target should
+   not outrank one outside a strong one by the same margin. */
+const EVW={strong:1,moderate:.6,weak:.3};
 function sev(m,v){
   const w=(m.clin[1]-m.clin[0])||1;                       // normalise by the marker's own range width
   if(v<m.clin[0])return 100+(m.clin[0]-v)/w;              // so mg/dL and mL/min are comparable
   if(v>m.clin[1])return 100+(v-m.clin[1])/w;
-  if(m.opt){ if(v<m.opt[0])return (m.opt[0]-v)/w; if(v>m.opt[1])return (v-m.opt[1])/w; }
+  // +100 above keeps every OUT-of-clinical marker ranked above every watch, untouched by
+  // evidence weighting: being outside the lab's own range is a fact, not an inference.
+  if(m.opt){ const k=EVW[m.oc]??.3;
+    if(v<m.opt[0])return (m.opt[0]-v)/w*k; if(v>m.opt[1])return (v-m.opt[1])/w*k; }
   return 0;
 }
 function excursion(m,v){                    // how far past the edge, in the CURRENT reading unit

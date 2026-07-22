@@ -1543,11 +1543,11 @@ window.BLOODWORK =
    ],
    "clin": [
     3.5,
-    5
+    5.2
    ],
    "opt": [
-    4,
-    5
+    4.5,
+    5.2
    ],
    "oc": "moderate",
    "axis": [
