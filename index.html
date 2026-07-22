@@ -184,7 +184,13 @@ th.uc,td.uc{left:calc(var(--gut,20px) + var(--nm) + var(--noww));width:62px;
 th.lc,td.lc{width:52px}
 th.off,td.off{width:150px}
 th.pos,td.pos{width:170px}
-th.tr,td.tr{min-width:104px}   /* no width: absorbs the leftover */
+/* WIDTH, not min-width. The table is table-layout:fixed, which IGNORES min-width on a
+   cell — only width counts. Every other column is explicitly sized, so this one was left
+   absorbing the remainder, and once the viewport got narrow the remainder went to ~14px:
+   the header clipped to "SIN" and the deltas to "↓ 0". An explicit width makes it part of
+   the table's own width instead, so the table scrolls (min-width:1130px) rather than
+   crushing its last column. */
+th.tr,td.tr{width:150px}
 thead th.nm,thead th.now,thead th.uc{background:var(--head);z-index:9}
 thead th.now{color:var(--txt)}
 tr.grp td{position:sticky;top:calc(var(--hvis,70px) + var(--thh) - 3px);z-index:6;padding:0;
