@@ -14,7 +14,7 @@ window.BLOODWORK =
   "what": "Bloodwork + supplement data for one person. THE single source of truth. The dashboard reads this file; so should any AI. Editing this file is how you add a new draw.",
   "how_to_add_a_draw": "APPEND one object to DATA.draws. Do not touch anything else. Do not reorder. Do not delete.\n  {\"id\":\"d2026jul\", \"date\":\"YYYY-MM-DD\", \"note\":\"lab, fasted?, on/off what\",\n   \"v\":{ \"<markerId>\": {\"r\": <EXACTLY what the lab printed>, \"u\": \"<the unit the lab used>\"} }}\nRULES, in order of how badly they bite:\n 1. NEVER convert a value. Write what the lab printed and name its unit. The dashboard converts.\n 2. \"u\" must be a unit LABEL copied EXACTLY from that marker units[] array (e.g. \"mg/L\", \"µmol/L\", \"G/L\").\n    If the lab used a unit not in that list, STOP and say so. Do not improvise a conversion.\n 3. \"<markerId>\" must be an existing id in MARK. If the lab reports something not in MARK, STOP and\n    say so rather than inventing an id — an unknown id is silently ignored.\n 4. Return the WHOLE file. Never a fragment, never a diff.",
   "units": "Each marker has a units[] array of {l, m} or {l, a, b} entries. Convert to the US unit with the entry whose l matches v.u: value = (a !== undefined) ? a*raw + b : raw*m. The first entry is not special; v.u names the unit by its LABEL, never by position.",
-  "optimal_ranges": "opt[] and oc are INFERENCES, not lab data. oc is the evidence behind the target: strong = outcome data (RCTs, dose-response vs hard endpoints); moderate = association studies or physiology; weak = convention or industry framing, no outcome data. 9 strong, 28 moderate, 29 weak. A value outside a WEAK band is an opinion, not a finding.",
+  "optimal_ranges": "opt[] and oc are INFERENCES, not lab data. oc is the evidence behind the target: strong = outcome data (RCTs, dose-response vs hard endpoints); moderate = association studies or physiology; weak = convention or industry framing, no outcome data. 3 strong, 29 moderate, 26 weak, 17 with no target at all. A value outside a WEAK band is an opinion, not a finding. A marker with NO opt is deliberate: it means no defensible target exists, and adding one back is a regression, not an improvement.",
   "clin_ranges": "clin[] IS lab data, off the report.",
   "dec": "Which supplements a marker bears on. Many-to-many. Membership does NOT mean the supplement moves it: cystatin C is under Creatine precisely because creatine CANNOT distort it, albumin is under Vitamin D because calcium cannot be corrected without it, selenium is iodine's cofactor, B12/folate are TMG's pathway. The DECS order is deliberate — grouped by primary biomarker domain (hormones/thyroid → lipids/cardio → liver/methylation → kidney/muscle → bone/minerals → aminos → foundational), NOT alphabetical; do not re-sort.",
   "confounds": [
@@ -379,13 +379,13 @@ window.BLOODWORK =
    ],
    "clin": [
     30,
-    100
-   ],
-   "opt": [
-    40,
     60
    ],
-   "oc": "moderate",
+   "opt": [
+    30,
+    50
+   ],
+   "oc": "weak",
    "axis": [
     0,
     120
@@ -575,11 +575,6 @@ window.BLOODWORK =
     0,
     35
    ],
-   "opt": [
-    0,
-    10
-   ],
-   "oc": "strong",
    "axis": [
     0,
     80
@@ -1292,13 +1287,13 @@ window.BLOODWORK =
    ],
    "clin": [
     4,
-    5.7
+    5.6
    ],
    "opt": [
     4.6,
     5.4
    ],
-   "oc": "strong",
+   "oc": "moderate",
    "axis": [
     4,
     7
@@ -1505,11 +1500,6 @@ window.BLOODWORK =
     0.2,
     1.2
    ],
-   "opt": [
-    0.2,
-    1
-   ],
-   "oc": "weak",
    "axis": [
     0,
     2
@@ -1671,11 +1661,6 @@ window.BLOODWORK =
     10,
     40
    ],
-   "opt": [
-    20,
-    30
-   ],
-   "oc": "weak",
    "axis": [
     0,
     60
@@ -1701,14 +1686,9 @@ window.BLOODWORK =
     }
    ],
    "clin": [
-    30,
-    85
+    23,
+    102
    ],
-   "opt": [
-    30,
-    85
-   ],
-   "oc": "weak",
    "axis": [
     0,
     110
@@ -1730,11 +1710,6 @@ window.BLOODWORK =
     1.7,
     8.6
    ],
-   "opt": [
-    2,
-    7
-   ],
-   "oc": "weak",
    "axis": [
     0,
     12
@@ -2315,11 +2290,6 @@ window.BLOODWORK =
     20,
     45
    ],
-   "opt": [
-    25,
-    35
-   ],
-   "oc": "moderate",
    "axis": [
     0,
     60
@@ -2373,16 +2343,11 @@ window.BLOODWORK =
    ],
    "clin": [
     30,
-    200
+    380
    ],
-   "opt": [
-    30,
-    200
-   ],
-   "oc": "weak",
    "axis": [
     0,
-    400
+    600
    ]
   },
   {
