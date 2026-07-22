@@ -2608,7 +2608,7 @@ window.BLOODWORK =
    {
     "id": "d20201210",
     "date": "2020-12-10",
-    "note": "Cerballiance Clairval (Marseille), drawn 10:38, Roche Cobas; hormones on Cobas ECLIA. Reached this file via an InsideTracker upload that re-converted the lab's SI values instead of transcribing them, so eight results were dropped entirely and six arrived rounded — all restored here from the report. THE LAB FLAGGED THREE VALUES: calcium 2.58 mmol/L against 2.15-2.50, creatinine 110 umol/L against 59-104, and potassium 4.7 against 3.4-4.5. Read the potassium with care — the report states 'legere hemolyse detectee dans le serum', and haemolysis releases intracellular potassium, which is the usual cause of a mildly high result on an otherwise normal panel. No albumin was measured, so corrected calcium cannot be derived for this draw.",
+    "note": "Cerballiance Clairval (Marseille), drawn 10:38, Roche Cobas; hormones on Cobas ECLIA. Reached this file via an InsideTracker upload that re-converted the lab's SI values instead of transcribing them, so eight results were dropped entirely and six arrived rounded — all restored here from the report. THE LAB FLAGGED THREE VALUES: calcium 2.58 mmol/L against 2.15-2.50, creatinine 110 umol/L against 59-104, and potassium 4.7 against 3.4-4.5. Read the potassium with care — the report states 'legere hemolyse detectee dans le serum', and haemolysis releases intracellular potassium, which is the usual cause of a mildly high result on an otherwise normal panel. No albumin was measured, so corrected calcium cannot be derived for this draw. ONE VALUE HERE IS NOT FROM THIS COLLECTION: zinc (13.9 umol/L, atomic absorption, CERBA) was drawn 22.12.2020 at 09h58, twelve days later, and arrived with the same report bundle. Folded in deliberately rather than given its own draw — the time axis is in years, so twelve days is invisible, and a separate draw would add a table column in which 74 of 75 rows are empty.",
     "v": {
      "wbc": {
       "r": 6.2,
@@ -2725,6 +2725,10 @@ window.BLOODWORK =
      "ferr": {
       "r": 72,
       "u": "µg/L"
+     },
+     "zn": {
+      "r": 13.9,
+      "u": "µmol/L"
      },
      "ast": {
       "r": 31,
