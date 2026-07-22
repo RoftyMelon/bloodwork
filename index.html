@@ -1000,13 +1000,38 @@ function derive(j){
   if(!CA||!AL||!CC)return;                       // marker removed? derive nothing, never guess
   const canon=(m,e)=>{const x=m.units.find(z=>z.l===e.u)||m.units[0];
     return x.a!==undefined?x.a*e.r+x.b:e.r*x.m;};
+  const TT=M('tt'),SH=M('shbg'),TF=M('trf'),TB=M('tibc'),FT=M('ft');
+  const put=(d,id,v,u)=>{d.v[id]={r:Math.round(v*100)/100,u};};
   j.DATA.draws.forEach(d=>{
     const ca=d.v.ca,al=d.v.alb;
-    if(!ca||!al){delete d.v.cacorr;return;}      // needs BOTH; a stale one must not survive
-    // the SOURCE LAB'S coefficient (1.0 mg/L per g/L albumin), not Payne's 0.02 mmol/L —
-    // so the number reproduces the printed report instead of quietly disagreeing with it.
-    const v=canon(CA,ca)-(canon(AL,al)-4);
-    d.v.cacorr={r:Math.round(v*100)/100,u:'mg/dL'};
+    if(!ca||!al)delete d.v.cacorr;               // needs BOTH; a stale one must not survive
+    else{
+      // the SOURCE LAB'S coefficient (1.0 mg/L per g/L albumin), not Payne's 0.02 mmol/L —
+      // so the number reproduces the printed report instead of quietly disagreeing with it.
+      put(d,'cacorr',canon(CA,ca)-(canon(AL,al)-4),'mg/dL');
+    }
+
+    // TIBC from transferrin. `!d.v.tibc` matters: a directly MEASURED TIBC must always win
+    // over a computed one, so this only fills a gap and never overwrites. 1.4023 = 25.1
+    // µmol/L per g/L carried into canonical units; it reproduces the lab's own TSAT
+    // (81.0/363.2 = 22.3% vs their printed 22%), which is what validates the factor.
+    const tf=d.v.trf;
+    if(TF&&TB&&tf&&!d.v.tibc)put(d,'tibc',canon(TF,tf)*1.4023,'µg/dL');
+
+    // Calculated free testosterone (Vermeulen 1999) — the clinical standard when
+    // equilibrium dialysis is unavailable, and far more reliable than a direct free-T
+    // immunoassay (this dataset already had one such value thrown out as a 10x error).
+    // Solves N·Kt·FT² + FT·(N + Kt·(S−T)) − T = 0 for the free fraction.
+    const tt=d.v.tt,sh=d.v.shbg;
+    if(TT&&SH&&FT&&tt&&sh&&al&&!d.v.ft){         // never overwrite a measured free T
+      const T=canon(TT,tt)/28.84*1e-9,          // ng/dL → nmol/L → mol/L
+            S=canon(SH,sh)*1e-9,                 // nmol/L → mol/L
+            Calb=canon(AL,al)*10/66430,          // g/dL → g/L → mol/L (albumin MW 66430)
+            Kt=1e9,Ka=3.6e4,N=1+Ka*Calb,
+            a=N*Kt,b=N+Kt*(S-T),
+            free=(-b+Math.sqrt(b*b+4*a*T))/(2*a);
+      if(isFinite(free)&&free>0)put(d,'ft',free*1e12*0.28842,'pg/mL');   // mol/L → pg/mL
+    }
   });
 }
 
