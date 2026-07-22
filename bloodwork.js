@@ -2771,87 +2771,39 @@ window.BLOODWORK =
    {
     "id": "d20220514",
     "date": "2022-05-14",
-    "note": "InsideTracker upload",
+    "note": "Cerballiance La Rouviere (Marseille), drawn 10:15, Roche Cobas / Cobas ECLIA. Arrived via an InsideTracker upload: four results were dropped (creatinine, eGFR, alkaline phosphatase, TSH) and three were rounded (RBC 5.28 stored as 5.3, MCHC 34.8 as 35, albumin 52.9 g/L as 5.3 g/dL) — all restored from the report. THE LAB FLAGGED THREE VALUES: albumin 52.9 g/L against 35-52, creatinine 106 umol/L against 59-104, and MPV 11.7 fL against 7.0-11.0 (no MPV marker in this panel; it was 9.2 in 2020). CRITICAL FOR THE CORRECTED-CALCIUM MARKER: this report prints, verbatim, 'Calcium corrige non indique car albumine >40 g/L' — the laboratory REFUSED to compute corrected calcium because albumin exceeds 40 g/L, which it does in every draw where albumin was measured (52.9 here, 51 in July 2026). Urea was deliberately not performed: the report states it is only reimbursed for dialysis, acute renal failure, or nutritional assessment in chronic renal failure, so the empty urea marker is a French reimbursement rule and not a dropped value. hs-CRP printed 'Inf a 0,5 mg/L' and is stored AT the limit, so read it as an upper bound.",
     "v": {
      "wbc": {
       "r": 5.3,
       "u": "G/L"
      },
-     "hscrp": {
-      "r": 0.5,
-      "u": "mg/L"
-     },
      "neut": {
-      "r": 3320,
-      "u": "cells/µL"
+      "r": 3.32,
+      "u": "G/L"
      },
      "lymph": {
-      "r": 1460,
-      "u": "cells/µL"
+      "r": 1.46,
+      "u": "G/L"
      },
      "mono": {
-      "r": 410,
-      "u": "cells/µL"
+      "r": 0.41,
+      "u": "G/L"
      },
      "eos": {
-      "r": 70,
-      "u": "cells/µL"
+      "r": 0.07,
+      "u": "G/L"
      },
      "baso": {
-      "r": 50,
-      "u": "cells/µL"
-     },
-     "chol": {
-      "r": 149,
-      "u": "mg/dL"
-     },
-     "hdl": {
-      "r": 53,
-      "u": "mg/dL"
-     },
-     "ldl": {
-      "r": 81,
-      "u": "mg/dL"
-     },
-     "tg": {
-      "r": 73,
-      "u": "mg/dL"
-     },
-     "vitd": {
-      "r": 32,
-      "u": "ng/mL"
-     },
-     "glu": {
-      "r": 85,
-      "u": "mg/dL"
-     },
-     "alt": {
-      "r": 20,
-      "u": "UI/L"
-     },
-     "ast": {
-      "r": 28,
-      "u": "UI/L"
-     },
-     "ggt": {
-      "r": 21,
-      "u": "UI/L"
-     },
-     "alb": {
-      "r": 5.3,
-      "u": "g/dL"
-     },
-     "ca": {
-      "r": 10,
-      "u": "mg/dL"
+      "r": 0.05,
+      "u": "G/L"
      },
      "hb": {
       "r": 16.3,
       "u": "g/dL"
      },
      "rbc": {
-      "r": 5.3,
-      "u": "10⁶/µL"
+      "r": 5.28,
+      "u": "T/L"
      },
      "hct": {
       "r": 46.8,
@@ -2866,20 +2818,84 @@ window.BLOODWORK =
       "u": "pg"
      },
      "mchc": {
-      "r": 35,
+      "r": 34.8,
       "u": "g/dL"
      },
      "plt": {
       "r": 172,
       "u": "G/L"
      },
-     "k": {
-      "r": 4.4,
-      "u": "mmol/L"
+     "glu": {
+      "r": 0.85,
+      "u": "g/L"
+     },
+     "crea": {
+      "r": 12.0,
+      "u": "mg/L"
+     },
+     "egfr": {
+      "r": 82,
+      "u": "mL/min/1.73m²"
+     },
+     "chol": {
+      "r": 1.49,
+      "u": "g/L"
+     },
+     "hdl": {
+      "r": 0.53,
+      "u": "g/L"
+     },
+     "ldl": {
+      "r": 0.81,
+      "u": "g/L"
+     },
+     "tg": {
+      "r": 0.73,
+      "u": "g/L"
      },
      "na": {
       "r": 140,
       "u": "mmol/L"
+     },
+     "k": {
+      "r": 4.4,
+      "u": "mmol/L"
+     },
+     "alb": {
+      "r": 52.9,
+      "u": "g/L"
+     },
+     "ca": {
+      "r": 100,
+      "u": "mg/L"
+     },
+     "ast": {
+      "r": 28,
+      "u": "UI/L"
+     },
+     "alt": {
+      "r": 20,
+      "u": "UI/L"
+     },
+     "alp": {
+      "r": 61,
+      "u": "UI/L"
+     },
+     "ggt": {
+      "r": 21,
+      "u": "UI/L"
+     },
+     "vitd": {
+      "r": 32,
+      "u": "ng/mL"
+     },
+     "hscrp": {
+      "r": 0.5,
+      "u": "mg/L"
+     },
+     "tsh": {
+      "r": 0.87,
+      "u": "mUI/L"
      }
     }
    },
