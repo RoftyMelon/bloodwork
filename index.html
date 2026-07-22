@@ -190,7 +190,7 @@ th.pos,td.pos{width:170px}
    the header clipped to "SIN" and the deltas to "↓ 0". An explicit width makes it part of
    the table's own width instead, so the table scrolls (min-width:1130px) rather than
    crushing its last column. */
-th.tr,td.tr{width:185px}   /* delta + % + timespan */
+th.tr,td.tr{width:200px}   /* the three .trw tracks + gaps + cell padding */
 thead th.nm,thead th.now,thead th.uc{background:var(--head);z-index:9}
 thead th.now{color:var(--txt)}
 tr.grp td{position:sticky;top:calc(var(--hvis,70px) + var(--thh) - 3px);z-index:6;padding:0;
@@ -206,7 +206,12 @@ tr.grp .gt{font-size:15.5px;font-weight:700;letter-spacing:.09em;text-transform:
 tr.grp .gs{font-size:13.5px;font-weight:450;letter-spacing:0;color:var(--t4);line-height:1.35}
 
 td.tr{text-align:left;padding-left:14px}
-.trw{display:flex;align-items:baseline;gap:7px}
+/* GRID, not flex: flex packs each row independently, so the % started at 6 different x
+   positions down the column and the timespan at 19. Fixed tracks put both on one vertical
+   line. The last track is auto so it just absorbs any extra column width — the two fixed
+   tracks are what hold the alignment, whatever the column ends up being.
+   76px clears the widest delta ("no change", 75px); 46px clears "+300%". */
+.trw{display:grid;grid-template-columns:76px 46px auto;align-items:baseline;gap:7px}
 .dlt{font-size:15.5px;font-weight:600;color:var(--t2);font-variant-numeric:tabular-nums;
   white-space:nowrap;letter-spacing:-.01em}
 /* a touch stronger than .tsp — the percentage is usually the more readable of the two,
@@ -1171,8 +1176,11 @@ function trend(m){
     (Math.abs(pc)>=10?Math.round(Math.abs(pc)):Math.round(Math.abs(pc)*10)/10)+'%';
   const tip=`${fmt(dV(m,V(A)))} (${A.date}) → ${fmt(dV(m,V(B)))} (${B.date}) ${uLab(m)}`+
     (pcs?` · ${pcs}`:'');
+  // .pct is emitted even when EMPTY: .trw is a grid with fixed tracks, so omitting the
+  // span would slide the timespan into the percentage's column and break the alignment
+  // on exactly the rows that have no percentage.
   return `<div class="trw" title="${tip}"><span class="dlt">${lbl}</span>`+
-    (pcs?`<span class="pct">${pcs}</span>`:'')+
+    `<span class="pct">${pcs}</span>`+
     `<span class="tsp">${yrs>=1?fmt(yrs)+'y':Math.round(yrs*12)+'mo'}</span></div>`;
 }
 
