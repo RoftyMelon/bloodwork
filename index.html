@@ -423,7 +423,9 @@ html:not([data-page=markers]) .shell,html:not([data-page=markers]) .gutmask{disp
 .srow{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:.5px solid var(--line2);flex-wrap:wrap;position:relative}
 .srow.off .sn{color:var(--t3);text-decoration:line-through;text-decoration-color:var(--t4);text-decoration-thickness:1px}
 .sn{font-size:16px;font-weight:560;color:var(--txt);letter-spacing:-.01em}
-.srow.on:not(.lite) .sn::after{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--ok);margin-left:8px;vertical-align:middle}   /* 'on now' dot — sits after the name */
+/* The 'on now' dot is gone on purpose. Everything outside "May add later" is being taken,
+   so a marker distinguishing them marked nothing — it only invited the reader to hunt for
+   a difference that no longer exists. Membership in the parked category IS the signal. */
 .sd{font-size:15px;color:var(--t2);font-variant-numeric:tabular-nums;text-align:right}
 .sfill{flex:1}
 .sbuy{flex:none;width:14px;text-align:center;font-size:11px;color:var(--t4);text-decoration:none;align-self:center}
@@ -1504,7 +1506,7 @@ function renderPage(p){
         (c.note?`<div class="cnote">${esc(c.note)}</div>`:'')+
         items.map(s=>{
           const dead=s.status==='stopped'||s.status==='dropped';
-          return `<div class="srow${dead?' off':''}${s.status==='taking'?' on':''}">`+
+          return `<div class="srow${dead?' off':''}">`+
             `<span class="sn">${esc(s.name)}</span>`+
             (s.url?`<a class="sbuy" href="${esc(s.url)}" target="_blank" rel="noopener" aria-label="Buy ${esc(s.name)}">&#8599;</a>`:'')+   // ↗ hugs the name
             `<span class="sfill"></span>`+   // spacer: the trailing columns flush right
@@ -1618,7 +1620,10 @@ function renderPage(p){
   } else if(p==='diet'&&DIET){
     // meal supp lists DERIVE from STACK.when (taking + planned): one source of truth
     const supps=slot=>{
-      const list=STACK?STACK.items.filter(x=>Array.isArray(x.when)&&x.when.some(w=>w.at===slot)&&(x.status==='taking'||x.status==='planned')&&x.cat!=='maylater'):[];   // parked items never derive into a meal
+      // ONLY 'taking'. Diet is a list of what actually goes in with each meal, and since
+      // the Stack no longer marks taking-vs-not, anything shown here must be real —
+      // otherwise a planned item is indistinguishable from one being swallowed daily.
+      const list=STACK?STACK.items.filter(x=>Array.isArray(x.when)&&x.when.some(w=>w.at===slot)&&x.status==='taking'):[];
       return list.length
         ?`<ul>${list.map(x=>{const w=x.when.find(w=>w.at===slot);return `<li class="suprow"><span class="sdn">${esc(x.name)}</span>${w.dose?`<span class="cwhen">${esc(w.dose)}</span>`:''}</li>`;}).join('')}</ul>`
         :`<div class="cempty">&mdash;</div>`;
