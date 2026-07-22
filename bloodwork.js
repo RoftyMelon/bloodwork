@@ -295,7 +295,7 @@ window.BLOODWORK =
    {"en": "Copper", "fr": "Cuivre"},
    {"en": "Calcium", "fr": "Calcium"},
    {"en": "PTH (parathyroid hormone)", "fr": "Parathormone (PTH)"},
-   {"en": "Magnesium (RBC)", "fr": "Magnésium érythrocytaire"},
+   {"en": "Magnesium (serum)", "fr": "Magnésium sérique"},
    {"en": "Ferritin", "fr": "Ferritine"},
    {"en": "Serum iron", "fr": "Fer sérique"},
    {"en": "TIBC (total iron-binding capacity)", "fr": "Capacité totale de fixation du fer (CTF)"},
