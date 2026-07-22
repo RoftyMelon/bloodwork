@@ -3108,7 +3108,7 @@ window.BLOODWORK =
    {
     "id": "d2026fr",
     "date": "2026-03-01",
-    "note": "French lab (Beckman), 10h fast. On creatine at the time.",
+    "note": "French lab, Beckman chemistry with an XN Sysmex haematology analyser, 10h fast, serum limpide. ON CREATINE at the time — which is why the eGFR of 61 is the outlier in an otherwise flat renal series (80, 82, 82, 61, 83.4) and should not be read as a decline. Verified against the printed report: every value matches to the digit, with no rounding, because this draw came from the lab directly rather than through an InsideTracker re-conversion. Creatinine 15 mg/L is on a page not reproduced in the copy checked here, but CKD-EPI 2021 on 1.5 mg/dL at age 31 gives 63, so it is consistent with the printed DFG of 61. Platelets 148 sit just below the 150-400 reference. THE CRP HERE IS A STANDARD ASSAY, NOT HIGH-SENSITIVITY: immuno-turbidimetry with a reference of <5 mg/L, printed '<1 mg/L' and stored AT that limit, so it is an upper bound from an assay that cannot resolve the hs-CRP range at all. The 2022 and July 2026 values ('Inf a 0,5' and '<0.6') come from genuine high-sensitivity assays and are the ones worth comparing.",
     "v": {
      "rbc": {
       "r": 5.17,
