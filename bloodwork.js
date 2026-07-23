@@ -158,7 +158,7 @@ window.BLOODWORK =
      {"n": "Finasteride 0.1% + Minoxidil 5%", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Matrixyl 10% + HA", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Petroleum", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
-     {"n": "Microneedle → Infadolan", "on": ["Sun"], "hi": true}
+     {"n": "Microneedle → Matrixyl → Infadolan", "on": ["Sun"], "hi": true}
     ]}
    ],
    "notes": [
