@@ -95,12 +95,11 @@ window.BLOODWORK =
   "Huel"
  ],
  "STACK": {
-  "intro": "Everything above 'May add later' is being taken, most of it started around the 2026-07-20 draw — so that draw is a clean baseline, measured before they went in. Huel counts too; it sits in the Diet as food. The parked tier waits for the next set of results. Creatine is the one exception: stopped before the draw so creatinine and eGFR would read clean, restarting shortly.",
   "cats": [
    {"id": "essentials", "t": "Essentials"},
    {"id": "skin", "t": "Skin"},
    {"id": "sport", "t": "Sport"},
-   {"id": "maylater", "t": "May add later", "note": "The trial tier — plausible but unproven for me. Each is added alone as a 3-month experiment after the bloodwork, judged by the readout below, then kept, cycled, or (usually) dropped."}
+   {"id": "maylater", "t": "May add later"}
   ],
   "items": [
    {"id": "astax", "name": "Astaxanthin", "dose": "12mg 2x/day", "info": "Photoprotection (raises the UV-burn threshold) plus moisture and elasticity. Not colour — that's beta-carotene's job. 24mg/day, 12mg twice with fat. Above the EU cap but safe to 40mg; held pending proof it helps colour.", "cat": "skin", "status": "taking", "when": [{"at": "brunch", "dose": "12mg"}, {"at": "dinner", "dose": "12mg"}], "url": null, "dec": null},
