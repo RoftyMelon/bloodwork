@@ -157,12 +157,11 @@ window.BLOODWORK =
      {"n": "Body lotion 12% AHA", "on": ["Tue", "Thu", "Sat"]},
      {"n": "Finasteride 0.1% + Minoxidil 5%", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Matrixyl 10% + HA", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
-     {"n": "Petroleum", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
-     {"n": "Microneedle → Matrixyl → Infadolan", "on": ["Sun"], "hi": true}
+     {"n": "Petroleum", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}
     ]}
    ],
    "notes": [
-    "Microneedle: face 1mm weekly, up to 2mm monthly; scalp 0.75mm weekly.",
+    "Microneedling → Infadolan: face 1mm weekly, up to 2mm monthly; scalp 0.75mm weekly.",
     "Finasteride + minoxidil skip the needling evening — fresh channels spike absorption."
    ]
   }},
