@@ -129,11 +129,11 @@ window.BLOODWORK =
   {"t": "10:00", "until": "10:30", "do": "Brunch"},
   {"t": "10:30", "until": "16:30", "do": "Work"},
   {"t": "16:30", "until": "17:00", "do": "Dinner"},
-  {"t": "18:00", "until": "21:00", "do": "Work"},
+  {"t": "18:00", "until": "20:30", "do": "Work"},
+  {"t": "20:30", "do": "Screens off"},
   {"t": "21:00", "until": "21:30", "do": "Shower + floss + skincare"},
-  {"t": "21:30", "do": "Screens off"},
-  {"t": "22:00", "do": "Bedtime"},
-  {"t": "22:30", "do": "Lights out"}
+  {"t": "21:30", "do": "Bedtime"},
+  {"t": "22:00", "do": "Lights out"}
  ],
  "CARE": [
   {"id": "face", "t": "Skincare", "schedule": {
