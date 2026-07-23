@@ -138,7 +138,7 @@ window.BLOODWORK =
    "groups": [
     {"t": "Morning", "icon": "sun", "items": [
      "Serum - Vit C 15% + Ferulic Acid + Vit E",
-     "Serum - Niacinamide 10%",
+     "Serum - Niacinamide 10% (B3) + Zinc PCA + Sarcosine",
      "Moisturizer",
      "SPF 50",
      "Finasteride 0.1% + Minoxidil 5%"
