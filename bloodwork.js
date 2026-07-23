@@ -138,7 +138,7 @@ window.BLOODWORK =
    "groups": [
     {"t": "Morning", "icon": "sun", "items": [
      {"n": "Serum - Vit C 15% + Ferulic Acid + Vit E", "url": "https://geekandgorgeous.com/products/c-glow"},
-     {"n": "Serum - Niacinamide 10% (B3) + Zinc PCA + Sarcosine", "url": "https://geekandgorgeous.com/products/b-bomb"},
+     {"n": "Serum - Niacinamide 10% (B3) + Zinc PCA", "url": "https://geekandgorgeous.com/products/b-bomb"},
      {"n": "Moisturizer - Ceramides + Cholesterol", "url": "https://www.cerave.fr/nos-produits/hydratants/creme-hydratante-visage"},
      {"n": "SPF 50", "url": "https://roundlab.com/en-ca/products/birch-moisturizing-uv-sunscreen?variant=43645688021206"},
      "Serum - Finasteride 0.1% + Minoxidil 5%"
