@@ -1471,6 +1471,8 @@ function renderPage(p){
   // Long protocol details hide behind an info tip so the cards stay narrow.
   const exRow=x=>{
     if(typeof x==='string')return `<li>${esc(x).replace(/\n/g,'<br>')}</li>`;
+    // a product row that links out (skincare) — the ↗ hugs the name, same glyph/class as the Stack buy link
+    if(x.url)return `<li>${esc(x.n)} <a class="sbuy" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="Open ${esc(x.n)}">&#8599;</a></li>`;
     // uniform weight AND reps (the usual case) collapse to ONE line on the name:
     // "40kg - 3x5". Uniform weight with mixed reps keeps a reps row; mixed weights
     // keep the full per-set kg/reps columns.
