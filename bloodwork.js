@@ -308,7 +308,8 @@ window.BLOODWORK =
      "Minerals": [["Calcium","240 mg","30%"],["Phosphorus","360 mg","51%"],["Potassium","700 mg","35%"],["Chloride","164 mg","21%"],["Magnesium","88 mg","23%"],["Iron","9.0 mg","64%"],["Zinc","4.6 mg","46%"],["Copper","0.50 mg","50%"],["Manganese","0.90 mg","45%"],["Selenium","33 mcg","60%"],["Iodine","30 mcg","20%"],["Chromium","12 mcg","30%"],["Molybdenum","37 mcg","74%"]],
      "Other": [["Choline","120 mg"],["Omega-3 (ALA)","4.0 g"],["Omega-6","4.2 g"],["MCT","1.1 g"],["Caffeine","68 mg"],["Green tea","130 mg"],["Lutein","1.6 mg"],["Zeaxanthin","0.1 mg"],["B. coagulans","200 M"]]
     }},
-    {"n": "Bananas", "amt": "2", "info": {"Per 2 (~236 g)":[["Energy","210 kcal","11%"],["Carbs","54 g","21%"],["– sugars","29 g","32%"],["Fibre","6 g"],["Protein","2.6 g","5%"]],"Standouts":[["Potassium","845 mg","42%"],["B6","0.9 mg","64%"],["Vit C","20 mg","25%"],["Magnesium","64 mg","17%"]]}}
+    {"n": "Banana", "amt": "1", "info": {"Per 1 (~118 g)":[["Energy","105 kcal","5%"],["Carbs","27 g","10%"],["– sugars","14 g","16%"],["Fibre","3 g"],["Protein","1.3 g","3%"]],"Standouts":[["Potassium","422 mg","21%"],["B6","0.45 mg","32%"],["Vit C","10 mg","12%"],["Magnesium","32 mg","8%"]]}},
+    {"n": "Berries (frozen)", "amt": "150 g", "info": {"Per 150g (mixed)":[["Energy","78 kcal","4%"],["Carbs","18 g","7%"],["– sugars","10 g","11%"],["Fibre","6 g"],["Protein","1.5 g","3%"]],"Standouts":[["Anthocyanins","~300 mg"],["Vit C","45 mg","56%"],["Manganese","0.7 mg","35%"],["Vit K","22 mcg","29%"]]}}
    ]},
    {"id": "brunch", "t": "Brunch", "at": "10:00", "items": [
     {"n": "Coffee", "amt": "1 cup", "info": {"Per cup (~240 ml)":[["Energy","2 kcal"],["Caffeine","~95 mg"],["Potassium","116 mg","6%"],["Chlorogenic acids","~200 mg"]]}},
