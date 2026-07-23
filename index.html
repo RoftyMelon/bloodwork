@@ -602,6 +602,14 @@ a.sbuy:hover{color:var(--info)}
    font-rendering drift on another device can't tip it either way. Re-measure if the text
    changes: below 344 the floss line breaks, at 370+ "applied" climbs back up. */
 .care.wide .ccard{flex:0 1 auto;width:min(356px,100%)}
+/* Skincare sizes to its OWN longest product line rather than a fixed 356px, so a name like
+   "Serum - Niacinamide 10% (B3) + Zinc PCA + Sarcosine" stops wrapping. fit-content = the
+   content's width, capped at what's available, so a phone still gets 100%. */
+.care.wide .ccard[data-care="face"]{width:fit-content;max-width:100%}
+/* ...but the footnotes are long sentences and would otherwise BE the widest content and set
+   the card width. width:0 removes them from that intrinsic measurement; min-width:100% then
+   refills them to the width the product list settled on, so they wrap inside it. */
+.care.wide .ccard[data-care="face"] .cgnote{width:0;min-width:100%}
 .care.col .ccard{flex:none;width:min(430px,100%)}   /* wide enough that no item wraps */
 .dnotes{margin-top:26px;padding:13px 16px 15px;background:var(--grp);border-radius:12px}
 .dnotes b{font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--t3)}
@@ -1505,7 +1513,7 @@ function renderPage(p){
     // footer notes under a list card (Skincare): the same .cgnote the schedule grid used, so a
     // card that dropped its dot-matrix keeps its footnotes reading exactly as before.
     const notes=(c.notes||[]).map(n=>`<div class="cgnote">${esc(n)}</div>`).join('');
-    return `<div class="ccard"><b>${esc(c.t)}</b>${inner}${notes}</div>`;}).join('')+`</div>`;
+    return `<div class="ccard"${c.id?` data-care="${esc(c.id)}"`:''}><b>${esc(c.t)}</b>${inner}${notes}</div>`;}).join('')+`</div>`;
   // a CARE card carrying a .schedule renders as a day-indexed dot-matrix instead of a card
   const CGISVG={   // section-header icons (schedule.sections[].icon) — line SVGs, inherit the label colour
     sun:'<circle cx="12" cy="12" r="4.2"/><path d="M12 1.8v2.4M12 19.8v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M1.8 12h2.4M19.8 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7"/>',
