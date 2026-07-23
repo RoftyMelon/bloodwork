@@ -129,6 +129,7 @@ window.BLOODWORK =
   {"t": "10:00", "until": "10:30", "do": "Brunch"},
   {"t": "10:30", "until": "16:30", "do": "Work"},
   {"t": "16:30", "until": "17:00", "do": "Dinner"},
+  {"t": "17:00", "until": "21:00", "do": "Work"},
   {"t": "21:00", "until": "21:30", "do": "Shower + floss + skincare"},
   {"t": "21:30", "do": "Bedtime"},
   {"t": "22:00", "do": "Lights out"}
