@@ -150,16 +150,15 @@ window.BLOODWORK =
      {"n": "Serum → Moisturizer → SPF 50", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]},
      {"n": "Finasteride 0.1% + Minoxidil 5%", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
     ]},
-    {"t": "After dinner", "icon": "sunset", "rows": [
+    {"t": "Before sleep", "icon": "moon", "rows": [
      {"n": "Retinal 0.2%", "on": ["Mon", "Tue", "Thu", "Fri", "Sat"]},
      {"n": "Glycolic 7%", "on": ["Wed"]},
      {"n": "Moisturizer", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Body lotion 12% AHA", "on": ["Tue", "Thu", "Sat"]},
      {"n": "Finasteride 0.1% + Minoxidil 5%", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+     {"n": "Matrixyl 10% + HA", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
+     {"n": "Petroleum", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]},
      {"n": "Microneedle → Infadolan", "on": ["Sun"], "hi": true}
-    ]},
-    {"t": "Before sleep", "icon": "moon", "rows": [
-     {"n": "Matrixyl + HA → Petroleum", "on": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]}
     ]}
    ],
    "notes": [
