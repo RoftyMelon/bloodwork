@@ -154,7 +154,6 @@ window.BLOODWORK =
     ]}
    ],
    "notes": [
-    "Finasteride + minoxidil skip the needling evening — fresh channels spike absorption.",
     "Glycolic 7% once a week instead of Retinal",
     "Microneedling → Infadolan: face 1mm weekly, up to 2mm monthly; scalp 0.75mm weekly."
    ]},
