@@ -140,7 +140,7 @@ window.BLOODWORK =
      {"n": "Serum - Vit C 15% + Ferulic Acid + Vit E", "url": "https://geekandgorgeous.com/products/c-glow"},
      {"n": "Serum - Niacinamide (B3) + Green Tea", "url": "https://www.yesstyle.com/fr/tcuc.EUR/coc.FR/info.html/pid.1119542353"},
      {"n": "Moisturizer - Ceramides + Cholesterol", "url": "https://www.cerave.fr/nos-produits/hydratants/creme-hydratante-visage"},
-     {"n": "SPF 50", "url": "https://roundlab.com/en-ca/products/birch-moisturizing-uv-sunscreen?variant=43645688021206"},
+     {"n": "SPF 50", "url": "https://www.yesstyle.com/fr/tcuc.EUR/coc.FR/info.html/pid.1122974582"},
      "Serum - Finasteride 0.1% + Minoxidil 5%"
     ]},
     {"t": "Before sleep", "icon": "moon", "items": [
